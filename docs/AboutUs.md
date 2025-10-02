@@ -27,7 +27,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: DevOps
 
-### Johnny Doe
+### Muhammad Zayyan Putra Akbar
 
 <img src="images/zayyankece.png" width="200px">
 
@@ -36,7 +36,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Data + Product Manager
 
-### Jean Doe
+### Aryaman Bansal
 
 <img src="images/ary-ban.png" width="200px">
 
