@@ -3,6 +3,8 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +33,18 @@ public class AddressBookParser {
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
+     * Single-letter aliases mapped to canonical command words.
+     * Example: "a" -> "add", "v" -> "list".
+     */
+    private static final Map<String, String> ALIASES = Map.of(
+            "a", AddCommand.COMMAND_WORD,
+            "d", DeleteCommand.COMMAND_WORD,
+            "e", EditCommand.COMMAND_WORD,
+            "v", ListCommand.COMMAND_WORD,   // “view” vibe, routes to list
+            "x", ExitCommand.COMMAND_WORD
+    );
+
+    /**
      * Parses user input into command for execution.
      *
      * @param userInput full user input string
@@ -43,15 +57,19 @@ public class AddressBookParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
 
-        final String commandWord = matcher.group("commandWord").toLowerCase();
+        // Extract raw word then normalize case + apply alias (if any)
+        final String rawCommandWord = matcher.group("commandWord");
+        String normalizedCommandWord = rawCommandWord.toLowerCase(Locale.ROOT);
+        normalizedCommandWord = ALIASES.getOrDefault(normalizedCommandWord, normalizedCommandWord);
+
         final String arguments = matcher.group("arguments");
 
         // Note to developers: Change the log level in config.json to enable lower level (i.e., FINE, FINER and lower)
         // log messages such as the one below.
         // Lower level log messages are used sparingly to minimize noise in the code.
-        logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
+        logger.fine("Command word: " + normalizedCommandWord + "; Arguments: " + arguments);
 
-        switch (commandWord) {
+        switch (normalizedCommandWord) {
 
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
