@@ -40,7 +40,7 @@ public class AddressBookParser {
             "a", AddCommand.COMMAND_WORD,
             "d", DeleteCommand.COMMAND_WORD,
             "e", EditCommand.COMMAND_WORD,
-            "v", ListCommand.COMMAND_WORD,   // “view” vibe, routes to list
+            "l", ListCommand.COMMAND_WORD,
             "x", ExitCommand.COMMAND_WORD
     );
 
