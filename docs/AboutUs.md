@@ -47,7 +47,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Arshelle Raheja
 
-<img src="images/Arshelle.png" width="200px">
+<img src="images/arshelle.png" width="200px">
 
 [[github](https://github.com/Arshelle9912)]
 
