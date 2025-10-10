@@ -46,7 +46,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 ### Arshelle Raheja
 
-<img src="images/arshelle.png" width="200px">
+<img src="images/arshelle9912.png" width="200px">
 
 [[github](https://github.com/Arshelle9912)]
 
