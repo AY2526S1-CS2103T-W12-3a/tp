@@ -9,9 +9,6 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The UI component that is responsible for receiving user command inputs.
  */
@@ -21,13 +18,10 @@ public class CommandBox extends UiPart<Region> {
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
+    private final CommandHistory commandHistory = new CommandHistory();
 
     @FXML
     private TextField commandTextField;
-
-    // Add history tracking fields
-    private final List<String> commandHistory = new ArrayList<>();
-    private int historyPointer = 0;
 
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
@@ -35,18 +29,25 @@ public class CommandBox extends UiPart<Region> {
     public CommandBox(CommandExecutor commandExecutor) {
         super(FXML);
         this.commandExecutor = commandExecutor;
-        // calls #setStyleToDefault() whenever there is a change to the text of the command box.
+
+        // reset style when text changes
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
 
         // handle up/down arrow navigation
         commandTextField.setOnKeyPressed(event -> {
-           if (event.getCode() == KeyCode.UP) {
-               navigateToPreviousCommand();
-               event.consume();
-           } else if (event.getCode() == KeyCode.DOWN) {
-               navigateToNextCommand();
-               event.consume();
-           }
+            if (event.getCode() == KeyCode.UP) {
+                String previous = commandHistory.getPrevious();
+                if (previous != null) {
+                    commandTextField.setText(previous);
+                    commandTextField.positionCaret(previous.length());
+                }
+                event.consume();
+            } else if (event.getCode() == KeyCode.DOWN) {
+                String next = commandHistory.getNext();
+                commandTextField.setText(next);
+                commandTextField.positionCaret(next.length());
+                event.consume();
+            }
         });
     }
 
@@ -56,46 +57,17 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private void handleCommandEntered() {
         String commandText = commandTextField.getText();
-        if (commandText.equals("")) {
+        if (commandText.isBlank()) {
             return;
         }
 
         try {
             commandExecutor.execute(commandText);
-
             commandHistory.add(commandText);
-            historyPointer = commandHistory.size();
-            commandTextField.setText("");
+            commandTextField.clear();
         } catch (CommandException | ParseException e) {
             setStyleToIndicateCommandFailure();
         }
-    }
-
-    // Helper methods for navigating history
-    private void navigateToPreviousCommand() {
-        if (commandHistory.isEmpty()) {
-            return;
-        }
-        if (historyPointer > 0) {
-            historyPointer--;
-            commandTextField.setText(commandHistory.get(historyPointer));
-            commandTextField.positionCaret(commandTextField.getText().length());
-        }
-    }
-
-    private void navigateToNextCommand() {
-        if (commandHistory.isEmpty()) {
-            return;
-        }
-        if (historyPointer < commandHistory.size() - 1) {
-            historyPointer++;
-            commandTextField.setText(commandHistory.get(historyPointer));
-        } else {
-            // If already at latest, clear field
-            historyPointer = commandHistory.size();
-            commandTextField.clear();
-        }
-        commandTextField.positionCaret(commandTextField.getText().length());
     }
 
     /**
@@ -111,11 +83,9 @@ public class CommandBox extends UiPart<Region> {
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
 
-        if (styleClass.contains(ERROR_STYLE_CLASS)) {
-            return;
+        if (!styleClass.contains(ERROR_STYLE_CLASS)) {
+            styleClass.add(ERROR_STYLE_CLASS);
         }
-
-        styleClass.add(ERROR_STYLE_CLASS);
     }
 
     /**
@@ -130,5 +100,4 @@ public class CommandBox extends UiPart<Region> {
          */
         CommandResult execute(String commandText) throws CommandException, ParseException;
     }
-
 }

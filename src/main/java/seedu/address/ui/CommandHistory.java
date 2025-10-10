@@ -3,45 +3,58 @@ package seedu.address.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-//Stores and navigates through user commands
+/**
+ * Manages the history of user-entered commands.
+ */
 public class CommandHistory {
     private final List<String> history = new ArrayList<>();
-    private int currentIndex = 0;
+    private int pointer = 0;
 
+    /**
+     * Adds a command to the history and resets the pointer to the end.
+     */
     public void add(String command) {
-        if (command == null || command.isBlank()) {
+        if (command == null || command.trim().isEmpty()) {
             return;
         }
         history.add(command);
-        currentIndex = history.size(); //reset pointer to after last
+        pointer = history.size(); // reset pointer to after the last element
     }
 
-    public boolean hasPrevious() {
-        return currentIndex > 0;
-    }
-
-    public boolean hasNext() {
-        return currentIndex < history.size() - 1;
-    }
-
+    /**
+     * Returns the previous command in history if available.
+     * Returns null if there is no previous command.
+     */
     public String getPrevious() {
-        if (hasPrevious()) {
-            currentIndex--;
-            return history.get(currentIndex);
+        if (history.isEmpty() || pointer == 0) {
+            return null;
         }
-        return "";
+        pointer--;
+        return history.get(pointer);
     }
 
+    /**
+     * Returns the next command in history if available.
+     * Returns an empty string if at the newest position.
+     */
     public String getNext() {
-        if (hasNext()) {
-            currentIndex++;
-            return history.get(currentIndex);
+        if (history.isEmpty()) {
+            return "";
         }
-        currentIndex = history.size();
-        return "";
+        if (pointer < history.size() - 1) {
+            pointer++;
+            return history.get(pointer);
+        } else {
+            pointer = history.size();
+            return "";
+        }
     }
 
-    public void resetIndex() {
-        currentIndex = history.size();
+    /**
+     * Clears all stored history.
+     */
+    public void clear() {
+        history.clear();
+        pointer = 0;
     }
 }
