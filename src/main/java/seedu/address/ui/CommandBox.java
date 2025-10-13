@@ -30,25 +30,50 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
 
-        // reset style when text changes
-        commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+        initializeListeners();
+        initializeKeyHandlers();
+    }
 
-        // handle up/down arrow navigation
+    /**
+     * Sets up listeners for text changes to reset styles.
+     */
+    private void initializeListeners() {
+        commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+    }
+
+    /**
+     * Sets up keyboard navigation (UP/DOWN) for command history.
+     */
+    private void initializeKeyHandlers() {
         commandTextField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP) {
-                String previous = commandHistory.getPrevious();
-                if (previous != null) {
-                    commandTextField.setText(previous);
-                    commandTextField.positionCaret(previous.length());
-                }
+                showPreviousCommand();
                 event.consume();
             } else if (event.getCode() == KeyCode.DOWN) {
-                String next = commandHistory.getNext();
-                commandTextField.setText(next);
-                commandTextField.positionCaret(next.length());
+                showNextCommand();
                 event.consume();
             }
         });
+    }
+
+    /**
+     * Displays the previous command in the history if available.
+     */
+    private void showPreviousCommand() {
+        String previous = commandHistory.getPrevious();
+        if (previous != null) {
+            commandTextField.setText(previous);
+            commandTextField.positionCaret(previous.length());
+        }
+    }
+
+    /**
+     * Displays the next command in the history (or clears the field).
+     */
+    private void showNextCommand() {
+        String next = commandHistory.getNext();
+        commandTextField.setText(next);
+        commandTextField.positionCaret(next.length());
     }
 
     /**
