@@ -39,6 +39,13 @@ public class Person {
         this.cadence = cadence;
     }
 
+    /**
+     * Overload.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this(name, phone, email, address, tags, null);
+    }
+
     public Name getName() {
         return name;
     }

@@ -47,7 +47,12 @@ public class AddCommandParser implements Parser<AddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         java.util.Optional<String> cadenceStr = argMultimap.getValue(PREFIX_CADENCE);
-        Cadence cadence = cadenceStr.map(ParserUtil::parseCadence).orElse(null);
+        Optional<String> cadenceStr = argMultimap.getValue(PREFIX_CADENCE);
+
+        Cadence cadence = null;
+        if (cadenceStr.isPresent()) {
+            cadence = ParserUtil.parseCadence(cadenceStr.get());
+        }
 
         Person person = new Person(name, phone, email, address, tagList, cadence);
 
