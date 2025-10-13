@@ -19,7 +19,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.cadence.Cadence;
+import seedu.address.model.person.Cadence;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -46,6 +46,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Cadence cadence = ParserUtil.parseCadence(argMultimap.getValue(PREFIX_CADENCE));
 
         Person person = new Person(name, phone, email, address, tagList, cadence);
 

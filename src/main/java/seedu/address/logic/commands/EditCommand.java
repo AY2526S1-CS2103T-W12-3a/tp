@@ -28,7 +28,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.cadence.Cadence;
+import seedu.address.model.person.Cadence;
 
 /**
  * Edits the details of an existing person in the address book.
@@ -103,6 +103,7 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Cadence updatedCadence = editPersonDescriptor.getCadence().orElse(personToEdit.getCadence());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
     }
@@ -207,7 +208,7 @@ public class EditCommand extends Command {
 
         public void setCadence(Cadence cadence) { this.cadence = cadence; }
 
-        public Optional<seedu.address.model.person.Cadence> getCadence() { return Optional.ofNullable(cadence); }
+        public Optional<Cadence> getCadence() { return Optional.ofNullable(cadence); }
 
         /**
          * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
