@@ -3,12 +3,29 @@ package seedu.address.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Manages the history of user-entered commands.
  */
 public class CommandHistory {
-    private final List<String> history = new ArrayList<>();
+    private List<String> history = new ArrayList<>();
     private int pointer = 0;
+
+    @JsonCreator
+    public CommandHistory(@JsonProperty("history") List<String> history) {
+        this.history = (history != null) ? new ArrayList<>(history) : new ArrayList<>();
+        this.pointer = this.history.size();
+    }
+
+    public CommandHistory() {
+        this.history = new ArrayList<>();
+    }
+
+    public List<String> getHistory() {
+        return history;
+    }
 
     /**
      * Adds a command to the history and resets the pointer to the end.

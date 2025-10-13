@@ -30,6 +30,9 @@ import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
+import seedu.address.storage.CommandHistoryStorage;
+import seedu.address.storage.JsonCommandHistoryStorage;
+import seedu.address.ui.CommandHistory;
 
 /**
  * Runs the application.
@@ -45,6 +48,8 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected Config config;
+    private CommandHistoryStorage commandHistoryStorage;
+    private CommandHistory commandHistory;
 
     @Override
     public void init() throws Exception {
@@ -59,12 +64,25 @@ public class MainApp extends Application {
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
         storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        Path commandHistoryFilePath = Path.of("data", "commandhistory.json");
+        commandHistoryStorage = new JsonCommandHistoryStorage(commandHistoryFilePath);
+        commandHistory = initCommandHistory(commandHistoryStorage);
 
         model = initModelManager(storage, userPrefs);
 
         logic = new LogicManager(model, storage);
 
-        ui = new UiManager(logic);
+        ui = new UiManager(logic, commandHistory);
+    }
+
+    private CommandHistory initCommandHistory(CommandHistoryStorage storage) {
+        logger.info("Using command history file : " + storage.getCommandHistoryFilePath());
+        try {
+            return storage.readCommandHistory().orElse(new CommandHistory());
+        } catch (DataLoadingException e) {
+            logger.warning("Could not load command history, starting with an empty history.");
+            return new CommandHistory();
+        }
     }
 
     /**
@@ -177,10 +195,19 @@ public class MainApp extends Application {
     @Override
     public void stop() {
         logger.info("============================ [ Stopping AddressBook ] =============================");
+
         try {
+            // Save user preferences (already present)
             storage.saveUserPrefs(model.getUserPrefs());
+            if (commandHistory != null && commandHistoryStorage != null) {
+                commandHistoryStorage.saveCommandHistory(commandHistory);
+                logger.info("Command history saved successfully.");
+            } else {
+                logger.warning("Command history or its storage was null; skipping save.");
+            }
+
         } catch (IOException e) {
-            logger.severe("Failed to save preferences " + StringUtil.getDetails(e));
+            logger.severe("Failed to save data on exit: " + StringUtil.getDetails(e));
         }
     }
 }

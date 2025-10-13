@@ -18,7 +18,7 @@ public class CommandBox extends UiPart<Region> {
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
-    private final CommandHistory commandHistory = new CommandHistory();
+    private final CommandHistory commandHistory;
 
     @FXML
     private TextField commandTextField;
@@ -26,9 +26,10 @@ public class CommandBox extends UiPart<Region> {
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
-    public CommandBox(CommandExecutor commandExecutor) {
+    public CommandBox(CommandExecutor commandExecutor, CommandHistory commandHistory) {
         super(FXML);
         this.commandExecutor = commandExecutor;
+        this.commandHistory = commandHistory;
 
         initializeListeners();
         initializeKeyHandlers();
