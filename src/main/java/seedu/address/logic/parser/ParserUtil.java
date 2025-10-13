@@ -130,7 +130,7 @@ public class ParserUtil {
         requireNonNull(cadenceDays);
         String trimmed = cadenceDays.trim();
         if (!StringUtil.isNonZeroUnsignedInteger(trimmed)) {
-            throw new ParseException("Cadence must be a positive integer number of days")
+            throw new ParseException("Cadence must be a positive integer number of days");
         }
         return new Cadence(Integer.parseInt(trimmed));
     }
