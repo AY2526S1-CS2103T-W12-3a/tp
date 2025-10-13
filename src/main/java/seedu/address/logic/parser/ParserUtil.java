@@ -14,6 +14,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Cadence;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -120,5 +121,17 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String cadenceDays} into a {@code Cadence}.
+     */
+    public static Cadence parseCadence(String cadenceDays) throws ParseException {
+        requireNonNull(cadenceDays);
+        String trimmed = cadenceDays.trim();
+        if (!StringUtil.isNonZeroUnsignedInteger(trimmed)) {
+            throw new ParseException("Cadence must be a positive integer number of days")
+        }
+        return new Cadence(Integer.parseInt(trimmed));
     }
 }
