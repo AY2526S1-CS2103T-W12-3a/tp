@@ -10,6 +10,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CADENCE;
 
 import java.util.Set;
 import java.util.stream.Stream;
+import java.util.Optional;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -46,7 +47,6 @@ public class AddCommandParser implements Parser<AddCommand> {
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-        java.util.Optional<String> cadenceStr = argMultimap.getValue(PREFIX_CADENCE);
         Optional<String> cadenceStr = argMultimap.getValue(PREFIX_CADENCE);
 
         Cadence cadence = null;
