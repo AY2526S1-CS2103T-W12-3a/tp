@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.time.LocalDate;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
@@ -132,6 +133,7 @@ public class ParserUtil {
         if (!StringUtil.isNonZeroUnsignedInteger(trimmed)) {
             throw new ParseException("Cadence must be a positive integer number of days");
         }
-        return new Cadence(Integer.parseInt(trimmed));
+        int interval = Integer.parseInt(trimmed);
+        return new Cadence(interval, LocalDate.now());
     }
 }

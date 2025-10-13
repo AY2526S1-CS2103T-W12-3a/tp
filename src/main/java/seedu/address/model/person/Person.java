@@ -55,7 +55,9 @@ public class Person {
         return address;
     }
 
-    public Cadence getCadence() { return cadence; }
+    public java.util.Optional<Cadence> getCadence() {
+        return java.util.Optional.ofNullable(cadence);
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
@@ -99,7 +101,7 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags)
-                && cadence.equals(otherPerson.cadence);
+                && Objects.equals(cadence, otherPerson.cadence);
     }
 
     @Override
