@@ -14,6 +14,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.ui.CommandHistory;
 
 public class StorageManagerTest {
 
@@ -67,4 +68,15 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getAddressBookFilePath());
     }
 
+    @Test
+    public void commandHistoryReadSave() throws Exception {
+        CommandHistory original = new CommandHistory();
+        original.add("list");
+        original.add("help");
+
+        storageManager.saveCommandHistory(original);
+        CommandHistory retrieved = storageManager.readCommandHistory().get();
+
+        assertEquals(original.getHistory(), retrieved.getHistory());
+    }
 }
