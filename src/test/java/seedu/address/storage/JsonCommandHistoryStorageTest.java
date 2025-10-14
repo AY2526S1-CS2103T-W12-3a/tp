@@ -78,7 +78,7 @@ public class JsonCommandHistoryStorageTest {
     }
 
     @Test
-    public void saveCommandHistory_ioException_throwsIoException() {
+    public void saveCommandHistory_ioException_throwsIOException() {
         Path invalidPath = Paths.get("/invalid/path/CommandHistory.json");
         JsonCommandHistoryStorage storage = new JsonCommandHistoryStorage(invalidPath);
         CommandHistory history = new CommandHistory();
