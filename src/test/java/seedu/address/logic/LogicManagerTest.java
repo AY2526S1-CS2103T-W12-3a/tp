@@ -31,10 +31,9 @@ import seedu.address.model.person.Person;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
-import seedu.address.testutil.PersonBuilder;
 import seedu.address.storage.JsonCommandHistoryStorage;
 import seedu.address.storage.CommandHistoryStorage;
-import seedu.address.ui.CommandHistory;
+import seedu.address.testutil.PersonBuilder;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
