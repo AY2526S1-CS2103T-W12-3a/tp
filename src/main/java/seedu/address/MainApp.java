@@ -48,7 +48,6 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected Config config;
-    private CommandHistoryStorage commandHistoryStorage;
     private CommandHistory commandHistory;
 
     @Override
@@ -63,16 +62,13 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
-        Path commandHistoryFilePath = Path.of("data", "commandhistory.json");
-        commandHistoryStorage = new JsonCommandHistoryStorage(commandHistoryFilePath);
+        CommandHistoryStorage commandHistoryStorage = new JsonCommandHistoryStorage(Path.of("data", "commandhistory.json"));
+        storage = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
+
         commandHistory = initCommandHistory(commandHistoryStorage);
-
         model = initModelManager(storage, userPrefs);
-
         logic = new LogicManager(model, storage);
-
-        ui = new UiManager(logic, commandHistory);
+        ui = new UiManager(logic);
     }
 
     private CommandHistory initCommandHistory(CommandHistoryStorage storage) {
@@ -189,7 +185,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         logger.info("Starting AddressBook " + MainApp.VERSION);
-        ui.start(primaryStage);
+        ui.start(primaryStage, commandHistory);
     }
 
     @Override
@@ -197,15 +193,9 @@ public class MainApp extends Application {
         logger.info("============================ [ Stopping AddressBook ] =============================");
 
         try {
-            // Save user preferences (already present)
             storage.saveUserPrefs(model.getUserPrefs());
-            if (commandHistory != null && commandHistoryStorage != null) {
-                commandHistoryStorage.saveCommandHistory(commandHistory);
-                logger.info("Command history saved successfully.");
-            } else {
-                logger.warning("Command history or its storage was null; skipping save.");
-            }
-
+            storage.saveCommandHistory(commandHistory);
+            logger.info("Command history saved successfully.");
         } catch (IOException e) {
             logger.severe("Failed to save data on exit: " + StringUtil.getDetails(e));
         }

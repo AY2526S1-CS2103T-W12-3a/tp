@@ -23,19 +23,17 @@ public class UiManager implements Ui {
     private static final String ICON_APPLICATION = "/images/address_book_32.png";
 
     private Logic logic;
-    private final CommandHistory commandHistory;
     private MainWindow mainWindow;
 
     /**
      * Creates a {@code UiManager} with the given {@code Logic} and {@code CommandHistory}.
      */
-    public UiManager(Logic logic, CommandHistory commandHistory) {
+    public UiManager(Logic logic) {
         this.logic = logic;
-        this.commandHistory = commandHistory;
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage, CommandHistory commandHistory) {
         logger.info("Starting UI...");
 
         //Set the application icon.
