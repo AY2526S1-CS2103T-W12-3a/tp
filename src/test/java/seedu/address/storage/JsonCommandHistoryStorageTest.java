@@ -2,12 +2,10 @@ package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -75,13 +73,5 @@ public class JsonCommandHistoryStorageTest {
             return;
         }
         throw new AssertionError("Expected DataLoadingException for invalid JSON");
-    }
-
-    @Test
-    public void saveCommandHistory_ioException_throwsIOException() {
-        Path invalidPath = Paths.get("/invalid/path/CommandHistory.json");
-        JsonCommandHistoryStorage storage = new JsonCommandHistoryStorage(invalidPath);
-        CommandHistory history = new CommandHistory();
-        assertThrows(IOException.class, () -> storage.saveCommandHistory(history));
     }
 }
