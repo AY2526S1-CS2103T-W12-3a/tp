@@ -8,10 +8,18 @@ import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.ui.CommandHistory;
 
+/**
+ * A class to access command history data stored as a JSON file on the hard disk.
+ */
 public class JsonCommandHistoryStorage implements CommandHistoryStorage {
 
     private final Path filePath;
 
+    /**
+     * Creates a {@code JsonCommandHistoryStorage} with the specified file path.
+     *
+     * @param filePath The path to the JSON file used to store command history.
+     */
     public JsonCommandHistoryStorage(Path filePath) {
         this.filePath = filePath;
     }
