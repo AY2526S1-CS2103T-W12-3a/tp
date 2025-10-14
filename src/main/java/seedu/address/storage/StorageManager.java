@@ -1,16 +1,16 @@
 package seedu.address.storage;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Optional;
+import java.util.logging.Logger;
+
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 import seedu.address.ui.CommandHistory;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Manages storage of AddressBook data in local storage.
@@ -42,6 +42,12 @@ public class StorageManager implements Storage {
         return commandHistoryStorage != null ? commandHistoryStorage.readCommandHistory() : Optional.empty();
     }
 
+    /**
+     * Saves this {@code CommandHistory} to storage.
+     *
+     * @param commandHistory Command history to save.
+     * @throws IOException If saving fails.
+     */
     public void saveCommandHistory(CommandHistory commandHistory) throws IOException {
         if (commandHistoryStorage != null) {
             commandHistoryStorage.saveCommandHistory(commandHistory);

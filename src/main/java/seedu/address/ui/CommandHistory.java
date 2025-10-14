@@ -13,6 +13,11 @@ public class CommandHistory {
     private List<String> history = new ArrayList<>();
     private int pointer = 0;
 
+    /**
+     * Creates a {@code CommandHistory} from the given list of commands.
+     *
+     * @param history List of past commands, may be {@code null}.
+     */
     @JsonCreator
     public CommandHistory(@JsonProperty("history") List<String> history) {
         this.history = (history != null) ? new ArrayList<>(history) : new ArrayList<>();
