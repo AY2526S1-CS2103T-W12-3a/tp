@@ -40,6 +40,8 @@ public class PersonCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label lastInteraction;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -55,5 +57,12 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        var last = person.getLastInteractionOrNull();
+        if (last == null) {
+            lastInteraction.setText("No interactions yet");
+        } else {
+            // Use system default zone for simplicity
+            lastInteraction.setText("Last: " + last.toDisplayString(java.time.ZoneId.systemDefault()));
+        }
     }
 }
