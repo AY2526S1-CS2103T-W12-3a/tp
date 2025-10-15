@@ -109,7 +109,8 @@ public class EditCommand extends Command {
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Cadence updatedCadence = editPersonDescriptor.getCadence().orElse(personToEdit.getCadence().orElse(null));
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updated Role, updatedCadence);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedRole,
+                updatedCadence);
     }
 
     @Override
@@ -254,7 +255,7 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
-                    && Objects.equals(role, otherEditPersonDescriptor.role);
+                    && Objects.equals(role, otherEditPersonDescriptor.role)
                     && Objects.equals(cadence, otherEditPersonDescriptor.cadence);
         }
 

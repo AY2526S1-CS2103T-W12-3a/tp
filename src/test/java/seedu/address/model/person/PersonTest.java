@@ -106,8 +106,8 @@ public class PersonTest {
                 + ", email=" + ALICE.getEmail()
                 + ", address=" + ALICE.getAddress()
                 + ", tags=" + ALICE.getTags()
-                + ", role=" + ALICE.getRole() 
-                + ", cadence=" + ALICE.getCadence().orElse(null)+ "}";
+                + ", role=" + ALICE.getRole()
+                + ", cadence=" + ALICE.getCadence().orElse(null) + "}";
         assertEquals(expected, ALICE.toString());
     }
 }

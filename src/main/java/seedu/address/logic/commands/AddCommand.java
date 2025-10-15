@@ -38,7 +38,7 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney"
-            + PREFIX_ROLE + "Customer ";
+            + PREFIX_ROLE + "Customer "
             + PREFIX_CADENCE + "7";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";

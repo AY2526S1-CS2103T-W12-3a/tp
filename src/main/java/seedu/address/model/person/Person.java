@@ -115,7 +115,7 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags)
-                && role.equals(otherPerson.role);
+                && role.equals(otherPerson.role)
                 && Objects.equals(cadence, otherPerson.cadence);
     }
 
