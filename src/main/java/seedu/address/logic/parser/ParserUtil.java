@@ -139,8 +139,7 @@ public class ParserUtil {
         }
         return new Role(trimmedRole);
     }
-  
-     /**
+    /**
      * Parses a {@code String cadenceDays} into a {@code Cadence}.
      */
     public static Cadence parseCadence(String cadenceDays) throws ParseException {
