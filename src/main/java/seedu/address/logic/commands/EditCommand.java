@@ -210,7 +210,9 @@ public class EditCommand extends Command {
             this.cadence = cadence;
         }
 
-        public Optional<Cadence> getCadence() { return Optional.ofNullable(cadence); }
+        public Optional<Cadence> getCadence() {
+            return Optional.ofNullable(cadence);
+        }
 
         /**
          * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
