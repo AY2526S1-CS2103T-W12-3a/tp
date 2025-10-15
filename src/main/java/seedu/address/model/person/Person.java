@@ -26,24 +26,27 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Cadence cadence;
 
+    private final Role role;
+
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Cadence cadence) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role, Cadence cadence) {
+        requireAllNonNull(name, phone, email, address, tags, role);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+        this.role = role;
         this.cadence = cadence;
     }
 
     /**
      * Overload.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, null);
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role) {
+        this(name, phone, email, address, tags, role, null);
     }
 
     public Name getName() {
@@ -72,6 +75,10 @@ public class Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     /**
@@ -108,13 +115,14 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags)
+                && role.equals(otherPerson.role);
                 && Objects.equals(cadence, otherPerson.cadence);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, cadence);
+        return Objects.hash(name, phone, email, address, tags, role, cadence);
     }
 
     @Override
@@ -125,6 +133,7 @@ public class Person {
                 .add("email", email)
                 .add("address", address)
                 .add("tags", tags)
+                .add("role", role)
                 .add("cadence", cadence)
                 .toString();
     }

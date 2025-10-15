@@ -32,13 +32,16 @@ public class Role {
      * Returns true if a given string is a valid role.
      */
     public static boolean isValidRole(String test) {
-        return test != null && test.trim().matches(VALIDATION_REGEX);
+        return test != null && test.trim().toLowerCase().matches(VALIDATION_REGEX);
     }
 
     /**
      * Capitalizes the first letter of the given string.
      */
     private static String capitalize(String s) {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
