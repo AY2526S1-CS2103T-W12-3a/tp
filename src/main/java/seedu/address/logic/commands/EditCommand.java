@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CADENCE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -23,6 +24,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Cadence;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -47,6 +49,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TAG + "TAG]..."
             + "[" + PREFIX_ROLE + "ROLE] \n"
+            + "[" + PREFIX_CADENCE + "DAYS]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
@@ -104,8 +107,9 @@ public class EditCommand extends Command {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
+        Cadence updatedCadence = editPersonDescriptor.getCadence().orElse(personToEdit.getCadence().orElse(null));
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedRole);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updated Role, updatedCadence);
     }
 
     @Override
@@ -143,6 +147,7 @@ public class EditCommand extends Command {
         private Address address;
         private Set<Tag> tags;
         private Role role;
+        private Cadence cadence;
 
         public EditPersonDescriptor() {}
 
@@ -157,13 +162,14 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             setTags(toCopy.tags);
             setRole(toCopy.role);
+            setCadence(toCopy.cadence);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, role);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, role, cadence);
         }
 
         public void setName(Name name) {
@@ -206,6 +212,14 @@ public class EditCommand extends Command {
             this.tags = (tags != null) ? new HashSet<>(tags) : null;
         }
 
+        public void setCadence(Cadence cadence) {
+            this.cadence = cadence;
+        }
+
+        public Optional<Cadence> getCadence() {
+            return Optional.ofNullable(cadence);
+        }
+
         /**
          * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
          * if modification is attempted.
@@ -241,6 +255,7 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
                     && Objects.equals(role, otherEditPersonDescriptor.role);
+                    && Objects.equals(cadence, otherEditPersonDescriptor.cadence);
         }
 
         @Override
@@ -252,6 +267,7 @@ public class EditCommand extends Command {
                     .add("address", address)
                     .add("tags", tags)
                     .add("role", role)
+                    .add("cadence", cadence)
                     .toString();
         }
     }
