@@ -1,5 +1,4 @@
 package seedu.address.logic.commands;
-
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
@@ -11,6 +10,8 @@ import java.util.List;
 
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+
+
 
 /**
  * Exports the current contact list (filtered or full) into a CSV file.
@@ -36,6 +37,13 @@ public class ExportContactListCommand extends Command {
             + "Parameters: [FILENAME]\n"
             + "Example: export my_contacts.csv";
 
+    /** Message template for successful exports. */
+    public static final String MESSAGE_SUCCESS = "Contacts successfully exported to:\n%s\n"
+            + "Summary: %d contacts written in %.2f seconds.";
+
+    /** Message template for failed exports. */
+    public static final String MESSAGE_FAILURE = "Export failed due to: %s";
+
     /** Default export folder within the project. */
     private static final String EXPORT_DIRECTORY = "data/exports/";
 
@@ -47,13 +55,6 @@ public class ExportContactListCommand extends Command {
 
     /** Optional filename argument provided by the user. */
     private final String fileNameArgument;
-
-    /** Message template for successful exports. */
-    public static final String MESSAGE_SUCCESS = "Contacts successfully exported to:\n%s\n"
-            + "Summary: %d contacts written in %.2f seconds.";
-
-    /** Message template for failed exports. */
-    public static final String MESSAGE_FAILURE = "Export failed due to: %s";
 
     /**
      * Constructs an {@code ExportContactListCommand} with an optional filename argument.
