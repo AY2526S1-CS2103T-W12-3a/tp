@@ -32,12 +32,12 @@ class JsonAdaptedPerson {
     private final String address;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
+    // Keep both features
     private final List<JsonAdaptedInteraction> interactions = new ArrayList<>();
     private final String role;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
-     * Accepts both legacy payloads (no role/interactions) and newer ones.
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name,
@@ -58,6 +58,17 @@ class JsonAdaptedPerson {
             this.interactions.addAll(interactions);
         }
         this.role = role;
+    }
+
+    // Backward-compatible overload used by tests and older code paths.
+    // Delegates to the @JsonCreator constructor with interactions = null.
+    public JsonAdaptedPerson(String name,
+                             String phone,
+                             String email,
+                             String address,
+                             List<JsonAdaptedTag> tags,
+                             String role) {
+        this(name, phone, email, address, tags, role, /*interactions=*/ null);
     }
 
     /**
@@ -128,27 +139,22 @@ class JsonAdaptedPerson {
         // Tags
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
-        // Interactions (optional)
+        // Interactions (may be empty)
         final List<Interaction> modelInteractions = this.interactions.stream()
             .map(JsonAdaptedInteraction::toModelType)
             .collect(Collectors.toList());
 
-        // Role (optional for backward compatibility)
-        Role modelRole = null;
-        if (role != null) {
-            if (!Role.isValidRole(role)) {
-                throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
-            }
-            modelRole = new Role(role);
+        // --- Role (REQUIRED by tests) ---
+        if (role == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Role.class.getSimpleName()));
         }
+        if (!Role.isValidRole(role)) {
+            throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
+        }
+        final Role modelRole = new Role(role);
 
-        // Choose the most specific constructor available with minimal change:
-        // If role is present, keep it; always pass interactions list (may be empty).
-        if (modelRole != null) {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags,
-                modelRole, /*cadence*/ null, modelInteractions);
-        } else {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelInteractions);
-        }
+        // Always construct with role; pass interactions list
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags,
+            modelRole, /*cadence*/ null, modelInteractions);
     }
 }

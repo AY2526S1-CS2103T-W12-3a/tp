@@ -28,8 +28,8 @@ public class Person {
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
 
-    private final Role role;           // may be null if not provided
-    private final Cadence cadence;     // may be null if not provided
+    private final Role role; // may be null if not provided
+    private final Cadence cadence; // may be null if not provided
 
     private final List<Interaction> interactions;
 
@@ -50,6 +50,7 @@ public class Person {
         this(name, phone, email, address, tags, role, cadence, List.of());
     }
 
+    /** Constructor */
     public Person(Name name, Phone phone, Email email, Address address,
                   Set<Tag> tags, Role role, Cadence cadence, List<Interaction> interactions) {
         requireAllNonNull(name, phone, email, address, tags);
@@ -58,28 +59,51 @@ public class Person {
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
-        this.role = role;           // allowed to be null for legacy callers
-        this.cadence = cadence;     // allowed to be null for legacy callers
+        this.role = role; // allowed to be null for legacy callers
+        this.cadence = cadence; // allowed to be null for legacy callers
         // defensive copy + immutable view
         this.interactions = Collections.unmodifiableList(
             new ArrayList<>(interactions == null ? List.of() : interactions));
     }
 
+    /** Copy-with constructor for updated interaction history. */
     public Person(Person base, List<Interaction> newInteractions) {
         this(base.name, base.phone, base.email, base.address, base.tags,
             base.role, base.cadence, newInteractions);
     }
 
-    public Name getName() { return name; }
-    public Phone getPhone() { return phone; }
-    public Email getEmail() { return email; }
-    public Address getAddress() { return address; }
-    public Set<Tag> getTags() { return Collections.unmodifiableSet(tags); }
-    public Role getRole() { return role; }
-    public java.util.Optional<Cadence> getCadence() { return java.util.Optional.ofNullable(cadence); }
+    public Name getName() {
+        return name;
+    }
+
+    public Phone getPhone() {
+        return phone;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(tags);
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public java.util.Optional<Cadence> getCadence() {
+        return java.util.Optional.ofNullable(cadence);
+    }
 
     /** Immutable view of the interaction history (most recent at the end). */
-    public List<Interaction> getInteractions() { return interactions; }
+    public List<Interaction> getInteractions() {
+        return interactions;
+    }
 
     /** Last (most recent) interaction, or null if none exists. */
     public Interaction getLastInteractionOrNull() {
@@ -97,8 +121,12 @@ public class Person {
     /** Stronger equality: all identity/data fields. */
     @Override
     public boolean equals(Object other) {
-        if (other == this) { return true; }
-        if (!(other instanceof Person)) { return false; }
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Person)) {
+            return false;
+        }
         Person o = (Person) other;
         return name.equals(o.name)
             && phone.equals(o.phone)
