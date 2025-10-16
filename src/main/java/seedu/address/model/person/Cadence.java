@@ -11,6 +11,7 @@ import java.time.temporal.ChronoUnit;
 public class Cadence {
 
     private final int intervalDays; // e.g., 7 days, 14 days, etc.
+
     private LocalDate lastContacted;
     private LocalDate nextContactDate;
 

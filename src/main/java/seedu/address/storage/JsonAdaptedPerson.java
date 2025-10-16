@@ -16,8 +16,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
 import seedu.address.model.tag.Tag;
-
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -31,15 +31,22 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+
     private final List<JsonAdaptedInteraction> interactions = new ArrayList<>();
+    private final String role;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     * Accepts both legacy payloads (no role/interactions) and newer ones.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+    public JsonAdaptedPerson(@JsonProperty("name") String name,
+                             @JsonProperty("phone") String phone,
+                             @JsonProperty("email") String email,
+                             @JsonProperty("address") String address,
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
+                             @JsonProperty("role") String role,
+                             @JsonProperty("interactions") List<JsonAdaptedInteraction> interactions) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -50,6 +57,7 @@ class JsonAdaptedPerson {
         if (interactions != null) {
             this.interactions.addAll(interactions);
         }
+        this.role = role;
     }
 
     /**
@@ -61,10 +69,13 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         tags.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
-                .collect(Collectors.toList()));
+            .map(JsonAdaptedTag::new)
+            .collect(Collectors.toList()));
+        // Interactions snapshot
         this.interactions.addAll(source.getInteractions()
-                .stream().map(JsonAdaptedInteraction::new).collect(Collectors.toList()));
+            .stream().map(JsonAdaptedInteraction::new).collect(Collectors.toList()));
+        // Role may be null in legacy persons; guard accordingly
+        role = (source.getRole() == null) ? null : source.getRole().value;
     }
 
     /**
@@ -78,6 +89,7 @@ class JsonAdaptedPerson {
             personTags.add(tag.toModelType());
         }
 
+        // --- Name ---
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
@@ -86,6 +98,7 @@ class JsonAdaptedPerson {
         }
         final Name modelName = new Name(name);
 
+        // --- Phone ---
         if (phone == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
@@ -94,6 +107,7 @@ class JsonAdaptedPerson {
         }
         final Phone modelPhone = new Phone(phone);
 
+        // --- Email ---
         if (email == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
@@ -102,6 +116,7 @@ class JsonAdaptedPerson {
         }
         final Email modelEmail = new Email(email);
 
+        // --- Address ---
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
@@ -110,13 +125,30 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
+        // Tags
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
+        // Interactions (optional)
         final List<Interaction> modelInteractions = this.interactions.stream()
-                .map(JsonAdaptedInteraction::toModelType)
-                .collect(Collectors.toList());
+            .map(JsonAdaptedInteraction::toModelType)
+            .collect(Collectors.toList());
 
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelInteractions);
+        // Role (optional for backward compatibility)
+        Role modelRole = null;
+        if (role != null) {
+            if (!Role.isValidRole(role)) {
+                throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
+            }
+            modelRole = new Role(role);
+        }
+
+        // Choose the most specific constructor available with minimal change:
+        // If role is present, keep it; always pass interactions list (may be empty).
+        if (modelRole != null) {
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags,
+                modelRole, /*cadence*/ null, modelInteractions);
+        } else {
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelInteractions);
+        }
     }
-
 }

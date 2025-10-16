@@ -10,6 +10,7 @@ import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.ui.CommandHistory;
 
 /**
  * Manages storage of AddressBook data in local storage.
@@ -19,13 +20,38 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private AddressBookStorage addressBookStorage;
     private UserPrefsStorage userPrefsStorage;
+    private CommandHistoryStorage commandHistoryStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
      */
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage,
+                          UserPrefsStorage userPrefsStorage,
+                          CommandHistoryStorage commandHistoryStorage) {
         this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.commandHistoryStorage = commandHistoryStorage;
+    }
+
+    // ================ CommandHistoryStorage methods ==============================
+    public Path getCommandHistoryFilePath() {
+        return commandHistoryStorage != null ? commandHistoryStorage.getCommandHistoryFilePath() : null;
+    }
+
+    public Optional<CommandHistory> readCommandHistory() throws DataLoadingException {
+        return commandHistoryStorage != null ? commandHistoryStorage.readCommandHistory() : Optional.empty();
+    }
+
+    /**
+     * Saves this {@code CommandHistory} to storage.
+     *
+     * @param commandHistory Command history to save.
+     * @throws IOException If saving fails.
+     */
+    public void saveCommandHistory(CommandHistory commandHistory) throws IOException {
+        if (commandHistoryStorage != null) {
+            commandHistoryStorage.saveCommandHistory(commandHistory);
+        }
     }
 
     // ================ UserPrefs methods ==============================

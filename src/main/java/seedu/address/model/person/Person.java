@@ -28,133 +28,104 @@ public class Person {
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
 
-    // Interaction history (most recent at the end)
+    private final Role role;           // may be null if not provided
+    private final Cadence cadence;     // may be null if not provided
+
     private final List<Interaction> interactions;
 
-    /**
-     * Backward-compatible constructor: every original field must be present and not null.
-     * Initializes with an empty interaction history.
-     */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, List.of());
+        this(name, phone, email, address, tags, null, null, List.of());
     }
 
-    /**
-     * Full constructor including interactions.
-     * Every field must be present and not null (interactions may be empty).
-     */
     public Person(Name name, Phone phone, Email email, Address address,
                   Set<Tag> tags, List<Interaction> interactions) {
+        this(name, phone, email, address, tags, null, null, interactions);
+    }
+
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role) {
+        this(name, phone, email, address, tags, role, null, List.of());
+    }
+
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role, Cadence cadence) {
+        this(name, phone, email, address, tags, role, cadence, List.of());
+    }
+
+    public Person(Name name, Phone phone, Email email, Address address,
+                  Set<Tag> tags, Role role, Cadence cadence, List<Interaction> interactions) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
-        // Defensively copy and make immutable view
+        this.role = role;           // allowed to be null for legacy callers
+        this.cadence = cadence;     // allowed to be null for legacy callers
+        // defensive copy + immutable view
         this.interactions = Collections.unmodifiableList(
-                new ArrayList<>(interactions == null ? List.of() : interactions));
+            new ArrayList<>(interactions == null ? List.of() : interactions));
     }
 
-    /**
-     * Copy-with constructor to create an updated Person sharing all fields but a new interaction list.
-     */
     public Person(Person base, List<Interaction> newInteractions) {
-        this(base.name, base.phone, base.email, base.address, base.tags, newInteractions);
+        this(base.name, base.phone, base.email, base.address, base.tags,
+            base.role, base.cadence, newInteractions);
     }
 
-    public Name getName() {
-        return name;
-    }
+    public Name getName() { return name; }
+    public Phone getPhone() { return phone; }
+    public Email getEmail() { return email; }
+    public Address getAddress() { return address; }
+    public Set<Tag> getTags() { return Collections.unmodifiableSet(tags); }
+    public Role getRole() { return role; }
+    public java.util.Optional<Cadence> getCadence() { return java.util.Optional.ofNullable(cadence); }
 
-    public Phone getPhone() {
-        return phone;
-    }
+    /** Immutable view of the interaction history (most recent at the end). */
+    public List<Interaction> getInteractions() { return interactions; }
 
-    public Email getEmail() {
-        return email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
-    }
-
-    /**
-     * Returns an immutable view of the interaction history (most recent at the end).
-     */
-    public List<Interaction> getInteractions() {
-        return interactions;
-    }
-
-    /**
-     * Returns the last (most recent) interaction, or null if none exists.
-     */
+    /** Last (most recent) interaction, or null if none exists. */
     public Interaction getLastInteractionOrNull() {
         return interactions.isEmpty() ? null : interactions.get(interactions.size() - 1);
     }
 
-    /**
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
-     */
+    /** Weaker equality: same name. */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
-
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        return otherPerson != null && otherPerson.getName().equals(getName());
     }
 
-    /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
-     */
+    /** Stronger equality: all identity/data fields. */
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof Person)) {
-            return false;
-        }
-
-        Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
-                && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags)
-                && interactions.equals(otherPerson.interactions);
+        if (other == this) { return true; }
+        if (!(other instanceof Person)) { return false; }
+        Person o = (Person) other;
+        return name.equals(o.name)
+            && phone.equals(o.phone)
+            && email.equals(o.email)
+            && address.equals(o.address)
+            && tags.equals(o.tags)
+            && Objects.equals(role, o.role)
+            && Objects.equals(cadence, o.cadence)
+            && interactions.equals(o.interactions);
     }
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, interactions);
+        return Objects.hash(name, phone, email, address, tags, role, cadence, interactions);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name", name)
-                .add("phone", phone)
-                .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
-                // Keep history concise in logs; UI shows full details where needed
-                .add("interactions(count)", interactions.size())
-                .toString();
+            .add("name", name)
+            .add("phone", phone)
+            .add("email", email)
+            .add("address", address)
+            .add("tags", tags)
+            .add("role", role)
+            .add("cadence", cadence)
+            .add("interactions(count)", interactions.size())
+            .toString();
     }
-
 }

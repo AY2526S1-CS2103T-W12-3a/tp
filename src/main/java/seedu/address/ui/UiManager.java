@@ -26,21 +26,21 @@ public class UiManager implements Ui {
     private MainWindow mainWindow;
 
     /**
-     * Creates a {@code UiManager} with the given {@code Logic}.
+     * Creates a {@code UiManager} with the given {@code Logic} and {@code CommandHistory}.
      */
     public UiManager(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage, CommandHistory commandHistory) {
         logger.info("Starting UI...");
 
         //Set the application icon.
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
-            mainWindow = new MainWindow(primaryStage, logic);
+            mainWindow = new MainWindow(primaryStage, logic, commandHistory);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
 

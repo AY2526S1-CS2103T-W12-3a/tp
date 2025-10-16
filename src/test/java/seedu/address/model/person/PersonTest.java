@@ -34,7 +34,7 @@ public class PersonTest {
 
         // same name, all other attributes different -> returns true
         Person editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
-                .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
+            .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
         // different name, all other attributes same -> returns false
@@ -88,17 +88,29 @@ public class PersonTest {
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+
+        // different role -> returns false
+        editedAlice = new PersonBuilder(ALICE)
+            .withPhone(VALID_PHONE_BOB)
+            .withEmail(VALID_EMAIL_BOB)
+            .withAddress(VALID_ADDRESS_BOB)
+            .withTags(VALID_TAG_HUSBAND)
+            .withRole("Lead")
+            .build();
+        assertFalse(ALICE.equals(editedAlice));
     }
 
     @Test
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName()
-                + ", phone=" + ALICE.getPhone()
-                + ", email=" + ALICE.getEmail()
-                + ", address=" + ALICE.getAddress()
-                + ", tags=" + ALICE.getTags()
-                + ", interactions(count)=" + ALICE.getInteractions().size()
-                + "}";
+            + ", phone=" + ALICE.getPhone()
+            + ", email=" + ALICE.getEmail()
+            + ", address=" + ALICE.getAddress()
+            + ", tags=" + ALICE.getTags()
+            + ", role=" + ALICE.getRole()
+            + ", cadence=" + ALICE.getCadence().orElse(null)
+            + ", interactions(count)=" + ALICE.getInteractions().size()
+            + "}";
         assertEquals(expected, ALICE.toString());
     }
 }
