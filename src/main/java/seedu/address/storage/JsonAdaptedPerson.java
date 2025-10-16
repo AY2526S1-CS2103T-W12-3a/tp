@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.interaction.Interaction;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -30,6 +31,9 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+
+    // Keep both features
+    private final List<JsonAdaptedInteraction> interactions = new ArrayList<>();
     private final String role;
 
     /**
@@ -41,7 +45,8 @@ class JsonAdaptedPerson {
                              @JsonProperty("email") String email,
                              @JsonProperty("address") String address,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags,
-                             @JsonProperty("role") String role) {
+                             @JsonProperty("role") String role,
+                             @JsonProperty("interactions") List<JsonAdaptedInteraction> interactions) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -49,7 +54,21 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        if (interactions != null) {
+            this.interactions.addAll(interactions);
+        }
         this.role = role;
+    }
+
+    // Backward-compatible overload used by tests and older code paths.
+    // Delegates to the @JsonCreator constructor with interactions = null.
+    public JsonAdaptedPerson(String name,
+                             String phone,
+                             String email,
+                             String address,
+                             List<JsonAdaptedTag> tags,
+                             String role) {
+        this(name, phone, email, address, tags, role, /*interactions=*/ null);
     }
 
     /**
@@ -61,9 +80,13 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         tags.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
-                .collect(Collectors.toList()));
-        role = source.getRole().value;
+            .map(JsonAdaptedTag::new)
+            .collect(Collectors.toList()));
+        // Interactions snapshot
+        this.interactions.addAll(source.getInteractions()
+            .stream().map(JsonAdaptedInteraction::new).collect(Collectors.toList()));
+        // Role may be null in legacy persons; guard accordingly
+        role = (source.getRole() == null) ? null : source.getRole().value;
     }
 
     /**
@@ -113,7 +136,15 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
-        // --- Role ---
+        // Tags
+        final Set<Tag> modelTags = new HashSet<>(personTags);
+
+        // Interactions (may be empty)
+        final List<Interaction> modelInteractions = this.interactions.stream()
+            .map(JsonAdaptedInteraction::toModelType)
+            .collect(Collectors.toList());
+
+        // --- Role (REQUIRED by tests) ---
         if (role == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Role.class.getSimpleName()));
         }
@@ -122,8 +153,8 @@ class JsonAdaptedPerson {
         }
         final Role modelRole = new Role(role);
 
-        final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelRole);
+        // Always construct with role; pass interactions list
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags,
+            modelRole, /*cadence*/ null, modelInteractions);
     }
-
 }

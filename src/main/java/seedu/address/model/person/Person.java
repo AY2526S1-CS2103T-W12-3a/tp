@@ -2,12 +2,15 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.interaction.Interaction;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -24,29 +27,49 @@ public class Person {
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-    private final Cadence cadence;
 
-    private final Role role;
+    private final Role role; // may be null if not provided
+    private final Cadence cadence; // may be null if not provided
 
-    /**
-     * Every field must be present and not null.
-     */
+    private final List<Interaction> interactions;
+
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this(name, phone, email, address, tags, null, null, List.of());
+    }
+
+    public Person(Name name, Phone phone, Email email, Address address,
+                  Set<Tag> tags, List<Interaction> interactions) {
+        this(name, phone, email, address, tags, null, null, interactions);
+    }
+
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role) {
+        this(name, phone, email, address, tags, role, null, List.of());
+    }
+
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role, Cadence cadence) {
-        requireAllNonNull(name, phone, email, address, tags, role);
+        this(name, phone, email, address, tags, role, cadence, List.of());
+    }
+
+    /** Constructor */
+    public Person(Name name, Phone phone, Email email, Address address,
+                  Set<Tag> tags, Role role, Cadence cadence, List<Interaction> interactions) {
+        requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
-        this.role = role;
-        this.cadence = cadence;
+        this.role = role; // allowed to be null for legacy callers
+        this.cadence = cadence; // allowed to be null for legacy callers
+        // defensive copy + immutable view
+        this.interactions = Collections.unmodifiableList(
+            new ArrayList<>(interactions == null ? List.of() : interactions));
     }
 
-    /**
-     * Overload.
-     */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Role role) {
-        this(name, phone, email, address, tags, role, null);
+    /** Copy-with constructor for updated interaction history. */
+    public Person(Person base, List<Interaction> newInteractions) {
+        this(base.name, base.phone, base.email, base.address, base.tags,
+            base.role, base.cadence, newInteractions);
     }
 
     public Name getName() {
@@ -65,14 +88,6 @@ public class Person {
         return address;
     }
 
-    public java.util.Optional<Cadence> getCadence() {
-        return java.util.Optional.ofNullable(cadence);
-    }
-
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
@@ -81,61 +96,64 @@ public class Person {
         return role;
     }
 
-    /**
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
-     */
+    public java.util.Optional<Cadence> getCadence() {
+        return java.util.Optional.ofNullable(cadence);
+    }
+
+    /** Immutable view of the interaction history (most recent at the end). */
+    public List<Interaction> getInteractions() {
+        return interactions;
+    }
+
+    /** Last (most recent) interaction, or null if none exists. */
+    public Interaction getLastInteractionOrNull() {
+        return interactions.isEmpty() ? null : interactions.get(interactions.size() - 1);
+    }
+
+    /** Weaker equality: same name. */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
-
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        return otherPerson != null && otherPerson.getName().equals(getName());
     }
 
-    /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
-     */
+    /** Stronger equality: all identity/data fields. */
     @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof Person)) {
             return false;
         }
-
-        Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
-                && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags)
-                && role.equals(otherPerson.role)
-                && Objects.equals(cadence, otherPerson.cadence);
+        Person o = (Person) other;
+        return name.equals(o.name)
+            && phone.equals(o.phone)
+            && email.equals(o.email)
+            && address.equals(o.address)
+            && tags.equals(o.tags)
+            && Objects.equals(role, o.role)
+            && Objects.equals(cadence, o.cadence)
+            && interactions.equals(o.interactions);
     }
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, role, cadence);
+        return Objects.hash(name, phone, email, address, tags, role, cadence, interactions);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name", name)
-                .add("phone", phone)
-                .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
-                .add("role", role)
-                .add("cadence", cadence)
-                .toString();
+            .add("name", name)
+            .add("phone", phone)
+            .add("email", email)
+            .add("address", address)
+            .add("tags", tags)
+            .add("role", role)
+            .add("cadence", cadence)
+            .add("interactions(count)", interactions.size())
+            .toString();
     }
-
 }
