@@ -152,13 +152,24 @@ public class ModelManager implements Model {
     @Override
     public void sortCadenceList(Comparator<Person> comparator) {
         addressBook.sortCadence(comparator); // sort in AddressBook
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS); // refresh view
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
+    /**
+     * Saves the current state of the address book into history.
+     * This allows the user to undo the most recent change.
+     */
     public void saveState() {
         // Deep copy the current state
         AddressBook copy = new AddressBook(addressBook);
         history.push(copy);
     }
 
+    /**
+     * Restores the previous address book state if available.
+     *
+     * @return true if the undo was successful, false if there was no previous state.
+     */
     @Override
     public boolean undoState() {
         if (history.isEmpty()) {
@@ -169,4 +180,5 @@ public class ModelManager implements Model {
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return true;
     }
+
 }
