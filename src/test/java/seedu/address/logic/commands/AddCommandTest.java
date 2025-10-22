@@ -162,6 +162,13 @@ public class AddCommandTest {
         @Override
         public void sortCadenceList(Comparator<Person> comparator) {
             throw new AssertionError("sortCadenceList should not be called in this test");
+        public void saveState() {
+            // not required for this test
+        }
+
+        @Override
+        public boolean undoState() {
+            return false; // not required for this test
         }
     }
 
