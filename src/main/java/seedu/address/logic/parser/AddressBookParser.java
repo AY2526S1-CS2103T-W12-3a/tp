@@ -107,7 +107,8 @@ public class AddressBookParser {
 
         case ExportContactListCommand.COMMAND_WORD:
             return new ExportContactListCommandParser().parse(arguments);
-
+        case ImportContactListCommand.COMMAND_WORD:
+            return new ImportContactListCommandParser().parse(arguments);
         case StatsCommand.COMMAND_WORD:
             return new StatsCommand();
         case SortCadenceCommand.COMMAND_WORD:
