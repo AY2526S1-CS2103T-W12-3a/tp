@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -145,4 +146,9 @@ public class ModelManager implements Model {
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
 
+    @Override
+    public void sortCadenceList(Comparator<Person> comparator) {
+        addressBook.sortCadence(comparator); // sort in AddressBook
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS); // refresh view
+    }
 }
