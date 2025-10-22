@@ -350,3 +350,7 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+
+.details-root { }
+.details-title { -fx-font-size: 16px; -fx-font-weight: bold; }
+.muted { -fx-text-fill: derive(-fx-text-fill, -40%); }

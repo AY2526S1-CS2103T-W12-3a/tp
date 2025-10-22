@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="8" prefWidth="360" fillWidth="true" styleClass="details-root">
+
+    <Label fx:id="header" styleClass="details-title"/>
+
+    <GridPane hgap="8" vgap="6">
+        <columnConstraints>
+            <ColumnConstraints minWidth="80"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Phone:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label fx:id="phone" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="email" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Address:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="address" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Role:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label fx:id="role" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Tags:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <FlowPane fx:id="tags" hgap="6" vgap="6" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Separator/>
+
+    <Label text="Interactions"/>
+    <ListView fx:id="interactionList" prefHeight="260"/>
+
+    <Label fx:id="emptyHint" text="Select a contact to view details"
+           visible="false" styleClass="muted"/>
+</VBox>
