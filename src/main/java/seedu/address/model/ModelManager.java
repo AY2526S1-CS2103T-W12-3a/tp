@@ -6,6 +6,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.nio.file.Path;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.Stack;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,6 +23,8 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+
+    private final Stack<ReadOnlyAddressBook> history = new Stack<>();
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -145,4 +148,21 @@ public class ModelManager implements Model {
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
 
+    @Override
+    public void saveState() {
+        // Deep copy the current state
+        AddressBook copy = new AddressBook(addressBook);
+        history.push(copy);
+    }
+
+    @Override
+    public boolean undoState() {
+        if (history.isEmpty()) {
+            return false;
+        }
+        ReadOnlyAddressBook previous = history.pop();
+        setAddressBook(previous);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        return true;
+    }
 }
