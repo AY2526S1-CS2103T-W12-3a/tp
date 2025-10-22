@@ -22,8 +22,8 @@ import seedu.address.testutil.PersonBuilder;
 public class UndoCommandTest {
 
     private Model model;
-    private final Person ALICE = new PersonBuilder().withName("Alice").build();
-    private final Person BOB = new PersonBuilder().withName("Bob").build();
+    private final Person alice = new PersonBuilder().withName("alice").build();
+    private final Person bob = new PersonBuilder().withName("bob").build();
 
     @BeforeEach
     public void setUp() {
@@ -42,43 +42,43 @@ public class UndoCommandTest {
         model.saveState();
 
         // Perform change
-        model.addPerson(ALICE);
-        assertTrue(model.hasPerson(ALICE));
+        model.addPerson(alice);
+        assertTrue(model.hasPerson(alice));
 
         // Undo
         UndoCommand undoCommand = new UndoCommand();
         CommandResult result = undoCommand.execute(model);
 
         assertEquals(UndoCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
-        assertFalse(model.hasPerson(ALICE));
+        assertFalse(model.hasPerson(alice));
     }
 
     @Test
     public void execute_multipleUndo_success() throws Exception {
         // Initial state
         model.saveState();
-        model.addPerson(ALICE);
+        model.addPerson(alice);
 
         // Save and modify again
         model.saveState();
-        model.addPerson(BOB);
-        assertTrue(model.hasPerson(BOB));
+        model.addPerson(bob);
+        assertTrue(model.hasPerson(bob));
 
         UndoCommand undoCommand = new UndoCommand();
 
-        // Undo Bob addition
+        // Undo bob addition
         undoCommand.execute(model);
-        assertFalse(model.hasPerson(BOB));
+        assertFalse(model.hasPerson(bob));
 
-        // Undo Alice addition
+        // Undo alice addition
         undoCommand.execute(model);
-        assertFalse(model.hasPerson(ALICE));
+        assertFalse(model.hasPerson(alice));
     }
 
     @Test
     public void execute_undoBeyondAvailableStates_throwsCommandException() throws Exception {
         model.saveState();
-        model.addPerson(ALICE);
+        model.addPerson(alice);
 
         UndoCommand undoCommand = new UndoCommand();
 
