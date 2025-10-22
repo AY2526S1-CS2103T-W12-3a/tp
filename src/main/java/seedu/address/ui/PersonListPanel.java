@@ -46,4 +46,18 @@ public class PersonListPanel extends UiPart<Region> {
         }
     }
 
+    /**
+     * Expose the underlying ListView for selection binding.
+     */
+    public ListView<Person> getListView() {
+        return personListView;
+    }
+
+    /**
+     * Convenience accessor for selection model.
+     */
+    public javafx.scene.control.MultipleSelectionModel<Person> getSelectionModel() {
+        return personListView.getSelectionModel();
+    }
+
 }
