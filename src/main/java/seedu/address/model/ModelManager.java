@@ -152,7 +152,9 @@ public class ModelManager implements Model {
     @Override
     public void sortCadenceList(Comparator<Person> comparator) {
         addressBook.sortCadence(comparator); // sort in AddressBook
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS); // refresh view
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }// refresh view
+
     public void saveState() {
         // Deep copy the current state
         AddressBook copy = new AddressBook(addressBook);
@@ -169,4 +171,5 @@ public class ModelManager implements Model {
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return true;
     }
+
 }
