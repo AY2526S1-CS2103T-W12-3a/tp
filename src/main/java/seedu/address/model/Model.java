@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -84,4 +85,24 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    void sortCadenceList(Comparator<Person> comparator);
+    /**
+     * Saves the current state of the address book.
+     * <p>
+     * This method should be called before executing any command that modifies the data.
+     * It creates and stores a deep copy of the current {@code AddressBook}, allowing
+     * changes to be undone later using {@link #undoState()}.
+     */
+    void saveState();
+
+    /**
+     * Reverts the address book to the most recent saved state.
+     * <p>
+     * If no previous states exist, this method does nothing and returns {@code false}.
+     * Otherwise, it restores the last saved state and returns {@code true}.
+     *
+     * @return {@code true} if the undo was successful, or {@code false} if there is no previous state.
+     */
+    boolean undoState();
 }
