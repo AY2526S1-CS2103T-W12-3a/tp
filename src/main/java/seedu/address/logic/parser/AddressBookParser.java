@@ -19,6 +19,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportContactListCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ImportContactListCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LogCommand;
 import seedu.address.logic.commands.SortCadenceCommand;
@@ -106,7 +107,8 @@ public class AddressBookParser {
 
         case ExportContactListCommand.COMMAND_WORD:
             return new ExportContactListCommandParser().parse(arguments);
-
+        case ImportContactListCommand.COMMAND_WORD:
+            return new ImportContactListCommandParser().parse(arguments);
         case StatsCommand.COMMAND_WORD:
             return new StatsCommand();
         case SortCadenceCommand.COMMAND_WORD:
