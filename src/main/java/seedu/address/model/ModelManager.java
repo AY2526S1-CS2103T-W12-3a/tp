@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -22,6 +24,8 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+
+    private final Stack<ReadOnlyAddressBook> history = new Stack<>();
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -143,6 +147,38 @@ public class ModelManager implements Model {
         return addressBook.equals(otherModelManager.addressBook)
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
+    }
+
+    @Override
+    public void sortCadenceList(Comparator<Person> comparator) {
+        addressBook.sortCadence(comparator); // sort in AddressBook
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
+    /**
+     * Saves the current state of the address book into history.
+     * This allows the user to undo the most recent change.
+     */
+    public void saveState() {
+        // Deep copy the current state
+        AddressBook copy = new AddressBook(addressBook);
+        history.push(copy);
+    }
+
+    /**
+     * Restores the previous address book state if available.
+     *
+     * @return true if the undo was successful, false if there was no previous state.
+     */
+    @Override
+    public boolean undoState() {
+        if (history.isEmpty()) {
+            return false;
+        }
+        ReadOnlyAddressBook previous = history.pop();
+        setAddressBook(previous);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        return true;
     }
 
 }
