@@ -64,10 +64,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
     }
 
     /**
-     * Populates the details panel with the fields of the given {@code person}.
-     * If {@code person} is {@code null}, the panel shows an empty state.
+     * Updates the panel to display details of the given person.
      *
      * @param person the selected person whose details should be shown; may be {@code null}
+     *               to clear the panel when no person is selected
      */
     public void setPerson(Person person) {
         if (person == null) {
