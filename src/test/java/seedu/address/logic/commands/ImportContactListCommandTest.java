@@ -149,4 +149,19 @@ public class ImportContactListCommandTest {
                 result.getFeedbackToUser()
         );
     }
+
+    /**
+     * Verifies that an empty CSV file triggers a CommandException
+     * because there are no valid contacts to import.
+     */
+    @Test
+    public void execute_emptyFile_throwsCommandException() throws Exception {
+        Path emptyFile = TEST_DIR.resolve("empty_contacts.csv");
+        Files.write(emptyFile, List.of());
+
+        ImportContactListCommand command = new ImportContactListCommand(emptyFile);
+        assertThrows(CommandException.class, () -> command.execute(model));
+
+        Files.deleteIfExists(emptyFile);
+    }
 }
