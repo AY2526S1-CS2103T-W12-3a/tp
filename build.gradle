@@ -23,6 +23,11 @@ checkstyle {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    jvmArgs '-ea' // Enable assertions in tests
+}
+
+run {
+    jvmArgs '-ea' // Enable assertions in runtime
 }
 
 task coverage(type: JacocoReport) {

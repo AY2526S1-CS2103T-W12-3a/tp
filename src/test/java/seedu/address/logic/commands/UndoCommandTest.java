@@ -55,24 +55,19 @@ public class UndoCommandTest {
 
     @Test
     public void execute_multipleUndo_success() throws Exception {
-        // Initial state
         model.saveState();
         model.addPerson(alice);
 
-        // Save and modify again
         model.saveState();
         model.addPerson(bob);
-        assertTrue(model.hasPerson(bob));
+        assert model.hasPerson(bob) : "Bob should exist before first undo";
 
         UndoCommand undoCommand = new UndoCommand();
-
-        // Undo bob addition
         undoCommand.execute(model);
-        assertFalse(model.hasPerson(bob));
+        assert !model.hasPerson(bob) : "Bob should be removed after first undo";
 
-        // Undo alice addition
         undoCommand.execute(model);
-        assertFalse(model.hasPerson(alice));
+        assert !model.hasPerson(alice) : "Alice should be removed after second undo";
     }
 
     @Test
