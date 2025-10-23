@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -53,6 +56,8 @@ public class ExportContactListCommand extends Command {
     /** Default file extension for all exported files. */
     private static final String DEFAULT_EXTENSION = ".csv";
 
+    private static final Logger logger = LogsCenter.getLogger(ExportContactListCommand.class);
+
     /** Optional filename argument provided by the user. */
     private final String fileNameArgument;
 
@@ -78,10 +83,12 @@ public class ExportContactListCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        logger.info("Export: start");
         long startTime = System.currentTimeMillis();
 
         List<Person> persons = model.getFilteredPersonList();
         if (persons.isEmpty()) {
+            logger.info("Export: aborted (filtered list empty)");
             return new CommandResult("No contacts to export. The current list is empty.");
         }
 
@@ -96,6 +103,8 @@ public class ExportContactListCommand extends Command {
 
             String chosenName = determineFilename();
             File exportFile = getUniqueFile(exportDir, chosenName);
+            logger.info(() -> "Export: writing " + persons.size()
+                    + " contacts to " + exportFile.getAbsolutePath());
             int count = writeContactsToCsv(exportFile, persons);
 
             double duration = (System.currentTimeMillis() - startTime) / 1000.0;
@@ -103,6 +112,7 @@ public class ExportContactListCommand extends Command {
                     exportFile.getAbsolutePath(), count, duration));
 
         } catch (IOException e) {
+            logger.log(Level.SEVERE, "Export: failed", e);
             return new CommandResult(String.format(MESSAGE_FAILURE, e.getMessage()));
         }
     }
