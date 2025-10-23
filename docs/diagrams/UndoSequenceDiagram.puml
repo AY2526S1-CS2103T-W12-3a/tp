@@ -1,0 +1,39 @@
+@startuml
+title Undo Command Sequence Diagram
+
+-> CommandBox : "undo"
+activate CommandBox
+
+CommandBox -> MainWindow : executeCommand("undo")
+activate MainWindow
+
+MainWindow -> LogicManager : execute("undo")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("undo")
+activate AddressBookParser
+AddressBookParser --> LogicManager : UndoCommand
+deactivate AddressBookParser
+
+LogicManager -> UndoCommand : execute(model)
+activate UndoCommand
+
+UndoCommand -> Model : undoState()
+activate Model
+Model -> AddressBook : restore previous saved state
+AddressBook --> Model : state restored
+deactivate Model
+
+UndoCommand --> LogicManager : CommandResult("Undo successful.")
+deactivate UndoCommand
+
+LogicManager --> MainWindow : display "Undo successful."
+deactivate LogicManager
+
+MainWindow -> CommandBox:
+deactivate MainWindow
+
+<- CommandBox :
+deactivate CommandBox
+
+@enduml
