@@ -61,8 +61,8 @@ public class CsvUtil {
                 lineNumber++;
                 line = line.trim();
 
-                if (line.isEmpty()) {
-                    continue; // skip blank lines
+                if (line.isEmpty() || line.toLowerCase().startsWith("name,phone,email")) {
+                    continue;
                 }
 
                 try {
