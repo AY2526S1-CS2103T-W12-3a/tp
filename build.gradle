@@ -74,4 +74,8 @@ shadowJar {
     archiveFileName = 'addressbook.jar'
 }
 
+tasks.withType(JavaExec) {
+    jvmArgs += '-ea'
+}
+
 defaultTasks 'clean', 'test'
