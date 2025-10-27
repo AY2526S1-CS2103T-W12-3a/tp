@@ -1,27 +1,27 @@
+.root {
+    -fx-background-color: #0d1117;
+    -fx-text-fill: #c9d1d9;
+}
+
 .background {
-    -fx-background-color: derive(#1d1d1d, 20%);
-    background-color: #383838; /* Used in the default.html file */
+    -fx-background-color: #121212;
+    background-color: #121212;
 }
 
 .label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #555555;
-    -fx-opacity: 0.9;
+    -fx-font-family: "Segoe UI", "Inter", sans-serif;
+    -fx-font-size: 12pt;
+    -fx-text-fill: #c9d1d9;
 }
 
 .label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
+    -fx-text-fill: #f0f6fc;
 }
 
 .label-header {
-    -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
+    -fx-font-size: 28pt;
+    -fx-font-weight: 600;
+    -fx-text-fill: #f0f6fc;
 }
 
 .text-field {
