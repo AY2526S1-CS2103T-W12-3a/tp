@@ -149,6 +149,6 @@ public class ParserUtil {
             throw new ParseException("Cadence must be a positive integer number of days");
         }
         int interval = Integer.parseInt(trimmed);
-        return new Cadence(interval, LocalDate.now());
+        return new Cadence(interval);
     }
 }
