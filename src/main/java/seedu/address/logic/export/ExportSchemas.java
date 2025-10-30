@@ -19,8 +19,7 @@ public final class ExportSchemas {
                 ColumnSpec.of("Phone", p -> p.getPhone().toString()),
                 ColumnSpec.of("Email", p -> p.getEmail().toString()),
                 ColumnSpec.of("Address", p -> p.getAddress().toString()),
-                ColumnSpec.of("Tags", p -> p.getTags().stream()
-                        .map(Object::toString).collect(Collectors.joining(";")))
+                ColumnSpec.of("Role", p -> p.getRole() == null ? "" : p.getRole().toString())
         );
     }
 
