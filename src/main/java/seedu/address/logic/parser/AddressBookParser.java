@@ -22,7 +22,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ImportContactListCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LogCommand;
-import seedu.address.logic.commands.SortCadenceCommand;
+import seedu.address.logic.commands.SortFollowUpCommand;
 import seedu.address.logic.commands.StatsCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -48,7 +48,7 @@ public class AddressBookParser {
             "e", EditCommand.COMMAND_WORD,
             "l", ListCommand.COMMAND_WORD,
             "x", ExitCommand.COMMAND_WORD,
-            "sc", SortCadenceCommand.COMMAND_WORD
+            "sfu", SortFollowUpCommand.COMMAND_WORD
     );
 
     /**
@@ -111,8 +111,8 @@ public class AddressBookParser {
             return new ImportContactListCommandParser().parse(arguments);
         case StatsCommand.COMMAND_WORD:
             return new StatsCommand();
-        case SortCadenceCommand.COMMAND_WORD:
-            return new SortCadenceCommand();
+        case SortFollowUpCommand.COMMAND_WORD:
+            return new SortFollowUpCommand();
         case UndoCommand.COMMAND_WORD:
             return new UndoCommandParser().parse(arguments);
 
