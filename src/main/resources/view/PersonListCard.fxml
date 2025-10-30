@@ -34,6 +34,7 @@
             <!-- Keep BOTH fields to match PersonCard.java -->
             <Label fx:id="role" styleClass="cell_small_label" text="\$role" />
             <Label fx:id="lastInteraction" styleClass="cell_small_label" text=""/>
+            <Label fx:id="cadence" styleClass="cell_small_label" text="" />
         </VBox>
     </GridPane>
 </HBox>

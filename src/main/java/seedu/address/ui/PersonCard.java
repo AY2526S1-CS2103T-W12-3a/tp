@@ -36,6 +36,8 @@ public class PersonCard extends UiPart<Region> {
     private Label lastInteraction;
     @FXML
     private Label role;
+    @FXML
+    private Label cadence;
 
     /**
      * Creates a {@code PersonCard} with the given {@code Person} and index to display.
@@ -68,6 +70,14 @@ public class PersonCard extends UiPart<Region> {
             } else {
                 lastInteraction.setText("Last: " + last.toDisplayString(java.time.ZoneId.systemDefault()));
             }
+        }
+
+        // Cadence (may be absent)
+        if (cadence != null) {
+            String text = person.getCadence()
+                    .map(c -> c.toString())
+                    .orElse("");
+            cadence.setText(text);
         }
     }
 }

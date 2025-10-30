@@ -47,9 +47,8 @@ public class Messages {
         person.getTags().forEach(builder::append);
         builder.append("; Role: ").append(person.getRole());
         person.getCadence().ifPresent(c ->
-                builder.append("; Cadence: every").append(c.getIntervalDays())
-                        .append(" days | next: ").append(c.getNextContactDate()));
+                builder.append("; Cadence: every ").append(c.getIntervalDays())
+                .append(" days"));
         return builder.toString();
     }
-
 }
