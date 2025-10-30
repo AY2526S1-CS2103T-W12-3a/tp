@@ -9,6 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import seedu.address.logic.export.ColumnSpec;
+import seedu.address.logic.export.ExportSchemas;
+import seedu.address.model.person.PersonReadOnly;
+import seedu.address.model.util.CsvUtil;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.Model;
@@ -19,15 +25,12 @@ import seedu.address.model.person.Person;
 /**
  * Exports the current contact list (filtered or full) into a CSV file.
  * <p>
- * This command allows users to specify a custom filename or,
- * if omitted, automatically generates a timestamped file name.
- * The exported file is saved inside the {@code data/exports/} directory,
- * which is created automatically if it does not exist.
+ * Supports schema profiles via {@code --profile standard|full}.
+ * - STANDARD: Name, Phone, Email, Address, Tags
+ * - FULL: STANDARD + Role, Cadence, InteractionsCount
  * <p>
- * In addition, the command handles duplicate filenames by appending
- * numeric suffixes, escapes CSV-sensitive fields, and produces a
- * summary report showing the export path, number of contacts written,
- * and total execution time.
+ * Files are written to {@code data/exports/}. If no filename is given,
+ * a timestamped filename is used. Existing filenames are not overwritten.
  */
 public class ExportContactListCommand extends Command {
 
@@ -36,13 +39,16 @@ public class ExportContactListCommand extends Command {
 
     /** Usage message for the export command. */
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Exports all (or filtered) contacts to a CSV file.\n"
-            + "Parameters: [FILENAME]\n"
-            + "Example: export my_contacts.csv";
+            + ": Exports contacts to a CSV file.\n"
+            + "Parameters: [FILENAME] [--profile standard|full]\n"
+            + "Examples:\n"
+            + "  export\n"
+            + "  export my_contacts.csv\n"
+            + "  export --profile full team.csv";
 
     /** Message template for successful exports. */
     public static final String MESSAGE_SUCCESS = "Contacts successfully exported to:\n%s\n"
-            + "Summary: %d contacts written in %.2f seconds.";
+            + "Summary: %d contacts written in %.2f seconds (profile: %s).";
 
     /** Message template for failed exports. */
     public static final String MESSAGE_FAILURE = "Export failed due to: %s";
@@ -58,24 +64,27 @@ public class ExportContactListCommand extends Command {
 
     private static final Logger logger = LogsCenter.getLogger(ExportContactListCommand.class);
 
+    public enum Profile { STANDARD, FULL }
+
     /** Optional filename argument provided by the user. */
     private final String fileNameArgument;
 
+    private final Profile profile;
+
     /**
-     * Constructs an {@code ExportContactListCommand} with an optional filename argument.
+     * Constructs an {@code ExportContactListCommand}.
      *
-     * @param fileNameArgument User-provided filename (may be {@code null} or empty).
+     * @param fileNameArgument User-provided filename (may be {@code null} or blank).
+     * @param profile Schema selection (defaults to STANDARD if {@code null}).
      */
-    public ExportContactListCommand(String fileNameArgument) {
-        this.fileNameArgument = fileNameArgument;
+    public ExportContactListCommand(String fileNameArgument, Profile profile) {
+        this.fileNameArgument = (fileNameArgument == null || fileNameArgument.isBlank())
+                ? null : fileNameArgument.trim();
+        this.profile = (profile == null) ? Profile.STANDARD : profile;
     }
 
     /**
      * Executes the export operation.
-     * <p>
-     * Writes all persons from the current filtered list to a CSV file.
-     * If the user does not specify a filename, a timestamped name is generated.
-     * Duplicate filenames are handled safely by appending numeric suffixes.
      *
      * @param model The model containing the current address book state.
      * @return A {@code CommandResult} summarizing the outcome of the export.
@@ -109,7 +118,7 @@ public class ExportContactListCommand extends Command {
 
             double duration = (System.currentTimeMillis() - startTime) / 1000.0;
             return new CommandResult(String.format(MESSAGE_SUCCESS,
-                    exportFile.getAbsolutePath(), count, duration));
+                    exportFile.getAbsolutePath(), count, duration, profile.name().toLowerCase()));
 
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Export: failed", e);
@@ -155,7 +164,9 @@ public class ExportContactListCommand extends Command {
         File file = new File(dir, filename);
         int counter = 1;
         while (file.exists()) {
-            String baseName = filename.replace(".csv", "");
+            String baseName = filename.endsWith(".csv")
+                    ? filename.substring(0, filename.length() - 4)
+                    : filename;
             file = new File(dir, baseName + "_" + counter + ".csv");
             counter++;
         }
@@ -174,48 +185,35 @@ public class ExportContactListCommand extends Command {
      * @throws IOException If any file I/O errors occur during writing.
      */
     private int writeContactsToCsv(File file, List<Person> persons) throws IOException {
+        final var schema = selectSchema(profile);
         int written = 0;
+
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write("Name,Phone,Email,Address,Tags\n");
+            // header
+            CsvUtil.writeHeader(
+                    schema.stream().map(c -> c.header)
+                            .collect(Collectors.toList()), writer
+            );
+
             for (Person p : persons) {
-                writer.write(formatCsvRow(p));
+                PersonReadOnly pr = p; // Person implements PersonReadOnly
+                var cells = new java.util.ArrayList<String>(schema.size());
+                for (ColumnSpec<PersonReadOnly> col : schema) {
+                    String v;
+                    try { v = String.valueOf(col.extractor.apply(pr)); }
+                    catch (Exception e) { v = ""; } // defensive: empty on extractor errors
+                    cells.add(v);
+                }
+                CsvUtil.writeRow(cells, writer);
                 written++;
             }
         }
         return written;
     }
 
-    /**
-     * Converts a {@code Person} object into a single valid CSV row.
-     * <p>
-     * Each field is escaped to preserve commas, quotes, and newline characters.
-     *
-     * @param p The person to be converted.
-     * @return A formatted CSV string representing the person.
-     */
-    private String formatCsvRow(Person p) {
-        String name = escapeCsv(p.getName().toString());
-        String phone = escapeCsv(p.getPhone().toString());
-        String email = escapeCsv(p.getEmail().toString());
-        String address = escapeCsv(p.getAddress().toString());
-        String tags = escapeCsv(p.getTags().toString().replaceAll("[\\[\\]]", ""));
-        return String.format("%s,%s,%s,%s,%s\n", name, phone, email, address, tags);
-    }
-
-    /**
-     * Escapes special characters to ensure CSV compatibility.
-     * <p>
-     * - Double quotes are doubled.<br>
-     * - Fields containing commas or newlines are wrapped in quotes.
-     *
-     * @param value The raw field value to escape.
-     * @return A CSV-safe string.
-     */
-    private String escapeCsv(String value) {
-        String escaped = value.replace("\"", "\"\"");
-        if (escaped.contains(",") || escaped.contains("\n")) {
-            escaped = "\"" + escaped + "\"";
-        }
-        return escaped;
+    /** Returns the selected export schema for the given profile. */
+    private List<ColumnSpec<PersonReadOnly>> selectSchema(ExportContactListCommand.Profile profile) {
+        return (profile == ExportContactListCommand.Profile.FULL)
+                ? ExportSchemas.full() : ExportSchemas.standard();
     }
 }

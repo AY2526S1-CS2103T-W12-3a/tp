@@ -2,6 +2,11 @@ package seedu.address.logic.parser;
 
 import seedu.address.logic.commands.ExportContactListCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.commands.ExportContactListCommand.Profile;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Parses input arguments and creates a new {@code ExportContactListCommand} object.
@@ -17,7 +22,11 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * </ul>
  */
 public class ExportContactListCommandParser implements Parser<ExportContactListCommand> {
+    private static final Pattern PROFILE_PATTERN =
+            Pattern.compile("(?i)(?:^|\\s)--profile\\s+(\\S+)(?=\\s|$)");
 
+    private static final Pattern PROFILE_BARE_PATTERN =
+            Pattern.compile("(?i)(?:^|\\s)--profile(?:\\s|$)");
     /**
      * Parses the given {@code String} of arguments and returns an {@code ExportContactListCommand}.
      *
@@ -27,7 +36,50 @@ public class ExportContactListCommandParser implements Parser<ExportContactListC
      */
     @Override
     public ExportContactListCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        return new ExportContactListCommand(trimmedArgs.isEmpty() ? null : trimmedArgs);
+        requireNonNull(args);
+        String trimmed = args.trim();
+        Profile profile = Profile.STANDARD;
+        String filePart = trimmed;
+        boolean hasBareProfile = PROFILE_BARE_PATTERN.matcher(trimmed).find()
+                && !PROFILE_PATTERN.matcher(trimmed).find();
+        if (hasBareProfile) {
+            throw new ParseException("Missing value for --profile. Use: --profile standard | --profile full");
+        }
+        Matcher m = PROFILE_PATTERN.matcher(trimmed);
+        if (m.find()) {
+            String raw = m.group(1);
+            String val = raw.toLowerCase(Locale.ROOT);
+
+            if (m.find()) {
+                throw new ParseException(
+                        "Duplicate --profile flags. Use exactly one of: --profile standard | --profile full");
+            }
+
+            switch (val) {
+                case "standard":
+                    profile = Profile.STANDARD;
+                    break;
+                case "full":
+                    profile = Profile.FULL;
+                    break;
+                default:
+                    throw new ParseException(
+                            "Unknown profile '" + raw + "'. Allowed: standard, full. " +
+                                    "Example: export team.csv --profile full");
+            }
+            filePart = PROFILE_PATTERN.matcher(filePart).replaceAll(" ").trim();
+            filePart = PROFILE_BARE_PATTERN.matcher(filePart).replaceAll(" ").trim();
+        }
+        String cleaned = (filePart == null) ? "" : filePart.trim();
+        if (cleaned.isEmpty()) {
+            return new ExportContactListCommand(null, profile);
+        }
+        if (cleaned.startsWith("--")) {
+            throw new ParseException(
+                    "Unexpected flag '" + cleaned + "'. Filename should not start with '--'. "
+                            + "Example: export team.csv --profile full"
+            );
+        }
+        return new ExportContactListCommand(cleaned, profile);
     }
 }
