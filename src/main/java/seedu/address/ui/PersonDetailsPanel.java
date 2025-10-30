@@ -1,7 +1,10 @@
 package seedu.address.ui;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,6 +15,7 @@ import javafx.scene.layout.Region;
 import seedu.address.model.interaction.Interaction;
 import seedu.address.model.person.Person;
 
+
 /**
  * UI panel that displays the full details of the selected {@link seedu.address.model.person.Person},
  * including their interactions list.
@@ -19,6 +23,7 @@ import seedu.address.model.person.Person;
 public class PersonDetailsPanel extends UiPart<Region> {
     private static final String FXML = "PersonDetailsPanel.fxml";
     private static final DateTimeFormatter TS_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @FXML
     private Label header;
@@ -36,6 +41,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private ListView<Interaction> interactionList;
     @FXML
     private Label emptyHint;
+    @FXML
+    private Label cadence;
+    @FXML
+    private Label nextFollowUp;
 
     /**
      * Creates the details panel that shows a selected person's full information,
@@ -88,6 +97,21 @@ public class PersonDetailsPanel extends UiPart<Region> {
             .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
 
         interactionList.getItems().setAll(person.getInteractions());
+
+        cadence.setText(person.getCadence()
+            .map(Object::toString)
+            .orElse("—"));
+
+        String nextText = "—";
+        Optional<seedu.address.model.person.Cadence> cadOpt = person.getCadence();
+        Interaction last = person.getLastInteractionOrNull();
+        if (cadOpt.isPresent() && last != null) {
+            int days = cadOpt.get().getIntervalDays(); // Cadence#getIntervalDays()
+            Instant dueInstant = last.getTimestamp().plusSeconds(days * 24L * 60L * 60L);
+            // Reuse your formatter (TS_FMT) and system zone for display
+            nextText = DATE_FMT.format(dueInstant.atZone(ZoneId.systemDefault()));
+        }
+        nextFollowUp.setText(nextText);
     }
 
     private void showEmpty() {
@@ -98,6 +122,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
         role.setText("-");
         tags.getChildren().clear();
         interactionList.getItems().clear();
+        cadence.setText("-");
+        nextFollowUp.setText("-");
         emptyHint.setVisible(true);
     }
 }

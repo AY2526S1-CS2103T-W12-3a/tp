@@ -23,6 +23,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.interaction.Interaction;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Cadence;
 import seedu.address.model.person.Email;
@@ -108,9 +109,10 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Cadence updatedCadence = editPersonDescriptor.getCadence().orElse(personToEdit.getCadence().orElse(null));
+        java.util.List<Interaction> interactionsCopy = new java.util.ArrayList<>(personToEdit.getInteractions());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedRole,
-                updatedCadence);
+                updatedCadence, interactionsCopy);
     }
 
     @Override
