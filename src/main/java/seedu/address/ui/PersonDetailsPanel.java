@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,8 +15,6 @@ import javafx.scene.layout.Region;
 import seedu.address.model.interaction.Interaction;
 import seedu.address.model.person.Person;
 
-import java.util.Comparator;
-import java.util.Optional;
 
 /**
  * UI panel that displays the full details of the selected {@link seedu.address.model.person.Person},

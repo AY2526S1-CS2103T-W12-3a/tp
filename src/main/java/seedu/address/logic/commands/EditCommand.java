@@ -23,6 +23,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.interaction.Interaction;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Cadence;
 import seedu.address.model.person.Email;
@@ -31,7 +32,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Role;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.interaction.Interaction;
 
 /**
  * Edits the details of an existing person in the address book.
