@@ -76,7 +76,7 @@ Shows a message explaining how to access the help page.
 
 Adds a person to the address book.
 
-**Format:**  
+**Format:**
 `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG] r/ROLE [c/DAYS]`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
@@ -101,7 +101,7 @@ Shows a list of all persons in the address book.
 
 Edits an existing person in the address book.
 
-**Format:**  
+**Format:**
 `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [r/ROLE] [c/20]`
 
 * Edits the person at the specified `INDEX` (must be a positive integer).
@@ -120,7 +120,7 @@ Edits an existing person in the address book.
 
 Finds persons whose names contain any of the given keywords.
 
-**Format:**  
+**Format:**
 `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive.
@@ -130,7 +130,7 @@ Finds persons whose names contain any of the given keywords.
 
 **Examples:**
 * `find John`
-* `find alex david`  
+* `find alex david`
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
 ---
@@ -139,7 +139,7 @@ Finds persons whose names contain any of the given keywords.
 
 Deletes the specified person from the address book.
 
-**Format:**  
+**Format:**
 `delete INDEX`
 
 * Deletes the person at the specified `INDEX`.
@@ -163,10 +163,10 @@ Clears all entries from the address book.
 
 Records an interaction for a contact. The latest one appears on the person’s card as `Last: <type · time>`.
 
-**Format:**  
+**Format:**
 `log INDEX i/<call|email|meeting|note> d/DETAILS`
 
-**Example:**  
+**Example:**
 `log 1 i/meeting d/Coffee chat`
 
 **Notes:**
@@ -180,7 +180,7 @@ Records an interaction for a contact. The latest one appears on the person’s c
 
 Exports the current or filtered contact list to a `.csv` file.
 
-**Format:**  
+**Format:**
 `export [FILENAME]`
 
 **Details:**
@@ -199,7 +199,7 @@ Exports the current or filtered contact list to a `.csv` file.
 
 Displays a list of previously executed commands in the current session.
 
-**Format:**  
+**Format:**
 `history`
 
 The command history helps you review or repeat past commands.
