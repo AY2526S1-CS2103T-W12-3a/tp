@@ -56,24 +56,30 @@ public class ImportContactListCommandTest {
         model = new ModelManager(new AddressBook(), new UserPrefs());
         Files.createDirectories(TEST_DIR);
 
+        String header = String.join(",",
+                "name", "phone", "email", "address", "tags", "role", "cadence", "interactions");
+
         List<String> validLines = List.of(
-                "Alice Tan,91234567,alice@example.com,123 Orchard Road,friend",
-                "Bob Lim,98765432,bob@example.com,456 Clementi Ave,school"
+                header,
+                "Alice Tan,91234567,alice@example.com,123 Orchard Road,friend,Customer,,",
+                "Bob Lim,98765432,bob@example.com,456 Clementi Ave,school,Customer,,"
         );
         Files.write(VALID_FILE, validLines);
 
         List<String> invalidLines = List.of(
-                "Alice Tan,,alice@example.com",
-                "Bob Lim,98765432"
+                header,
+                "Alice Tan,,alice@example.com,123 Orchard Road,friend,Customer,,",
+                "Bob Lim,98765432,,456 Clementi Ave,school,Customer,,"
         );
         Files.write(INVALID_FILE, invalidLines);
-
         List<String> duplicateLines = List.of(
-                "Charlie Wong,99998888,charlie@u.nus.edu,Jurong West,",
-                "Charlie Wong,99998888,charlie@u.nus.edu,Jurong West,"
+                header,
+                "Charlie Wong,99998888,charlie@ntu.edu.sg,Jurong West,,Lead,,",
+                "Charlie Wong,99998888,charlie@ntu.edu.sg,Jurong West,,Lead,,"
         );
         Files.write(DUPLICATE_FILE, duplicateLines);
     }
+
 
     /**
      * Deletes temporary files after each test to ensure isolation.
@@ -157,11 +163,36 @@ public class ImportContactListCommandTest {
     @Test
     public void execute_emptyFile_throwsCommandException() throws Exception {
         Path emptyFile = TEST_DIR.resolve("empty_contacts.csv");
-        Files.write(emptyFile, List.of());
-
+        Files.write(emptyFile, List.of("name,phone,email,address,tags,role,cadence,interactions"));
         ImportContactListCommand command = new ImportContactListCommand(emptyFile);
         assertThrows(CommandException.class, () -> command.execute(model));
-
         Files.deleteIfExists(emptyFile);
+    }
+
+    @Test
+    public void equals() {
+        Path p1 = Path.of("a.csv");
+        Path p2 = Path.of("b.csv");
+        ImportContactListCommand c1 = new ImportContactListCommand(p1);
+        ImportContactListCommand c2 = new ImportContactListCommand(p1);
+        ImportContactListCommand c3 = new ImportContactListCommand(p2);
+        assertTrue(c1.equals(c1));
+        assertTrue(c1.equals(c2));
+        assertTrue(!c1.equals(c3));
+        assertTrue(!c1.equals(null));
+        assertTrue(!c1.equals("x"));
+    }
+
+    @Test
+    public void execute_tabDelimited_success() throws Exception {
+        Path f = TEST_DIR.resolve("tab_contacts.csv");
+        List<String> lines = List.of(
+                "name\tphone\temail\taddress\ttags\trole\tcadence\tinteractions",
+                "Lee Ada\t81234567\tada@example.com\t123 Tech Park\tvip\tInvestor\t\t"
+        );
+        Files.write(f, lines);
+        CommandResult r = new ImportContactListCommand(f).execute(model);
+        assertEquals(1, model.getAddressBook().getPersonList().size());
+        Files.deleteIfExists(f);
     }
 }
