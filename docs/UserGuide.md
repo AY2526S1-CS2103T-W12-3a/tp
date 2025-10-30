@@ -195,32 +195,31 @@ Exports the current or filtered contact list to a `.csv` file.
 
 ---
 
-### Viewing command history : `history`
+### Command history
 
-Displays a list of previously executed commands in the current session.
+All commands made previously are stored, able to toggle to previous commands
 
 **Format:**
-`history`
-
-The command history helps you review or repeat past commands.
+Press <kbd>↑</kbd> and <kbd>↓</kbd> to navigate command history.
 
 * Shown in chronological order (most recent last).
-* Includes invalid commands.
-* Cleared when the application closes.
+* Persists through different sessions
+* Invalid commands are not recorded
 * Navigate directly using keyboard:
     * <kbd>↑</kbd> — previous command
     * <kbd>↓</kbd> — next command
+  
+---
 
-**Example:**
-`list
-add n/John Doe p/98765432 e/john@example.com a/123 Street
-delete 1
-history`
+### Undoing latest command : `undo`
 
+Undoes the most recent command made
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-Use the arrow keys in the command box to quickly recall and re-execute past commands.
-</div>
+**Format:**
+`undo`
+* Undo is recorded in the command history
+* Undoing a command does not remove it from the command history
+
 
 ---
 
