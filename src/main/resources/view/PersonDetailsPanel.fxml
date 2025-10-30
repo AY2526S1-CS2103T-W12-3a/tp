@@ -33,6 +33,12 @@
 
         <Label text="Tags:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
         <FlowPane fx:id="tags" hgap="6" vgap="6" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Cadence:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <Label fx:id="cadence" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <Label text="Next follow-up:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <Label fx:id="nextFollowUp" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
     </GridPane>
 
     <Separator/>

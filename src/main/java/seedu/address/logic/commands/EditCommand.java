@@ -31,6 +31,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Role;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.interaction.Interaction;
 
 /**
  * Edits the details of an existing person in the address book.
@@ -108,9 +109,10 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Cadence updatedCadence = editPersonDescriptor.getCadence().orElse(personToEdit.getCadence().orElse(null));
+        java.util.List<Interaction> interactionsCopy = new java.util.ArrayList<>(personToEdit.getInteractions());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedRole,
-                updatedCadence);
+                updatedCadence, interactionsCopy);
     }
 
     @Override
