@@ -1,6 +1,9 @@
 package seedu.address.storage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -69,7 +72,7 @@ class JsonAdaptedPerson {
                              String address,
                              List<JsonAdaptedTag> tags,
                              String role) {
-        this(name, phone, email, address, tags, role,null, null);
+        this(name, phone, email, address, tags, role, null, null);
     }
 
     /**
@@ -163,7 +166,6 @@ class JsonAdaptedPerson {
         } else {
             modelCadence = new Cadence(cadence);
         }
-        
         // Always construct with role; pass interactions list
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags,
             modelRole, modelCadence, modelInteractions);
