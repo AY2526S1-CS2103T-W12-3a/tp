@@ -48,7 +48,7 @@ public class Messages {
         builder.append("; Role: ").append(person.getRole());
         person.getCadence().ifPresent(c ->
                 builder.append("; Cadence: every ").append(c.getIntervalDays())
-                .append(" days"));
+                .append(" day(s)"));
         return builder.toString();
     }
 }

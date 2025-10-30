@@ -20,6 +20,20 @@ public class LogCommandParser implements Parser<LogCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_INTERACTION_TYPE, PREFIX_DETAILS);
 
+        String preamble = argMultimap.getPreamble().trim();
+
+        if (preamble.isEmpty()) {
+            throw new ParseException(ParserUtil.MESSAGE_MISSING_INDEX);
+        }
+        boolean unsignedDigits = preamble.chars().allMatch(Character::isDigit);
+        boolean signedNegative = preamble.matches("-\\d+");
+        if (!(unsignedDigits || signedNegative)) {
+            throw new ParseException(ParserUtil.MESSAGE_INDEX_NOT_NUMBER);
+        }
+        if ("0".equals(preamble) || signedNegative) {
+            throw new ParseException(ParserUtil.MESSAGE_INDEX_NOT_POSITIVE);
+        }
+
         Index index = ParserUtil.parseIndex(argMultimap.getPreamble());
 
         if (!argMultimap.getValue(PREFIX_INTERACTION_TYPE).isPresent()
@@ -29,6 +43,10 @@ public class LogCommandParser implements Parser<LogCommand> {
 
         String typeRaw = argMultimap.getValue(PREFIX_INTERACTION_TYPE).get();
         String details = argMultimap.getValue(PREFIX_DETAILS).get();
+
+        if (details.trim().isEmpty()) {
+            throw new ParseException("Details cannot be empty. Please provide a message after d/.");
+        }
 
         InteractionType type;
         try {

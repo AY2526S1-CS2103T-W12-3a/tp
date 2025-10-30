@@ -48,8 +48,11 @@ public class ExportContactListCommandTest {
     public void tearDown() throws Exception {
         File dir = new File(EXPORT_DIR);
         if (dir.exists()) {
-            for (File f : dir.listFiles()) {
-                Files.deleteIfExists(f.toPath());
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    Files.deleteIfExists(f.toPath());
+                }
             }
         }
     }
@@ -63,13 +66,16 @@ public class ExportContactListCommandTest {
      */
     @Test
     public void execute_exportDefaultFile_success() {
-        ExportContactListCommand command = new ExportContactListCommand(null);
+        ExportContactListCommand command = new ExportContactListCommand(null,
+                ExportContactListCommand.Profile.STANDARD);
         CommandResult result = command.execute(model);
 
         // Message check
-        assertTrue(result.getFeedbackToUser().contains("exported")
-                        || result.getFeedbackToUser().contains("Contacts successfully exported"),
-                "Feedback should indicate successful export.");
+        assertTrue(
+                result.getFeedbackToUser().contains("Contacts successfully exported")
+                        && result.getFeedbackToUser().toLowerCase().contains("(profile: standard)"),
+                "Feedback should indicate successful export and show profile: standard."
+        );
 
         // Directory check
         File dir = new File(EXPORT_DIR);
@@ -90,12 +96,16 @@ public class ExportContactListCommandTest {
     @Test
     public void execute_exportWithCustomFilename_success() {
         String filename = "test_contacts.csv";
-        ExportContactListCommand command = new ExportContactListCommand(filename);
+        ExportContactListCommand command = new ExportContactListCommand(filename,
+                ExportContactListCommand.Profile.STANDARD);
         CommandResult result = command.execute(model);
 
         // Confirm feedback message
-        assertTrue(result.getFeedbackToUser().contains("exported"),
-                "Feedback should confirm export success.");
+        assertTrue(
+                result.getFeedbackToUser().contains("Contacts successfully exported")
+                        && result.getFeedbackToUser().toLowerCase().contains("(profile: standard)"),
+                "Feedback should confirm export success and show profile: standard."
+        );
 
         // Confirm file created
         File exported = new File(EXPORT_DIR + filename);
@@ -115,15 +125,17 @@ public class ExportContactListCommandTest {
         String filename = "duplicate_test.csv";
 
         // First export
-        ExportContactListCommand firstCommand = new ExportContactListCommand(filename);
+        ExportContactListCommand firstCommand = new ExportContactListCommand(filename,
+                ExportContactListCommand.Profile.STANDARD);
         CommandResult firstResult = firstCommand.execute(model);
-        assertTrue(firstResult.getFeedbackToUser().contains("exported"),
+        assertTrue(firstResult.getFeedbackToUser().contains("Contacts successfully exported"),
                 "First export should succeed.");
 
         // Second export
-        ExportContactListCommand secondCommand = new ExportContactListCommand(filename);
+        ExportContactListCommand secondCommand = new ExportContactListCommand(filename,
+                ExportContactListCommand.Profile.STANDARD);
         CommandResult secondResult = secondCommand.execute(model);
-        assertTrue(secondResult.getFeedbackToUser().contains("exported"),
+        assertTrue(secondResult.getFeedbackToUser().contains("Contacts successfully exported"),
                 "Second export should also succeed.");
 
         // Check both files exist
@@ -143,10 +155,25 @@ public class ExportContactListCommandTest {
     @Test
     public void execute_emptyModel_noContactsMessage() {
         Model emptyModel = new ModelManager(new AddressBook(), new UserPrefs());
-        ExportContactListCommand command = new ExportContactListCommand("empty_test.csv");
+        ExportContactListCommand command = new ExportContactListCommand("empty_test.csv",
+                ExportContactListCommand.Profile.STANDARD);
         CommandResult result = command.execute(emptyModel);
 
         assertTrue(result.getFeedbackToUser().contains("No contacts to export"),
                 "Feedback should indicate empty list handling.");
+    }
+
+    @Test
+    public void execute_profileFull_writesFullSchema() {
+        ExportContactListCommand command = new ExportContactListCommand("full_profile.csv",
+                ExportContactListCommand.Profile.FULL); // CHANGED: USE PROFILE.FULL
+        CommandResult result = command.execute(model);
+        assertTrue(
+                result.getFeedbackToUser().contains("Contacts successfully exported")
+                        && result.getFeedbackToUser().toLowerCase().contains("(profile: full)"),
+                "Feedback should show profile: full."
+        );
+        File exported = new File(EXPORT_DIR + "full_profile.csv");
+        assertTrue(exported.exists(), "Full profile file should be created.");
     }
 }

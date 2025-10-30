@@ -64,9 +64,9 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Display a message showing how to access the help page.
 
-![help message](images/helpMessage.png)
+![help message](images/helpMessageNew.png)
 
 **Format:** `help`
 
@@ -118,20 +118,25 @@ Edits an existing person in the address book.
 
 ### Locating persons by name : `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose names contain any of the given keyword(s).
 
 **Format:**
 `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive.
 * The order of the keywords does not matter.
-* Only full words are matched.
+* Partial matches are supported.
 * Persons matching at least one keyword will be returned.
 
 **Examples:**
-* `find John`
-* `find alex david`
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find john`
+* `find Nab Au`
+  ![result for 'find Nab Au'](images/findNabAuResult.png)
+
+**Details:**
+* The search is case-insensitive (e.g., “john” matches “John”).
+* Partial matches are supported (e.g., “Nab” matches “Nabil”).
+* Multiple keywords will return all persons matching any of the keywords.
 
 ---
 
@@ -195,32 +200,52 @@ Exports the current or filtered contact list to a `.csv` file.
 
 ---
 
-### Viewing command history : `history`
+### Command history
 
-Displays a list of previously executed commands in the current session.
+All commands made previously are stored, able to toggle to previous commands
 
 **Format:**
-`history`
-
-The command history helps you review or repeat past commands.
+Press <kbd>↑</kbd> and <kbd>↓</kbd> to navigate command history.
 
 * Shown in chronological order (most recent last).
-* Includes invalid commands.
-* Cleared when the application closes.
+* Persists through different sessions
+* Invalid commands are not recorded
 * Navigate directly using keyboard:
     * <kbd>↑</kbd> — previous command
     * <kbd>↓</kbd> — next command
+  
+---
 
-**Example:**
-`list
-add n/John Doe p/98765432 e/john@example.com a/123 Street
-delete 1
-history`
+### Undoing latest command : `undo`
+
+Undoes the most recent command made
+
+**Format:**
+`undo`
+* Undo is recorded in the command history
+* Undoing a command does not remove it from the command history
 
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-Use the arrow keys in the command box to quickly recall and re-execute past commands.
-</div>
+---
+
+### Sorting persons by next follow-up date : `sortfollowup`
+
+Sorts all persons in the address book by their next follow-up date.
+Calculated from their last interaction date and cadence (in days).
+
+**Format:** `sortfollowup`
+
+This command helps you prioritise which contacts to reach out to next.  
+* The next contact date = last interaction date + cadence days.
+* Contacts with earlier next contact dates appear first.
+* Contacts with no cadence and/or no recorded interactions appear last.
+* Sorting affects only the displayed list — your data remains unchanged.
+* Useful for tracking regular check-ins or follow-ups with clients.
+
+**Expected output:** `Sorted all persons by next follow-up.`
+
+<div markdown="span" class="alert alert-primary">:bulb: 
+**Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
 ---
 
@@ -281,4 +306,5 @@ Action | Format, Examples
 **Log** | `log INDEX i/<call|email|meeting|note> d/DETAILS`<br> e.g., `log 1 i/meeting d/Coffee chat`
 **Export** | `export [FILENAME]`<br> e.g., `export contacts.csv`
 **Help** | `help`
+**Sort Follow Up** | `sortfollowup`
 **Exit** | `exit`

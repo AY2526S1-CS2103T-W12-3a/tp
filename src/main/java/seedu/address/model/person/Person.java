@@ -2,6 +2,8 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ import seedu.address.model.tag.Tag;
  * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Person {
+public class Person implements PersonReadOnly {
 
     // Identity fields
     private final Name name;
@@ -108,6 +110,17 @@ public class Person {
     /** Last (most recent) interaction, or null if none exists. */
     public Interaction getLastInteractionOrNull() {
         return interactions.isEmpty() ? null : interactions.get(interactions.size() - 1);
+    }
+
+    /** Predict next follow-up date (last interaction date + cadence). */
+    public LocalDateTime getNextInteractionOrNull() {
+        Interaction last = getLastInteractionOrNull();
+        if (last == null || cadence == null) {
+            return null;
+        }
+
+        return LocalDateTime.ofInstant(last.getTimestamp(), ZoneId.systemDefault())
+                .plusDays(cadence.getIntervalDays());
     }
 
     /** Weaker equality: same name. */

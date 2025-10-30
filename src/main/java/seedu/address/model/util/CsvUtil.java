@@ -22,15 +22,22 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Utility class for reading {@link Person} objects from a CSV file.
+ * CSV utilities for the address book domain.
  * <p>
- * This class provides a single method, {@link #readPersonsFromCsv(Path)},
- * which parses a comma-separated file containing person information.
- * Each non-empty line should be in the following format:
- * <pre>
- * Name, Phone, Email, [Address], [Tags separated by ';']
- * </pre>
- * Fields in brackets are optional. Malformed lines are skipped gracefully.
+ * <b>Export:</b> Provides {@link #writeHeader(List, java.io.Writer)},
+ * {@link #writeRow(List, java.io.Writer)}, and {@link #escape(String)} to write
+ * CSV safely. Fields containing commas, quotes, or newlines are escaped by
+ * doubling quotes and wrapping the cell in quotes.
+ * <p>
+ * <b>Import:</b> Provides {@link #readPersonsFromCsv(Path)} which parses a
+ * simplified CSV containing people in the order:
+ * <pre>Name, Phone, Email, [Address], [Tags separated by ';']</pre>
+ * Address and tags are optional. Malformed lines are skipped.
+ * <p><strong>Note:</strong> The current importer is a simple splitter and does
+ * not honor quoted fields. If a field contains commas or newlines, it must be
+ * fixed in a future iteration with a proper CSV parser.
+ * <p>
+ * This class is stateless and thread-safe.
  */
 public class CsvUtil {
 
@@ -38,6 +45,8 @@ public class CsvUtil {
 
     private static final int MIN_FIELDS = 3; // Name, Phone, Email
     private static final int MAX_FIELDS = 5; // Includes optional Address and Tags
+    private static final char DELIM = ',';
+    private static final String NEWLINE = "\n";
 
     /**
      * Reads a list of {@link Person} objects from a CSV file.
@@ -121,5 +130,61 @@ public class CsvUtil {
         }
 
         return new Person(name, phone, email, address, tags);
+    }
+
+    /**
+     * Escapes a string for CSV output.
+     * <ul>
+     *   <li>Doubles any double quotes ({@code " -> ""}).</li>
+     *   <li>If the cell contains the delimiter, a quote, or a newline, wraps the
+     *       entire cell in double quotes.</li>
+     *   <li>Null values are rendered as empty strings.</li>
+     * </ul>
+     *
+     * @param s the cell value, possibly {@code null}
+     * @return an export-safe CSV cell
+     */
+    public static String escape(String s) {
+        if (s == null) {
+            return "";
+        }
+        boolean needsQuotes = s.indexOf(DELIM) >= 0 || s.indexOf('"') >= 0
+                || s.indexOf('\n') >= 0 || s.indexOf('\r') >= 0;
+        String v = s.replace("\"", "\"\"");
+        return needsQuotes ? "\"" + v + "\"" : v;
+    }
+
+    /**
+     * Writes a header row using the current delimiter.
+     *
+     * @param headers ordered list of column names (nulls rendered empty)
+     * @param out     the writer to append to
+     * @throws IOException if writing fails
+     */
+    public static void writeHeader(List<String> headers, java.io.Writer out) throws IOException {
+        writeRow(headers, out);
+    }
+
+    /**
+     * Writes a single CSV row using the current delimiter.
+     * <p>Each cell is escaped via {@link #escape(String)}. Nulls render as empty
+     * strings. A newline is appended at the end.</p>
+     *
+     * @param cells ordered list of cell values (may contain nulls)
+     * @param out   the writer to append to
+     * @throws IOException if writing fails
+     */
+    public static void writeRow(List<String> cells, java.io.Writer out) throws IOException {
+        // Null-safe and escape each cell
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < cells.size(); i++) {
+            String cell = cells.get(i);
+            sb.append(escape(cell == null ? "" : cell));
+            if (i + 1 < cells.size()) {
+                sb.append(DELIM);
+            }
+        }
+        sb.append(NEWLINE);
+        out.write(sb.toString());
     }
 }
