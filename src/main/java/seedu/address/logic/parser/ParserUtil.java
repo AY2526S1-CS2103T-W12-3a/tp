@@ -23,6 +23,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    private static final int MAX_CADENCE_DAYS = Integer.MAX_VALUE;
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -144,10 +145,26 @@ public class ParserUtil {
     public static Cadence parseCadence(String cadenceDays) throws ParseException {
         requireNonNull(cadenceDays);
         String trimmed = cadenceDays.trim();
-        if (!StringUtil.isNonZeroUnsignedInteger(trimmed)) {
+        if (trimmed.isEmpty()) {
             throw new ParseException("Cadence must be a positive integer number of days");
         }
-        int interval = Integer.parseInt(trimmed);
-        return new Cadence(interval);
+
+        final long value;
+        try {
+            // Use long to avoid Integer.parseInt overflow
+            value = Long.parseLong(trimmed);
+        } catch (NumberFormatException e) {
+            // Clearly signal the overflow / non-integer case
+            throw new ParseException("Cadence value is too large. Maximum allowed is " + MAX_CADENCE_DAYS + " days.");
+        }
+
+        if (value <= 0) {
+            throw new ParseException("Cadence must be a positive integer number of days");
+        }
+        if (value > MAX_CADENCE_DAYS) {
+            throw new ParseException("Cadence value is too large. Maximum allowed is " + MAX_CADENCE_DAYS + " days.");
+        }
+
+        return new Cadence((int) value);
     }
 }
