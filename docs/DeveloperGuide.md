@@ -237,6 +237,25 @@ Examples:
 - CSV provides quick interoperability with spreadsheets/other CRMs,
 - Import is tolerant by design to maximize utility in early project stages.
 
+### Command History
+
+**Command format**: <kbd>↑</kbd> and <kbd>↓</kbd> keys
+
+- <kbd>↑</kbd> toggles to later commands
+- <kbd>↓</kbd> toggles to earlier commands
+
+**Rationale**:
+
+- Maintaining a command history allows quick navigability to earlier commands
+- Implementing this feature also ties in with the Undo feature
+- How it works:
+  1. The MainWindow class listens for UP or DOWN key presses
+  2. Depending on which is pressed, getNext or getPrevious will be called by Logic
+  3. With the command, the commandHistory component will be called
+  4. The key press event is then consumed within MainWindow
+
+<img src="images/CommandHistoryDiagram.png" width="550"/>
+
 ### Undo/redo (AB3-proposed; unchanged)
 
 MeshCRM inherits AB3’s **proposed** design using `VersionedAddressBook` (commit/undo/redo). See AB3 diagrams and notes
