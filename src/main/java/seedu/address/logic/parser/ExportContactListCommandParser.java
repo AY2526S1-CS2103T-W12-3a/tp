@@ -1,12 +1,14 @@
 package seedu.address.logic.parser;
 
-import seedu.address.logic.commands.ExportContactListCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.logic.commands.ExportContactListCommand.Profile;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static java.util.Objects.requireNonNull;
+
+import seedu.address.logic.commands.ExportContactListCommand;
+import seedu.address.logic.commands.ExportContactListCommand.Profile;
+import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
  * Parses input arguments and creates a new {@code ExportContactListCommand} object.
@@ -56,16 +58,16 @@ public class ExportContactListCommandParser implements Parser<ExportContactListC
             }
 
             switch (val) {
-                case "standard":
-                    profile = Profile.STANDARD;
-                    break;
-                case "full":
-                    profile = Profile.FULL;
-                    break;
-                default:
-                    throw new ParseException(
-                            "Unknown profile '" + raw + "'. Allowed: standard, full. " +
-                                    "Example: export team.csv --profile full");
+            case "standard":
+                profile = Profile.STANDARD;
+                break;
+            case "full":
+                profile = Profile.FULL;
+                break;
+            default:
+                throw new ParseException(
+                        "Unknown profile '" + raw + "'. Allowed: standard, full. "
+                                + "Example: export team.csv --profile full");
             }
             filePart = PROFILE_PATTERN.matcher(filePart).replaceAll(" ").trim();
             filePart = PROFILE_BARE_PATTERN.matcher(filePart).replaceAll(" ").trim();

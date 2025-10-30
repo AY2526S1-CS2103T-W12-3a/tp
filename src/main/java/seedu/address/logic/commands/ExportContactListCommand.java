@@ -11,14 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.export.ColumnSpec;
 import seedu.address.logic.export.ExportSchemas;
-import seedu.address.model.person.PersonReadOnly;
-import seedu.address.model.util.CsvUtil;
-
-import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonReadOnly;
+import seedu.address.model.util.CsvUtil;
 
 
 
@@ -64,6 +63,7 @@ public class ExportContactListCommand extends Command {
 
     private static final Logger logger = LogsCenter.getLogger(ExportContactListCommand.class);
 
+    /** CSV export schema profiles. */
     public enum Profile { STANDARD, FULL }
 
     /** Optional filename argument provided by the user. */
@@ -200,8 +200,11 @@ public class ExportContactListCommand extends Command {
                 var cells = new java.util.ArrayList<String>(schema.size());
                 for (ColumnSpec<PersonReadOnly> col : schema) {
                     String v;
-                    try { v = String.valueOf(col.extractor.apply(pr)); }
-                    catch (Exception e) { v = ""; } // defensive: empty on extractor errors
+                    try {
+                        v = String.valueOf(col.extractor.apply(pr));
+                    } catch (Exception e) {
+                        v = "";
+                    } // defensive: empty on extractor errors
                     cells.add(v);
                 }
                 CsvUtil.writeRow(cells, writer);

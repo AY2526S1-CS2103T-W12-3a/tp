@@ -145,7 +145,9 @@ public class CsvUtil {
      * @return an export-safe CSV cell
      */
     public static String escape(String s) {
-        if (s == null) return "";
+        if (s == null) {
+            return "";
+        }
         boolean needsQuotes = s.indexOf(DELIM) >= 0 || s.indexOf('"') >= 0
                 || s.indexOf('\n') >= 0 || s.indexOf('\r') >= 0;
         String v = s.replace("\"", "\"\"");
@@ -153,25 +155,34 @@ public class CsvUtil {
     }
 
     /**
-     * Writes a header row to the writer using the current delimiter.
-     * Calls {@link #writeRow(List, java.io.Writer)} under the hood.
+     * Writes a header row using the current delimiter.
      *
      * @param headers ordered list of column names (nulls rendered empty)
-     * @param out the writer to append to
+     * @param out     the writer to append to
      * @throws IOException if writing fails
      */
-
     public static void writeHeader(List<String> headers, java.io.Writer out) throws IOException {
         writeRow(headers, out);
     }
 
+    /**
+     * Writes a single CSV row using the current delimiter.
+     * <p>Each cell is escaped via {@link #escape(String)}. Nulls render as empty
+     * strings. A newline is appended at the end.</p>
+     *
+     * @param cells ordered list of cell values (may contain nulls)
+     * @param out   the writer to append to
+     * @throws IOException if writing fails
+     */
     public static void writeRow(List<String> cells, java.io.Writer out) throws IOException {
         // Null-safe and escape each cell
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < cells.size(); i++) {
             String cell = cells.get(i);
             sb.append(escape(cell == null ? "" : cell));
-            if (i + 1 < cells.size()) sb.append(DELIM);
+            if (i + 1 < cells.size()) {
+                sb.append(DELIM);
+            }
         }
         sb.append(NEWLINE);
         out.write(sb.toString());

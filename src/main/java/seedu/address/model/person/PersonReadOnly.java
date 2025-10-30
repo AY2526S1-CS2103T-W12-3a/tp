@@ -7,6 +7,10 @@ import java.util.Set;
 import seedu.address.model.interaction.Interaction;
 import seedu.address.model.tag.Tag;
 
+/**
+ * Read-only view of a {@link Person}.
+ * Implementations must not expose mutable state.
+ */
 public interface PersonReadOnly {
     Name getName();
     Phone getPhone();
