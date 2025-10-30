@@ -23,13 +23,16 @@ import seedu.address.model.util.CsvUtil;
 
 /**
  * Exports the current contact list (filtered or full) into a CSV file.
- * <p>
- * Supports schema profiles via {@code --profile standard|full}.
- * - STANDARD: Name, Phone, Email, Address, Tags
- * - FULL: STANDARD + Role, Cadence, InteractionsCount
- * <p>
- * Files are written to {@code data/exports/}. If no filename is given,
- * a timestamped filename is used. Existing filenames are not overwritten.
+ *
+ * <p>Supports schema profiles via {@code --profile standard|full}:
+ * <ul>
+ *   <li><b>STANDARD:</b> Name, Email, Address, Phone, Role</li>
+ *   <li><b>FULL:</b> STANDARD + Cadence, InteractionsCount</li>
+ * </ul>
+ *
+ * <p>Files are written to {@code data/exports/}. If no filename is given,
+ * a timestamped filename is generated. Existing files are never overwritten —
+ * numeric suffixes are appended if needed.
  */
 public class ExportContactListCommand extends Command {
 
@@ -189,14 +192,13 @@ public class ExportContactListCommand extends Command {
         int written = 0;
 
         try (FileWriter writer = new FileWriter(file)) {
-            // header
             CsvUtil.writeHeader(
                     schema.stream().map(c -> c.header)
                             .collect(Collectors.toList()), writer
             );
 
             for (Person p : persons) {
-                PersonReadOnly pr = p; // Person implements PersonReadOnly
+                PersonReadOnly pr = p;
                 var cells = new java.util.ArrayList<String>(schema.size());
                 for (ColumnSpec<PersonReadOnly> col : schema) {
                     String v;
@@ -204,7 +206,7 @@ public class ExportContactListCommand extends Command {
                         v = String.valueOf(col.extractor.apply(pr));
                     } catch (Exception e) {
                         v = "";
-                    } // defensive: empty on extractor errors
+                    }
                     cells.add(v);
                 }
                 CsvUtil.writeRow(cells, writer);
