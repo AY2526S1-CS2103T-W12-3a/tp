@@ -14,7 +14,7 @@ import seedu.address.model.person.comparator.CadenceComparator;
 public class SortCadenceCommand extends Command {
 
     public static final String COMMAND_WORD = "sortcadence";
-    public static final String MESSAGE_SUCCESS = "Sorted all persons by last contact date.";
+    public static final String MESSAGE_SUCCESS = "Sorted all persons by next contact date.";
 
     @Override
     public CommandResult execute(Model model) {
