@@ -40,6 +40,10 @@ and edit diagrams.
 
 The ***Architecture Diagram*** above explains the high-level design of the app.
 
+**Changes to Architecture since AB3:**
+* **Storage now also persists `CommandHistory`** (JSON at `data/commandhistory.json`) during app shutdown.
+* **CSV Import/Export** uses `model.util.CsvUtil` for parsing/writing; persistent storage remains Jackson JSON.
+
 **What MeshCRM changes vs AB3 (at a glance)**
 
 - **Domain extensions** to `Person`: `Role` (Investor/Partner/Customer/Lead), optional `Cadence` (follow-up interval in
@@ -69,8 +73,7 @@ The bulk of the work is done by the following four components:
 
 **How the architecture components interact**
 
-The *Sequence Diagram* below (unchanged from AB3) shows a typical flow for a mutating command (`delete 1`). MeshCRM
-commands follow the same pattern: UI → Logic (parse) → Command → Model (mutate/query) → Storage/UI.
+The *Sequence Diagram* below shows a typical flow for a mutating command (`delete 1`): UI → Logic (parse) → Command → Model (mutate/query) → Storage/UI.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -114,7 +117,7 @@ The UI:
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a PlantUML limitation, it continues till the end.
 </div>
 
-How it works (unchanged model with new commands):
+How it works:
 
 1. `LogicManager#execute(String)` delegates to `AddressBookParser` which instantiates the appropriate
    `XYZCommandParser` (e.g., `LogCommandParser`) to parse user input.
