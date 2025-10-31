@@ -23,6 +23,9 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_MISSING_INDEX = "Missing person index.";
+    public static final String MESSAGE_INDEX_NOT_NUMBER = "Index must be a number.";
+    public static final String MESSAGE_INDEX_NOT_POSITIVE = "Index must be a positive number.";
     private static final int MAX_CADENCE_DAYS = Integer.MAX_VALUE;
 
     /**
@@ -30,13 +33,21 @@ public class ParserUtil {
      * trimmed.
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
-    public static Index parseIndex(String oneBasedIndex) throws ParseException {
-        String trimmedIndex = oneBasedIndex.trim();
-        if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
+    static Index parseIndex(String oneBasedIndex) throws ParseException {
+        requireNonNull(oneBasedIndex);
+        String trimmed = oneBasedIndex.trim();
+
+        if (trimmed.isEmpty()) {
+            throw new ParseException(MESSAGE_MISSING_INDEX);
+        }
+
+        if (!StringUtil.isNonZeroUnsignedInteger(trimmed)) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
-        return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+
+        return Index.fromOneBased(Integer.parseInt(trimmed));
     }
+
 
     /**
      * Parses a {@code String name} into a {@code Name}.
@@ -148,7 +159,6 @@ public class ParserUtil {
         if (trimmed.isEmpty()) {
             throw new ParseException("Cadence must be a positive integer number of days");
         }
-
         final long value;
         try {
             // Use long to avoid Integer.parseInt overflow
@@ -157,14 +167,13 @@ public class ParserUtil {
             // Clearly signal the overflow / non-integer case
             throw new ParseException("Cadence value is too large. Maximum allowed is " + MAX_CADENCE_DAYS + " days.");
         }
-
         if (value <= 0) {
             throw new ParseException("Cadence must be a positive integer number of days");
         }
         if (value > MAX_CADENCE_DAYS) {
             throw new ParseException("Cadence value is too large. Maximum allowed is " + MAX_CADENCE_DAYS + " days.");
         }
-
         return new Cadence((int) value);
     }
+
 }

@@ -1,0 +1,47 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+Actor User as user USER_COLOR
+Participant ":UI" as ui UI_COLOR
+Participant ":Logic" as logic LOGIC_COLOR
+Participant ":CommandHistory" as commandHistory LOGIC_COLOR_T1
+
+user -> ui : handleUpDownKeyPress(event, commandBox)
+activate ui
+
+alt UP key pressed
+    ui -> logic : getNext()
+    activate logic
+
+    logic -> commandHistory : getNext()
+    activate commandHistory
+
+    commandHistory --> logic : nextCommand
+    deactivate commandHistory
+
+    logic --> ui : command
+    deactivate logic
+
+
+else DOWN key pressed
+    ui -> logic : getPrevious()
+    activate logic
+
+    logic -> commandHistory : getPrevious()
+    activate commandHistory
+
+    commandHistory --> logic : previousCommand
+    deactivate commandHistory
+
+    logic --> ui : command
+    deactivate logic
+end
+
+
+ui -> ui : event.consume()
+
+ui --> user
+deactivate ui
+
+@enduml

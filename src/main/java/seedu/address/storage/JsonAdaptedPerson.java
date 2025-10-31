@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.interaction.Interaction;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Cadence;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -35,6 +36,7 @@ class JsonAdaptedPerson {
     // Keep both features
     private final List<JsonAdaptedInteraction> interactions = new ArrayList<>();
     private final String role;
+    private final Integer cadence;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -46,6 +48,7 @@ class JsonAdaptedPerson {
                              @JsonProperty("address") String address,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags,
                              @JsonProperty("role") String role,
+                             @JsonProperty("cadence") Integer cadence,
                              @JsonProperty("interactions") List<JsonAdaptedInteraction> interactions) {
         this.name = name;
         this.phone = phone;
@@ -58,6 +61,7 @@ class JsonAdaptedPerson {
             this.interactions.addAll(interactions);
         }
         this.role = role;
+        this.cadence = cadence;
     }
 
     // Backward-compatible overload used by tests and older code paths.
@@ -68,7 +72,7 @@ class JsonAdaptedPerson {
                              String address,
                              List<JsonAdaptedTag> tags,
                              String role) {
-        this(name, phone, email, address, tags, role, /*interactions=*/ null);
+        this(name, phone, email, address, tags, role, null, null);
     }
 
     /**
@@ -86,7 +90,10 @@ class JsonAdaptedPerson {
         this.interactions.addAll(source.getInteractions()
             .stream().map(JsonAdaptedInteraction::new).collect(Collectors.toList()));
         // Role may be null in legacy persons; guard accordingly
-        role = (source.getRole() == null) ? null : source.getRole().value;
+        role = source.getRole().value;
+        cadence = source.getCadence()
+                .map(Cadence::getIntervalDays)
+                .orElse(null);
     }
 
     /**
@@ -153,8 +160,14 @@ class JsonAdaptedPerson {
         }
         final Role modelRole = new Role(role);
 
+        final Cadence modelCadence;
+        if (cadence == null) {
+            modelCadence = null;
+        } else {
+            modelCadence = new Cadence(cadence);
+        }
         // Always construct with role; pass interactions list
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags,
-            modelRole, /*cadence*/ null, modelInteractions);
+            modelRole, modelCadence, modelInteractions);
     }
 }

@@ -10,7 +10,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 
-public class SortCadenceCommandTest {
+public class SortFollowUpCommandTest {
 
     private Model model;
     private Model expectedModel;
@@ -22,13 +22,13 @@ public class SortCadenceCommandTest {
     }
 
     @Test
-    public void execute_sortCadence_success() {
-        SortCadenceCommand command = new SortCadenceCommand();
+    public void execute_sortFollowUp_success() {
+        SortFollowUpCommand command = new SortFollowUpCommand();
 
         CommandResult result = command.execute(model);
         command.execute(expectedModel);
 
-        assertEquals(SortCadenceCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(SortFollowUpCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
 
         assertEquals(model.getFilteredPersonList(), expectedModel.getFilteredPersonList());
     }

@@ -18,28 +18,31 @@ import seedu.address.model.util.CsvUtil;
 /**
  * Imports a list of contacts from a CSV file into the AddressBook.
  * <p>
- * Each valid line in the CSV file should contain the following fields (comma-separated):
+ * The CSV must have a header row (case-insensitive) containing at least:
+ * Name, Role, Address, Phone, Email.
+ * Optional columns: Tags, Cadence, Interactions.
+ * Unknown columns are ignored.
  * <ul>
- *     <li>Name</li>
- *     <li>Phone number</li>
- *     <li>Email address</li>
- *     <li>(Optional) Address</li>
- *     <li>(Optional) Tags</li>
+ *   <li>Name</li>
+ *   <li>Role</li>
+ *   <li>Address</li>
+ *   <li>Phone number</li>
+ *   <li>Email address</li>
+ *   <li>(Optional) Tags</li>
+ *   <li>(Optional) Cadence (days)</li>
+ *   <li>(Optional) Interactions (count)</li>
  * </ul>
- * Duplicate contacts (based on equality defined in {@link Person}) are ignored during import.
- * Invalid or malformed entries are safely skipped, and error messages are logged.
- * <p>
- * Example usage:
- * <pre>{@code
- * import data/exports/contacts_backup.csv
- * }</pre>
+ * Duplicate contacts are ignored; malformed rows are skipped with warnings.
  */
 public class ImportContactListCommand extends Command {
 
     public static final String COMMAND_WORD = "import";
 
+    public static final String MESSAGE_NO_VALID_CONTACTS = "CSV contained no valid contacts: %s";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Imports contacts from a CSV file.\n"
             + "Parameters: FILE_PATH\n"
+            + "Notes: CSV must include a header with at least Name, Role, Address, Phone, Email.\n"
             + "Example: " + COMMAND_WORD + " data/exports/contacts_backup.csv";
 
     public static final String MESSAGE_SUCCESS = "Successfully imported %d contacts from %s";
@@ -80,7 +83,7 @@ public class ImportContactListCommand extends Command {
 
         if (persons.isEmpty()) {
             logger.warning("CSV contained no valid contacts: " + filePath);
-            throw new CommandException(String.format(MESSAGE_INVALID_FILE, filePath));
+            throw new CommandException(String.format(MESSAGE_NO_VALID_CONTACTS, filePath));
         }
 
         int importedCount = importPersonsIntoModel(model, persons);

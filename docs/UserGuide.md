@@ -1,12 +1,51 @@
----
-layout: page
-title: User Guide
----
+# MeshCRM User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+MeshCRM is made for **entrepreneurs managing customer relationships, discovery, and fundraising.**
 
-* Table of Contents
-  {:toc}
+It is a desktop app for managing contacts, optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI).
+
+If you type fast, often find yourself rushing to manage contacts, and want to save time, MeshCRM helps you get things done faster than traditional GUI apps.
+
+Here’s how it helps you save time and stay on top of every relationship:
+
+* Add and update contacts instantly. Type, hit Enter, and move on. No endless clicking.
+* Track follow-ups effortlessly with built-in cadence and interaction logs.
+* See what matters using tag-based stats and sorting by next follow-up date.
+* Import and export seamlessly between CSV files.
+* Work faster, not harder. The CLI gives you full control, while the GUI keeps it visual and intuitive.
+
+MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured, action-driven network.
+
+> 💡 **Note:**  
+> A **CLI (Command Line Interface)** means you type commands — like texting the app what you want it to do.  
+> A **GUI (Graphical User Interface)** means you can also click buttons and see everything nicely displayed on your screen.  
+> MeshCRM combines both, so you can **type fast when you want speed** and **click around when you want convenience**.
+
+## Table of Contents
+- [Quick start](#quick-start)
+- [Features](#features)
+    - [Viewing help](#viewing-help--help)
+    - [Adding a person](#adding-a-person--add)
+    - [Deleting a person](#deleting-a-person--delete)
+    - [Editing a person](#editing-a-person--edit)
+    - [Listing all persons](#listing-all-persons--list)
+    - [Locating persons by name](#locating-persons-by-name--find)
+    - [Clearing all entries](#clearing-all-entries--clear)
+    - [Logging an interaction](#logging-an-interaction--log)
+    - [Exporting contacts](#exporting-contacts--export)
+    - [Importing contacts](#importing-contacts--import)
+    - [Viewing tag statistics](#viewing-tag-statistics--stats)
+    - [Sorting persons by next follow-up date](#sorting-persons-by-next-follow-up-date--sortfollowup)
+    - [Command history](#command-history)
+    - [Undoing latest command](#undoing-latest-command--undo)
+    - [Exiting the program](#exiting-the-program--exit)
+    - [Saving the data](#saving-the-data)
+    - [Editing the data file](#editing-the-data-file)
+- [Command Summary](#command-summary)
+- [Glossary](#glossary)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -15,11 +54,11 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-W12-3a/tp/releases).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your MeshCRM.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar meshcrm.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -64,74 +103,60 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Display a message showing how to access the help page.
 
-![help message](images/helpMessage.png)
+![help message](images/helpMessageNew.png)
 
 **Format:** `help`
 
 ---
 
+## Command Summary
+
+| **Action** | **Format** | **Example** |
+|-------------|-------------|--------------|
+| **View Help** | `help` | — |
+| **Add Contact** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]... r/ROLE [c/DAYS]` | `add n/James Ho p/22224444 e/jamesho@example.com a/123 Clementi Rd t/friend r/customer c/20` |
+| **Delete Contact** | `delete INDEX` | `delete 3` |
+| **Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]... [r/ROLE] [c/DAYS]` | `edit 2 n/James Lee e/jameslee@example.com` |
+| **List All Contacts** | `list` | — |
+| **Find Contacts** | `find KEYWORD [MORE_KEYWORDS]` | `find James Jake` |
+| **Clear All Contacts** | `clear` | — |
+| **Log Interaction** | `log INDEX i/<call/email/meeting/note> d/DETAILS` | `log 1 i/meeting d/Coffee chat` |
+| **Export Contacts** | `export FILE_NAME` | `export contacts.csv` |
+| **Import Contacts** | `import FILE_PATH` | `import data/exports/team_oct.csv` |
+| **View Tag Statistics** | `stats` | — |
+| **Sort by Follow-Up Date** | `sortfollowup` | — |
+| **View Command History** | *(keyboard shortcuts)* | Press <kbd>↑</kbd> / <kbd>↓</kbd> to navigate |
+| **Undo Last Command** | `undo` | — |
+| **Exit Program** | `exit` | — |
+
+---
+
 ### Adding a person : `add`
 
-Adds a person to the address book.
+Adds a new contact to the address book. Does not allow duplicate names.
 
 **Format:**
-`add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG] r/ROLE [c/DAYS]`
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]... r/ROLE [c/DAYS]`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0).
-</div>
-
-**Examples:**
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/Investor c/23`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal r/Customer c/20`
-
----
-
-### Listing all persons : `list`
-
-Shows a list of all persons in the address book.
-
-**Format:** `list`
-
----
-
-### Editing a person : `edit`
-
-Edits an existing person in the address book.
-
-**Format:**
-`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [r/ROLE] [c/20]`
-
-* Edits the person at the specified `INDEX` (must be a positive integer).
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, existing tags will be replaced with the new ones.
-* To remove all tags, type `t/` without specifying any tags after it.
+**Details**
+* NAME, PHONE, and EMAIL are mandatory
+* ADDRESS, CADENCE, and TAG are optional.
+* Multiple tags can be added by repeating the t/ prefix.
+* CADENCE accepts a number of days (e.g., c/7 means follow up every 7 days).
 
 **Examples:**
-* `edit 1 p/91234567 e/johndoe@example.com`
-* `edit 2 n/Betsy Crower t/`
+* add n/John Tan p/91234567 e/johntan@gmail.com a/123 Clementi Ave 3 t/client r/Investor c/14
+* add n/Alicia Koh p/98765432 e/aliciakoh@yahoo.com a/88 Serangoon Road t/partner t/highvalue r/Client c/30
+* add n/Daniel Lim p/81112222 e/daniel.lim@abc.com a/25 Ang Mo Kio Ave 10 r/Supplier
+* add n/Sophia Lee p/90001111 e/sophia.lee@gmail.com a/18 Bishan Street 12 t/lead r/Prospect c/10
+* add n/Bryan Ong p/92223333 e/bryan.ong@xyz.com a/450 Jurong West St 42 t/vip t/referral r/Customer
 
----
+> ⚠️ **Warning:** Duplicate names are not allowed.  
+> If a contact already exists with the same name, the command will be rejected.
 
-### Locating persons by name : `find`
-
-Finds persons whose names contain any of the given keywords.
-
-**Format:**
-`find KEYWORD [MORE_KEYWORDS]`
-
-* The search is case-insensitive.
-* The order of the keywords does not matter.
-* Only full words are matched.
-* Persons matching at least one keyword will be returned.
-
-**Examples:**
-* `find John`
-* `find alex david`
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+> 💡 **Tip:** Use `c/7` or `c/14` to set regular follow-ups automatically — perfect for staying in touch with leads or clients.
 
 ---
 
@@ -151,6 +176,62 @@ Deletes the specified person from the address book.
 
 ---
 
+### Editing a person : `edit`
+
+Edits an existing contact’s details by index.
+
+**Format:**
+`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]... [r/ROLE] [c/DAYS]`
+
+**Details**
+* Edits the person at the specified `INDEX` (must be a positive integer).
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values.
+* If no new value is provided for a particular field, that field will remain unchanged.
+* When editing tags, existing tags will be replaced with the new ones.
+* To remove all tags, type `t/` without specifying any tags after it.
+* Tags are replaced, not appended. Use all desired tags in the same command.
+
+**Examples:**
+* `edit 1 p/91234567 e/johndoe@example.com`
+* `edit 2 n/Betsy Crower t/`
+* `edit 3 a/123 Clementi Ave 3 r/Investor`
+* `edit 4 n/Alex Tan p/81234567 t/Friend t/Colleague c/14`
+
+---
+
+### Listing all persons : `list`
+
+Shows a list of all persons in the address book.
+
+**Format:** `list`
+
+---
+
+### Locating persons by name : `find`
+
+Finds persons whose names contain any of the given keyword(s).
+
+**Format:**
+`find KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive.
+* The order of the keywords does not matter.
+* Partial matches are supported.
+* Persons matching at least one keyword will be returned.
+
+**Details:**
+* The search is case-insensitive (e.g., “john” matches “John”).
+* Partial matches are supported (e.g., “Nab” matches “Nabil”).
+* Multiple keywords will return all persons matching any of the keywords.
+
+**Examples:**
+* `find john`
+* `find Nab Au`
+  ![result for 'find Nab Au'](images/findNabAuResult.png)
+
+---
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -166,61 +247,132 @@ Records an interaction for a contact. The latest one appears on the person’s c
 **Format:**
 `log INDEX i/<call|email|meeting|note> d/DETAILS`
 
-**Example:**
-`log 1 i/meeting d/Coffee chat`
-
-**Notes:**
+**Details:**
 * Invalid index/type, empty details, or missing prefixes will trigger an error.
 * Each person’s interactions are stored in the data file under an `interactions` array.
 * Backward compatible with older data files (those without interactions).
 
+**Example:**
+`log 1 i/meeting d/Coffee chat`
+
 ---
 
-### Exporting contact list : `export`
+### Exporting contacts : `export`
 
-Exports the current or filtered contact list to a `.csv` file.
+Exports the current or filtered contact list to a CSV file for use in Excel, Numbers, or Google Sheets.
 
 **Format:**
-`export [FILENAME]`
+`export [FILENAME] [--profile standard|full]`
 
 **Details:**
 * Saved to `data/exports/`.
-* Automatically adds `.csv` if not provided.
+* `.csv` is added automatically if not provided.
 * Prevents overwriting by adding numeric suffixes.
-* Displays file path and number of contacts exported.
+* `--profile` controls how much data is included:
+    * `standard` *(default)*: Name, Email, Address, Phone, Role
+    * `full`: Name, Email, Address, Phone, Role, Cadence, Interactions
+* Exports only the currently displayed list (respects filters).
 
 **Examples:**
-* `export`
-* `export my_contacts.csv`
+* `export` → timestamped CSV using standard profile
+* `export team.csv` → saves as `data/exports/team.csv`
+* `export submission --profile full` → exports all columns
 
 ---
 
-### Viewing command history : `history`
+### Importing contacts : `import`
 
-Displays a list of previously executed commands in the current session.
+Imports contacts from a CSV file into the address book.  
+Duplicate entries (based on `Person#equals`) are skipped automatically.
 
 **Format:**
-`history`
+`import FILE_PATH`
 
-The command history helps you review or repeat past commands.
+**Details:**
+* Reads data from a CSV at the given path (relative or absolute).
+* Required columns: `Name, Role, Address, Phone, Email`
+* Optional columns: `Tags, Cadence, Interactions`
+* Accepts comma, semicolon, or tab delimiters.
+* Unknown or missing columns are ignored.
+* Malformed or duplicate rows are skipped safely.
 
+**Examples:**
+* `import data/exports/contacts_backup.csv`
+* `import ./data/exports/team_oct.csv`
+* `import /Users/me/Downloads/mesh_contacts.csv`
+
+---
+
+### Viewing tag statistics : `stats`
+
+Displays a summary of how many contacts belong to each tag in the address book.
+
+**Format:**  
+`stats`
+
+**Details:**
+* Counts how many contacts are associated with each tag.
+* Tags are shown in **descending order of frequency**, then alphabetically if counts are equal.
+* If no tags exist, shows: `No tags found on any contact.`
+* Useful for understanding your contact composition (e.g., how many clients, investors, or friends you have).
+
+**Example:**
+```
+Tag stats:
+client: 4
+investor: 3
+vip: 1
+```
+
+---
+
+### Sorting persons by next follow-up date : `sortfollowup`
+
+Sorts all persons in the address book by their next follow-up date.
+Calculated from their last interaction date and cadence (in days).
+
+**Format:** `sortfollowup`
+
+**Details:**
+* The next contact date = last interaction date + cadence days.
+* Contacts with earlier next contact dates appear first.
+* Contacts with no cadence and/or no recorded interactions appear last.
+* Sorting affects only the displayed list — your data remains unchanged.
+* Useful for tracking regular check-ins or follow-ups with clients.
+
+> 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
+
+> 💡 **Tip:** Combine `log` and `sortfollowup` to instantly see who to contact next after each interaction.
+
+---
+
+### Command history
+
+All commands made previously are stored, able to toggle to previous commands
+
+**Format:**
+Press <kbd>↑</kbd> and <kbd>↓</kbd> to navigate command history.
+
+**Details:**
 * Shown in chronological order (most recent last).
-* Includes invalid commands.
-* Cleared when the application closes.
+* Persists through different sessions
+* Invalid commands are not recorded
 * Navigate directly using keyboard:
     * <kbd>↑</kbd> — previous command
     * <kbd>↓</kbd> — next command
 
-**Example:**
-`list
-add n/John Doe p/98765432 e/john@example.com a/123 Street
-delete 1
-history`
+---
 
+### Undoing latest command : `undo`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-Use the arrow keys in the command box to quickly recall and re-execute past commands.
-</div>
+Undoes the most recent command made
+
+**Format:**
+`undo`
+
+**Details:**
+* Undo is recorded in the command history
+* Undoing a command does not remove it from the command history
 
 ---
 
@@ -234,30 +386,34 @@ Exits the program.
 
 ### Saving the data
 
-AddressBook data are saved automatically to the hard disk after every command that changes the data.
+MeshCRM data are saved automatically to the hard disk after every command that changes the data.
 
 ---
 
 ### Editing the data file
 
-Data are stored as a JSON file: `[JAR file location]/data/addressbook.json`.
+Data are stored as a JSON file: `[JAR file location]/data/meshcrm.json`.
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If the file format becomes invalid, AddressBook will start with an empty data file on the next run. Always back up before editing manually.
-</div>
-
----
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon..._
+> ⚠️ **Warning:** If the file format becomes invalid, MeshCRM will start with an empty data file on the next run. Always back up before editing manually.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
-**Q:** How do I transfer my data to another computer?<br>
-**A:** Install the app on the new computer and replace its empty data file with the one from your old AddressBook home folder.
+### ❓ How do I transfer my data to another computer?
+Install MeshCRM on the new computer and replace its empty data file with the one from your old MeshCRM home folder.
+
+### ❓ My contacts didn’t save after I added them. What should I do?
+Make sure MeshCRM is saved in a folder you can edit, such as `Documents` or `Desktop`.  
+If it’s in a protected system folder, the app might not be able to save new data.
+
+### ❓ I imported a CSV file, but not all contacts appeared. Why?
+Some rows might be skipped if they are incomplete or repeated.  
+Check that each row has a **name, phone number, email, and address**.
+
+### ❓ How do I start fresh with new sample data?
+Delete or rename the `meshcrm.json` file in the `data` folder, then restart MeshCRM.  
+It will automatically create a new one with sample contacts.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -267,18 +423,3 @@ _Details coming soon..._
 2. **Minimized Help Window:** If minimized, re-running `help` will not open a new window. Restore the existing one manually.
 
 --------------------------------------------------------------------------------------------------------------------
-
-## Command summary
-
-Action | Format, Examples
---------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG] r/ROLE [c/CADENCE]`<br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd t/friend r/customer c/20`
-**Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [r/ROLE] [c/CADENCE]`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
-**Log** | `log INDEX i/<call|email|meeting|note> d/DETAILS`<br> e.g., `log 1 i/meeting d/Coffee chat`
-**Export** | `export [FILENAME]`<br> e.g., `export contacts.csv`
-**Help** | `help`
-**Exit** | `exit`
