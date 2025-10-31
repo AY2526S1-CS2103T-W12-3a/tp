@@ -202,9 +202,26 @@ Edits an existing contact’s details by index.
 
 ### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
+Shows the full contact list.
 
 **Format:** `list`
+
+**Details:**
+
+* Displays every contact in the address book.
+* **Clears any active filters** from previous commands (for example, after `find`).
+* The command is **recorded in command history**.
+* **Abbreviation:** `l` can also be used to perform the same action.
+* **Current behaviour:**
+  `list` is processed even if you type extra text after it, such as `list x/1` or `list 123`.
+  The additional text is **ignored** and the full list is still shown.
+
+**Examples:**
+
+* `list`
+  Displays the complete list of contacts.
+* `l`
+  Displays the complete list of contacts (abbreviation).
 
 ---
 
@@ -242,18 +259,42 @@ Clears all entries from the address book.
 
 ### Logging an interaction : `log`
 
-Records an interaction for a contact. The latest one appears on the person’s card as `Last: <type · time>`.
+Adds an interaction (call / email / meeting / note) to a person’s history.
 
 **Format:**
-`log INDEX i/<call|email|meeting|note> d/DETAILS`
+`log INDEX i/<call|email|meeting|note> d/<DETAILS>`
 
 **Details:**
-* Invalid index/type, empty details, or missing prefixes will trigger an error.
-* Each person’s interactions are stored in the data file under an `interactions` array.
-* Backward compatible with older data files (those without interactions).
 
-**Example:**
-`log 1 i/meeting d/Coffee chat`
+* Adds a new interaction record to the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index must be a positive integer `1, 2, 3, …`
+* **Both prefixes are required:**
+
+    * `i/` specifies the interaction type.
+    * `d/` specifies the interaction details / notes.
+* The interaction type in `i/` may be any of: `call`, `email`, `meeting`, `note`.
+  These values are **case-insensitive** (e.g., `i/MEETING`, `i/Call` are accepted).
+* `DETAILS` in `d/` **must not be empty after trimming whitespace**, and must be **500 characters or fewer**.
+  (For example, `d/` *(only spaces)* or extremely long text should be rejected.)
+* If the same prefix appears more than once, **the last occurrence is used**.
+  For example, `log 1 i/call i/email d/Sent deck` will log an **email** interaction, not a call.
+  `log 3 i/call d/A d/Left voicemail` will store **`d/Left voicemail`** as the details.
+* The command is **saved in command history** (you can use <kbd>↑</kbd> and <kbd>↓</kbd> to navigate through successful
+  commands later).
+
+**Examples:**
+
+* `log 1 i/call d/Called to confirm appointment`
+  Adds a call entry with details “Called to confirm appointment” to the 1st person.
+* `log 2 i/MEETING d/Project kickoff at 4pm`
+  Adds a meeting entry to the 2nd person.
+* `log 3 i/call d/A d/Left voicemail`
+  Adds an interaction for the 3rd person with details “Left voicemail”
+  *(“Left voicemail” replaces “A” because the last `d/` wins).*
+* `log 1 i/call i/email d/Sent deck`
+  Adds an **email** interaction for the 1st person
+  *(email replaces call because the last `i/` wins).*
 
 ---
 
@@ -378,9 +419,21 @@ Undoes the most recent command made
 
 ### Exiting the program : `exit`
 
-Exits the program.
-
 **Format:** `exit`
+
+**Details:**
+
+* Exits the program and closes all windows.
+* Your data is **saved automatically before the program quits**, so you do not need to manually save first.
+* The command is **recorded in command history**.
+* **Abbreviation:** `x` can also be used.
+
+**Examples:**
+
+* `exit`
+  Exits the program after saving.
+* `x`
+  Exits the program after saving (abbreviation).
 
 ---
 
