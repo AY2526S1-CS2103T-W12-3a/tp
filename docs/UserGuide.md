@@ -231,23 +231,20 @@ Shows the full contact list.
 
 ### Locating persons by name : `find`
 
-Finds persons whose names contain any of the given keyword(s).
+Finds persons whose **name, role, or tags** contain any of the given keyword(s).
 
 **Format:**
 `find KEYWORD [MORE_KEYWORDS]`
 
-* The search is case-insensitive.
-* The order of the keywords does not matter.
-* Partial matches are supported.
-* Persons matching at least one keyword will be returned.
-
 **Details:**
-* The search is case-insensitive (e.g., “john” matches “John”).
-* Partial matches are supported (e.g., “Nab” matches “Nabil”).
-* Multiple keywords will return all persons matching any of the keywords.
+* The search is **case-insensitive** (e.g., `john` matches “John”).
+* Partial matches are supported (e.g., `Nab` matches “Nabil”).
+* Multiple keywords will return all persons matching any keyword in **name, role, or tags**.
+* Persons are included if at least one field matches any keyword.
 
 **Examples:**
 * `find john`
+* `find investor vip`
 * `find Nab Au`
   ![result for 'find Nab Au'](images/findNabAuResult.png)
 
