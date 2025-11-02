@@ -214,7 +214,7 @@ Edits an existing contact’s details by index.
 * `edit 3 a/123 Clementi Ave 3 r/Investor`
 * `edit 4 n/Alex Tan p/81234567 t/Friend t/Colleague c/14`
 
-![Edited the first person's role to Customer and cadence to 4 days](editCommandExample.png)
+![Edited the first person's role to Customer and cadence to 4 days](images/editCommandExample.png)
 
 ---
 
@@ -241,7 +241,7 @@ Shows the full contact list.
 * `l`
   Displays the complete list of contacts (abbreviation).
 
-![Displays list of contacts](listCommandExample.png)
+![Displays list of contacts](images/listCommandExample.png)
 ---
 
 ### Locating persons by name : `find`
@@ -263,9 +263,9 @@ Finds persons whose names contain any of the given keyword(s).
 
 **Examples:**
 * `find irfan`
-  ![Result for find irfan](findCommandExample1.png)
+  ![Result for find irfan](images/findCommandExample1.png)
 * `find li`
-  ![Result for find li](findCommandExample2.png)
+  ![Result for find li](images/findCommandExample2.png)
 ---
 
 ### Clearing all entries : `clear`
@@ -274,7 +274,7 @@ Clears all entries from the address book.
 
 **Format:** `clear`
 
-![](clearCommandExample.png)
+![](images/clearCommandExample.png)
 ---
 
 ### Logging an interaction : `log`
@@ -316,7 +316,7 @@ Adds an interaction (call / email / meeting / note) to a person’s history.
   Adds an **email** interaction for the 1st person
   *(email replaces call because the last `i/` wins).*
 
-  ![Logged a call with the first person](logCommandExample.png)`
+  ![Logged a call with the first person](images/logCommandExample.png)`
 
 ---
 
@@ -341,7 +341,7 @@ Exports the current or filtered contact list to a CSV file for use in Excel, Num
 * `export team.csv` → saves as `data/exports/team.csv`
 * `export submission --profile full` → exports all columns
 
-![Exported contacts to mycontacts.csv](exportCommandExample.png)
+![Exported contacts to mycontacts.csv](images/exportCommandExample.png)
 
 ---
 
@@ -366,7 +366,7 @@ Duplicate entries (based on `Person#equals`) are skipped automatically.
 * `import ./data/exports/team_oct.csv`
 * `import /Users/me/Downloads/mesh_contacts.csv`
 
-![Imported contacts from mycontacts.csv](importCommandExample.png)
+![Imported contacts from mycontacts.csv](images/importCommandExample.png)
 
 ---
 
@@ -383,7 +383,7 @@ Displays a summary of how many contacts belong to each tag in the address book.
 * If no tags exist, shows: `No tags found on any contact.`
 * Useful for understanding your contact composition (e.g., how many clients, investors, or friends you have).
 
-![](statsCommandExample.png)
+![](images/statsCommandExample.png)
 
 ---
 
@@ -405,7 +405,7 @@ This command helps you prioritise which contacts to reach out to next.
 
 > 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
-![](sortFollowUpCommandExample.png)
+![](images/sortFollowUpCommandExample.png)
 
 ---
 
