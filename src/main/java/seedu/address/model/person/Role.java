@@ -32,15 +32,17 @@ public class Role {
         value = capitalize(normalizedRole.trim().toLowerCase());
     }
 
-    //Converts numeric shortcuts to full role names.
+    /**
+     * Converts numeric shortcuts to full role names.
+     */
     public static String normalizeRole(String input) {
         input = input.trim();
         switch (input) {
-            case "1": return "Investor";
-            case "2": return "Partner";
-            case "3": return "Customer";
-            case "4": return "Lead";
-            default: return input;
+        case "1": return "Investor";
+        case "2": return "Partner";
+        case "3": return "Customer";
+        case "4": return "Lead";
+        default: return input;
         }
     }
 
