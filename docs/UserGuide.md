@@ -24,25 +24,24 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 ## Table of Contents
 - [Quick start](#quick-start)
 - [Features](#features)
-    - [Viewing help](#viewing-help--help)
-    - [Adding a person](#adding-a-person--add)
-    - [Deleting a person](#deleting-a-person--delete)
-    - [Editing a person](#editing-a-person--edit)
-    - [Listing all persons](#listing-all-persons--list)
-    - [Locating persons by name](#locating-persons-by-name--find)
-    - [Clearing all entries](#clearing-all-entries--clear)
-    - [Logging an interaction](#logging-an-interaction--log)
-    - [Exporting contacts](#exporting-contacts--export)
-    - [Importing contacts](#importing-contacts--import)
-    - [Viewing tag statistics](#viewing-tag-statistics--stats)
-    - [Sorting persons by next follow-up date](#sorting-persons-by-next-follow-up-date--sortfollowup)
-    - [Command history](#command-history)
-    - [Undoing latest command](#undoing-latest-command--undo)
-    - [Exiting the program](#exiting-the-program--exit)
-    - [Saving the data](#saving-the-data)
-    - [Editing the data file](#editing-the-data-file)
 - [Command Summary](#command-summary)
-- [Glossary](#glossary)
+  - [Viewing help: help](#viewing-help--help)
+  - [Adding a person: add](#adding-a-person--add)
+  - [Deleting a person: delete](#deleting-a-person--delete)
+  - [Editing a person: edit](#editing-a-person--edit)
+  - [Listing all persons: list](#listing-all-persons--list)
+  - [Locating persons by name: find](#locating-persons-by-name--find)
+  - [Clearing all entries: clear](#clearing-all-entries--clear)
+  - [Logging an interaction: log](#logging-an-interaction--log)
+  - [Exporting contacts: export](#exporting-contacts--export)
+  - [Importing contacts: import](#importing-contacts--import)
+  - [Viewing tag statistics: stats](#viewing-tag-statistics--stats)
+  - [Sorting persons by next follow-up date: sortfollowup](#sorting-persons-by-next-follow-up-date--sortfollowup)
+  - [Command history](#command-history)
+  - [Undoing latest command: undo](#undoing-latest-command--undo)
+  - [Exiting the program: exit](#exiting-the-program--exit)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
 - [FAQ](#faq)
 - [Known issues](#known-issues)
 
@@ -52,6 +51,20 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 ## Quick start
 
 1. Ensure you have Java `17` or above installed in your Computer.<br>
+   a. Search for Command Prompt in the Start Menu (if you are using Mac, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").
+
+   b. Type `java -version` and press Enter. You should see an output similar to below.
+   ```
+   java version "17.0.16" 2025-07-15 LTS
+   Java(TM) SE Runtime Environment (build 17.0.16+12-LTS-247)
+   Java HotSpot(TM) 64-Bit Server VM (build 17.0.16+12-LTS-247, mixed mode, sharing)
+   ```
+
+   c. Verify that the terminal displays java version "17" or higher (highlighted line in screenshot above).
+
+   d. If Java version displayed is not Java 17 or higher:
+
+   **Windows users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html).
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-W12-3a/tp/releases).
@@ -65,11 +78,11 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-    * `list` : Lists all contacts.
-    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe`.
-    * `delete 3` : Deletes the 3rd contact shown in the current list.
-    * `clear` : Deletes all contacts.
-    * `exit` : Exits the app.
+  * `list` : Lists all contacts.
+  * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/boss r/investor c/10` : Adds a contact named `John Doe`.
+  * `delete 3` : Deletes the 3rd contact shown in the current list.
+  * `clear` : Deletes all contacts.
+  * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) below for details of each command.
 
@@ -79,7 +92,7 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 
 <div markdown="block" class="alert alert-info">
 
-**:information_source: Notes about the command format:**<br>
+**Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
@@ -101,22 +114,12 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 
 ---
 
-### Viewing help : `help`
-
-Display a message showing how to access the help page.
-
-![help message](images/helpMessageNew.png)
-
-**Format:** `help`
-
----
-
 ## Command Summary
 
 | **Action** | **Format** | **Example** |
 |-------------|-------------|--------------|
 | **View Help** | `help` | — |
-| **Add Contact** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]... r/ROLE [c/DAYS]` | `add n/James Ho p/22224444 e/jamesho@example.com a/123 Clementi Rd t/friend r/customer c/20` |
+| **Add Contact** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]... r/ROLE [c/DAYS]` | `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/boss r/investor c/10` |
 | **Delete Contact** | `delete INDEX` | `delete 3` |
 | **Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]... [r/ROLE] [c/DAYS]` | `edit 2 n/James Lee e/jameslee@example.com` |
 | **List All Contacts** | `list` | — |
@@ -133,6 +136,16 @@ Display a message showing how to access the help page.
 
 ---
 
+### Viewing help : `help`
+
+Display a message showing how to access the help page.
+
+![help message](images/helpMessageNew.png)
+
+**Format:** `help`
+
+---
+
 ### Adding a person : `add`
 
 Adds a new contact to the address book. Does not allow duplicate names.
@@ -141,17 +154,20 @@ Adds a new contact to the address book. Does not allow duplicate names.
 `add n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]... r/ROLE [c/DAYS]`
 
 **Details**
-* NAME, PHONE, and EMAIL are mandatory
-* ADDRESS, CADENCE, and TAG are optional.
+* NAME, PHONE, EMAIL, ADDRESS and ROLE are mandatory.
+* CADENCE and TAG are optional.
 * Multiple tags can be added by repeating the t/ prefix.
-* CADENCE accepts a number of days (e.g., c/7 means follow up every 7 days).
+* CADENCE accepts a positive number of days (e.g., c/7 means follow up every 7 days).
+* ROLE should be one of the following: Investor, Partner, Customer or Lead (case-insensitive).
 
 **Examples:**
 * add n/John Tan p/91234567 e/johntan@gmail.com a/123 Clementi Ave 3 t/client r/Investor c/14
-* add n/Alicia Koh p/98765432 e/aliciakoh@yahoo.com a/88 Serangoon Road t/partner t/highvalue r/Client c/30
-* add n/Daniel Lim p/81112222 e/daniel.lim@abc.com a/25 Ang Mo Kio Ave 10 r/Supplier
-* add n/Sophia Lee p/90001111 e/sophia.lee@gmail.com a/18 Bishan Street 12 t/lead r/Prospect c/10
-* add n/Bryan Ong p/92223333 e/bryan.ong@xyz.com a/450 Jurong West St 42 t/vip t/referral r/Customer
+* add n/Alicia Koh p/98765432 e/aliciakoh@yahoo.com a/88 Serangoon Road t/partner t/highvalue r/Customer c/30
+* add n/Daniel Lim p/81112222 e/daniel.lim@abc.com a/25 Ang Mo Kio Ave 10 r/Lead
+* add n/Sophia Lee p/90001111 e/sophia.lee@gmail.com a/18 Bishan Street 12 t/lead r/Partner c/10
+* add n/Bryan Ong p/92223333 e/bryan.ong@xyz.com a/450 Jurong West St 42 t/vip t/referral r/Investor
+
+![Added John Tan as a contact](images/addCommandExample.png)
 
 > ⚠️ **Warning:** Duplicate names are not allowed.  
 > If a contact already exists with the same name, the command will be rejected.
@@ -198,6 +214,8 @@ Edits an existing contact’s details by index.
 * `edit 3 a/123 Clementi Ave 3 r/Investor`
 * `edit 4 n/Alex Tan p/81234567 t/Friend t/Colleague c/14`
 
+![Edited the first person's role to Customer and cadence to 4 days](editCommandExample.png)
+
 ---
 
 ### Listing all persons : `list`
@@ -223,6 +241,7 @@ Shows the full contact list.
 * `l`
   Displays the complete list of contacts (abbreviation).
 
+![Displays list of contacts](listCommandExample.png)
 ---
 
 ### Locating persons by name : `find`
@@ -243,10 +262,10 @@ Finds persons whose names contain any of the given keyword(s).
 * Multiple keywords will return all persons matching any of the keywords.
 
 **Examples:**
-* `find john`
-* `find Nab Au`
-  ![result for 'find Nab Au'](images/findNabAuResult.png)
-
+* `find irfan`
+  ![Result for find irfan](findCommandExample1.png)
+* `find li`
+  ![Result for find li](findCommandExample2.png)
 ---
 
 ### Clearing all entries : `clear`
@@ -255,6 +274,7 @@ Clears all entries from the address book.
 
 **Format:** `clear`
 
+![](clearCommandExample.png)
 ---
 
 ### Logging an interaction : `log`
@@ -271,8 +291,8 @@ Adds an interaction (call / email / meeting / note) to a person’s history.
 * The index must be a positive integer `1, 2, 3, …`
 * **Both prefixes are required:**
 
-    * `i/` specifies the interaction type.
-    * `d/` specifies the interaction details / notes.
+  * `i/` specifies the interaction type.
+  * `d/` specifies the interaction details / notes.
 * The interaction type in `i/` may be any of: `call`, `email`, `meeting`, `note`.
   These values are **case-insensitive** (e.g., `i/MEETING`, `i/Call` are accepted).
 * `DETAILS` in `d/` **must not be empty after trimming whitespace**, and must be **500 characters or fewer**.
@@ -296,6 +316,8 @@ Adds an interaction (call / email / meeting / note) to a person’s history.
   Adds an **email** interaction for the 1st person
   *(email replaces call because the last `i/` wins).*
 
+  ![Logged a call with the first person](logCommandExample.png)`
+
 ---
 
 ### Exporting contacts : `export`
@@ -310,14 +332,16 @@ Exports the current or filtered contact list to a CSV file for use in Excel, Num
 * `.csv` is added automatically if not provided.
 * Prevents overwriting by adding numeric suffixes.
 * `--profile` controls how much data is included:
-    * `standard` *(default)*: Name, Email, Address, Phone, Role
-    * `full`: Name, Email, Address, Phone, Role, Cadence, Interactions
+  * `standard` *(default)*: Name, Email, Address, Phone, Role
+  * `full`: Name, Email, Address, Phone, Role, Cadence, Interactions
 * Exports only the currently displayed list (respects filters).
 
 **Examples:**
 * `export` → timestamped CSV using standard profile
 * `export team.csv` → saves as `data/exports/team.csv`
 * `export submission --profile full` → exports all columns
+
+![Exported contacts to mycontacts.csv](exportCommandExample.png)
 
 ---
 
@@ -342,12 +366,7 @@ Duplicate entries (based on `Person#equals`) are skipped automatically.
 * `import ./data/exports/team_oct.csv`
 * `import /Users/me/Downloads/mesh_contacts.csv`
 
-* Shown in chronological order (most recent last).
-* Persists through different sessions
-* Invalid commands are not recorded
-* Navigate directly using keyboard:
-    * <kbd>↑</kbd> — previous command
-    * <kbd>↓</kbd> — next command
+![Imported contacts from mycontacts.csv](importCommandExample.png)
 
 ---
 
@@ -364,13 +383,7 @@ Displays a summary of how many contacts belong to each tag in the address book.
 * If no tags exist, shows: `No tags found on any contact.`
 * Useful for understanding your contact composition (e.g., how many clients, investors, or friends you have).
 
-**Example:**
-```
-Tag stats:
-client: 4
-investor: 3
-vip: 1
-```
+![](statsCommandExample.png)
 
 ---
 
@@ -390,8 +403,9 @@ This command helps you prioritise which contacts to reach out to next.
 
 > 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
-<div markdown="span" class="alert alert-primary">:bulb:
-**Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
+> 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
+
+![](sortFollowUpCommandExample.png)
 
 ---
 
@@ -407,8 +421,8 @@ Press <kbd>↑</kbd> and <kbd>↓</kbd> to navigate command history.
 * Persists through different sessions
 * Invalid commands are not recorded
 * Navigate directly using keyboard:
-    * <kbd>↑</kbd> — previous command
-    * <kbd>↓</kbd> — next command
+  * <kbd>↑</kbd> — previous command
+  * <kbd>↓</kbd> — next command
 
 ---
 
@@ -453,7 +467,7 @@ MeshCRM data are saved automatically to the hard disk after every command that c
 
 ### Editing the data file
 
-Data are stored as a JSON file: `[JAR file location]/data/meshcrm.json`.
+Data are stored as a JSON file: `[JAR file location]/data/addressbook.json`.
 
 > ⚠️ **Warning:** If the file format becomes invalid, MeshCRM will start with an empty data file on the next run. Always back up before editing manually.
 
@@ -473,7 +487,7 @@ Some rows might be skipped if they are incomplete or repeated.
 Check that each row has a **name, phone number, email, and address**.
 
 ### ❓ How do I start fresh with new sample data?
-Delete or rename the `meshcrm.json` file in the `data` folder, then restart MeshCRM.  
+Delete or rename the `addressbook.json` file in the `data` folder, then restart MeshCRM.  
 It will automatically create a new one with sample contacts.
 
 --------------------------------------------------------------------------------------------------------------------
