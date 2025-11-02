@@ -1,0 +1,66 @@
+@startuml
+' Keep text readable on GitHub pages
+skinparam defaultFontSize 14
+title ExportContactListCommand sequence (profile = FULL)
+
+actor User
+participant Ui
+participant LogicManager
+participant AddressBookParser as Parser
+participant ExportContactListCommand as ExportCmd
+participant Model
+participant "ExportSchemas\n(ColumnSpec)" as Schemas
+participant "CsvUtil" as CsvUtil
+participant "FileWriter\n(java.io)" as FileWriter
+
+== Trigger ==
+User -> Ui: types "export something.csv --profile full"
+Ui -> LogicManager: execute("export something.csv --profile full")
+
+== Parse ==
+LogicManager -> Parser: parseCommand(...)
+Parser --> ExportCmd: new ExportContactListCommand(filename="something.csv", profile=FULL)
+
+== Execute ==
+LogicManager -> ExportCmd: execute(model)
+
+alt empty filtered list
+    ExportCmd -> Model: getFilteredPersonList()
+    Model --> ExportCmd: []
+    ExportCmd --> LogicManager: CommandResult("No contacts to export. The current list is empty.")
+    LogicManager --> Ui: show result
+    return
+end
+
+ExportCmd -> Model: getFilteredPersonList()
+Model --> ExportCmd: List<Person>
+
+' choose schema for FULL
+ExportCmd -> Schemas: selectSchema(FULL)
+Schemas --> ExportCmd: List<ColumnSpec<PersonReadOnly>>
+
+' ensure export directory, pick unique file, write CSV
+ExportCmd -> ExportCmd: determineFilename()
+ExportCmd -> ExportCmd: getUniqueFile(exportDir, chosenName)
+ExportCmd -> FileWriter: new FileWriter(file)
+activate FileWriter
+ExportCmd -> CsvUtil: writeHeader(headers from ColumnSpec, writer)
+loop for each Person
+    ExportCmd -> CsvUtil: writeRow(cells from ColumnSpec extractors, writer)
+end
+FileWriter --> ExportCmd: close()
+deactivate FileWriter
+
+ExportCmd --> LogicManager: CommandResult(\n  String.format(MESSAGE_SUCCESS, count, path)\n)
+LogicManager --> Ui: show success banner/toast
+
+== Variants ==
+alt filename omitted (user typed "export --profile full")
+  Parser --> ExportCmd: new(..., filename=null, profile=FULL)
+  ExportCmd -> ExportCmd: determineFilename() => timestamped "contacts_YYYY-MM-DD_HH-mm-ss.csv"
+end
+
+opt file exists collision
+  ExportCmd -> ExportCmd: getUniqueFile(...) => "something_1.csv"
+end
+@enduml
