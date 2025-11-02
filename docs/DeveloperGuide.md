@@ -8,6 +8,9 @@ title: Developer Guide
 
 --------------------------------------------------------------------------------------------------------------------
 
+This guide helps new developers understand how MeshCRM works inside.  
+It explains the main design ideas and how each part connects together.
+
 ## Acknowledgements
 
 MeshCRM is adapted from [SE-EDU AddressBook-Level3 (AB3)](https://github.com/se-edu/addressbook-level3).
