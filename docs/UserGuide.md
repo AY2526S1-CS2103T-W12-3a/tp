@@ -103,9 +103,13 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 
 ### Viewing help : `help`
 
-Display a message showing how to access the help page.
+Opens a new window displaying the user guide link and quick-start commands.
+The help window includes:
+* A clickable link to the User Guide
+* A Copy URL button to copy the user guide link
+* A Quick Start section showing example commands
 
-![help message](images/helpMessageNew.png)
+![help message](images/helpMessageNewest.png)
 
 **Format:** `help`
 
