@@ -9,23 +9,44 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Role {
 
-    public static final String MESSAGE_CONSTRAINTS = "Role should be one of the following: "
-            + "Investor, Partner, Customer, or Lead (case-insensitive).";
+    public static final String MESSAGE_CONSTRAINTS = "Role should be one of the following: \n"
+            + "Investor, Partner, Customer, or Lead (case-insensitive).\n"
+            + "You can also use the numbers 1, 2, 3, 4 as shortcuts:\n"
+            + "1 -> Investor\n"
+            + "2 -> Partner\n"
+            + "3 -> Customer\n"
+            + "4 -> Lead";
 
     // Accepts only the 4 valid roles, case-insensitive
     private static final String VALIDATION_REGEX = "(?i)investor|partner|customer|lead";
+    private static final String[] ROLE_SHORTCUTS = {"Investor", "Partner", "Customer", "Lead"};
 
     public final String value;
 
     /**
      * Constructs a {@code Role}.
      *
-     * @param role A valid role string.
+     * @param role A valid role string or numeric shortcut.
      */
     public Role(String role) {
         requireNonNull(role);
-        checkArgument(isValidRole(role), MESSAGE_CONSTRAINTS);
-        value = capitalize(role.trim().toLowerCase());
+        String normalizedRole = normalizeRole(role);
+        checkArgument(isValidRole(normalizedRole), MESSAGE_CONSTRAINTS);
+        value = capitalize(normalizedRole.trim().toLowerCase());
+    }
+
+    /**
+     * Converts numeric shortcuts to full role names.
+     */
+    public static String normalizeRole(String input) {
+        input = input.trim();
+        switch (input) {
+            case "1": return "Investor";
+            case "2": return "Partner";
+            case "3": return "Customer";
+            case "4": return "Lead";
+            default: return input;
+        }
     }
 
     /**
