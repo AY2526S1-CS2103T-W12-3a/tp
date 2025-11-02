@@ -27,8 +27,8 @@ public class SampleDataUtil {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new Address("Blk 30 Geylang Street 29, #06-40"), getTagSet("friends"),
-                new Role("Investor"), new Cadence(6), List.of
-                    (new Interaction(InteractionType.CALL, "Quick sync", Instant.parse("2025-02-02T02:02:02Z")))),
+                new Role("Investor"), new Cadence(6), List.of(new Interaction(
+                        InteractionType.CALL, "Quick sync", Instant.parse("2025-02-02T02:02:02Z")))),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                 new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
                 getTagSet("colleagues", "friends"), new Role("Partner")),
@@ -37,7 +37,7 @@ public class SampleDataUtil {
                 new Role("Customer")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                 new Address("Blk 436 Serangoon Gardens Street 26, #16-43"), getTagSet("family"),
-                new Role("Investor"), new Cadence (7)),
+                new Role("Investor"), new Cadence(7)),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                 new Address("Blk 47 Tampines Street 20, #17-35"), getTagSet("classmates"),
                 new Role("Lead")),
