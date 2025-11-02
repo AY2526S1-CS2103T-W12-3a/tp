@@ -149,7 +149,7 @@ The `Model` stores:
     - `Role role` (required, validated set),
     - `Cadence cadence` (optional; positive days),
     - immutable `List<Interaction>` (timestamped records).
-- `Interaction` = `(InteractionType type, String details, Instant timestamp)`.  
+- `Interaction` = `(InteractionType type, String details, Instant timestamp)`.
   Rendered as `yyyy-MM-dd HH:mm` in the interactions list.
 - `InteractionType` is an enum (e.g., `CALL`, `EMAIL`, `MEETING`, `NOTE`).
 - Convenience methods: e.g., `getLastInteractionOrNull()` and safe, immutable accessors.
@@ -181,7 +181,7 @@ This section highlights noteworthy MeshCRM implementations. (Diagrams remain as 
 
 ### `log` — Append an interaction to a contact
 
-**Command format**: `log INDEX i/TYPE d/DETAILS`  
+**Command format**: `log INDEX i/TYPE d/DETAILS`
 Examples:
 
 - `log 1 i/email d/Sent pricing deck`
@@ -398,78 +398,78 @@ Below are starting points for manual testing; testers should extend with explora
 
 1. **Initial launch**
     1. Place the jar in an empty folder.
-    2. Double-click the jar.  
+    2. Double-click the jar.
        **Expected**: GUI shows sample contacts; window size may not be optimal.
 
 2. **Saving window preferences**
     1. Resize/move the window and close it.
-    2. Relaunch the jar.  
+    2. Relaunch the jar.
        **Expected**: Last window size and position are retained.
 
 ### Listing contacts
 
 1. **List resets filters**
-    - Run: `list gibberish`  
+    - Run: `list gibberish`
       **Expected**: Extra text ignored; full list shown.
 
 ### Logging interactions
 
 1. **Happy path**
     - Prereq: `list` to ensure multiple contacts visible.
-    - Run: `log 1 i/email d/Sent pricing deck`  
+    - Run: `log 1 i/email d/Sent pricing deck`
       **Expected**: Success message; `PersonDetailsPanel` shows a new interaction with timestamp and details.
 
 2. **Invalid index**
-    - Run: `log 0 i/call d/Check-in`  
+    - Run: `log 0 i/call d/Check-in`
       **Expected**: Error about invalid index; no model changes.
 
 3. **Invalid/missing type**
-    - Run: `log 1 i/coffee d/Catch-up`  
+    - Run: `log 1 i/coffee d/Catch-up`
       **Expected**: Error listing valid interaction types.
 
 4. **Empty details**
-    - Run: `log 1 i/meeting d/`  
+    - Run: `log 1 i/meeting d/`
       **Expected**: Error that details must not be empty.
 
 ### Sorting by follow-up priority
 
 1. **Sort with interactions**
     - Create two contacts and log an interaction on only one.
-    - Run: `sortfollowup`  
+    - Run: `sortfollowup`
       **Expected**: Contact with the **more recent** last interaction appears earlier (current behavior).
 
 2. **Contacts without interactions**
     - Ensure at least one contact has no interactions.
-    - Run: `sortfollowup`  
+    - Run: `sortfollowup`
       **Expected**: Contacts without interactions are placed last.
 
 ### Exporting to CSV
 
 1. **Basic export**
-    - Run: `export mylist.csv`  
+    - Run: `export mylist.csv`
       **Expected**: `data/exports/mylist.csv` exists; columns `name,phone,email,address,tags`.
 
 2. **Filtered export**
-    - Filter the list (e.g., run `find`); then `export filtered.csv`.  
+    - Filter the list (e.g., run `find`); then `export filtered.csv`.
       **Expected**: Only currently displayed contacts are exported.
 
 3. **Edge fields**
-    - Use contacts with commas/newlines in fields.  
+    - Use contacts with commas/newlines in fields.
       **Expected**: CSV quotes are correct; file opens cleanly in spreadsheet apps.
 
 ### Importing from CSV
 
 1. **Basic import**
     - Prepare a CSV with header `name,phone,email,address,tags`.
-    - Run: `import data/exports/mylist.csv`  
+    - Run: `import data/exports/mylist.csv`
       **Expected**: Contacts added; duplicates skipped; summary shown.
 
 2. **File not found**
-    - Run: `import does/not/exist.csv`  
+    - Run: `import does/not/exist.csv`
       **Expected**: Clear error with the path.
 
 3. **Malformed lines**
-    - Intentionally break a line (e.g., missing name).  
+    - Intentionally break a line (e.g., missing name).
       **Expected**: Line skipped; summary reports malformed count.
 
 ### Saving data
@@ -477,6 +477,6 @@ Below are starting points for manual testing; testers should extend with explora
 1. **Missing/corrupt JSON**
     - Close the app.
     - Temporarily remove or corrupt the JSON in `data/`.
-    - Relaunch.  
+    - Relaunch.
       **Expected**: App recreates storage or reports recovery guidance without crashing.
 

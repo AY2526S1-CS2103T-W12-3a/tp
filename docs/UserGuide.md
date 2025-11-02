@@ -213,7 +213,7 @@ Press <kbd>↑</kbd> and <kbd>↓</kbd> to navigate command history.
 * Navigate directly using keyboard:
     * <kbd>↑</kbd> — previous command
     * <kbd>↓</kbd> — next command
-  
+
 ---
 
 ### Undoing latest command : `undo`
@@ -235,7 +235,7 @@ Calculated from their last interaction date and cadence (in days).
 
 **Format:** `sortfollowup`
 
-This command helps you prioritise which contacts to reach out to next.  
+This command helps you prioritise which contacts to reach out to next.
 * The next contact date = last interaction date + cadence days.
 * Contacts with earlier next contact dates appear first.
 * Contacts with no cadence and/or no recorded interactions appear last.
@@ -244,7 +244,7 @@ This command helps you prioritise which contacts to reach out to next.
 
 **Expected output:** `Sorted all persons by next follow-up.`
 
-<div markdown="span" class="alert alert-primary">:bulb: 
+<div markdown="span" class="alert alert-primary">:bulb:
 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
 ---
