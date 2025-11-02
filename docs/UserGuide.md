@@ -342,6 +342,13 @@ Duplicate entries (based on `Person#equals`) are skipped automatically.
 * `import ./data/exports/team_oct.csv`
 * `import /Users/me/Downloads/mesh_contacts.csv`
 
+* Shown in chronological order (most recent last).
+* Persists through different sessions
+* Invalid commands are not recorded
+* Navigate directly using keyboard:
+    * <kbd>↑</kbd> — previous command
+    * <kbd>↓</kbd> — next command
+
 ---
 
 ### Viewing tag statistics : `stats`
@@ -374,7 +381,7 @@ Calculated from their last interaction date and cadence (in days).
 
 **Format:** `sortfollowup`
 
-**Details:**
+This command helps you prioritise which contacts to reach out to next.
 * The next contact date = last interaction date + cadence days.
 * Contacts with earlier next contact dates appear first.
 * Contacts with no cadence and/or no recorded interactions appear last.
@@ -383,7 +390,8 @@ Calculated from their last interaction date and cadence (in days).
 
 > 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
-> 💡 **Tip:** Combine `log` and `sortfollowup` to instantly see who to contact next after each interaction.
+<div markdown="span" class="alert alert-primary">:bulb:
+**Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
 ---
 
