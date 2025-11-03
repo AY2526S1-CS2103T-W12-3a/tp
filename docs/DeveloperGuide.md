@@ -510,3 +510,26 @@ Below are starting points for manual testing; testers should extend with explora
     - Relaunch.
       **Expected**: App recreates storage or reports recovery guidance without crashing.
 
+--------------------------------------------------------------------------------------------------------------------
+
+## Appendix: Planned Enhancements
+
+**Team size:** 5
+
+---
+
+### 1. Improve Tag Management: Append Tags to Existing Contacts
+
+* **Problem:** Currently, adding new tags to an existing contact requires the user to retype all existing tags when using the `edit` command. This process is inconvenient and error-prone.
+* **Planned Enhancement:** We will introduce a new prefix (e.g., `+t/`) for the `edit` command. This will allow users to append new tags to a contact without affecting the existing ones.
+* **Example:**
+    * **Current:** `edit 1 t/friend t/client` (requires retyping all tags)
+    * **Future:** `edit 1 +t/vip` (adds the `vip` tag while keeping `friend` and `client`)
+
+### 2. Expand Search Capability: Find Beyond Name Field
+
+* **Problem:** The current `find` command only searches the contact's name field. This limits the user's ability to locate contacts by other important information, such as their email, role, or associated tags.
+* **Planned Enhancement:** The `find` command will be extended to optionally search all relevant fields, including email, phone, role, and tags, in addition to the name.
+* **Example:**
+    * **Current:** `find amy` (finds contacts *only* with "amy" in the name)
+    * **Future:** `find amy` (finds contacts with "amy" in the name, email, role, or tag)
