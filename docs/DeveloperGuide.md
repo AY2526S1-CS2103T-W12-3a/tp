@@ -247,8 +247,8 @@ Examples:
 
 **Command format**: <kbd>↑</kbd> and <kbd>↓</kbd> keys
 
-- <kbd>↑</kbd> toggles to later commands
-- <kbd>↓</kbd> toggles to earlier commands
+- <kbd>↓</kbd> toggles to later commands
+- <kbd>↑</kbd> toggles to earlier commands
 
 **Rationale**:
 
