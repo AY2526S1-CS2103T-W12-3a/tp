@@ -16,5 +16,5 @@ opt exists
   Cmd -> Cmd: chosen = addSuffix("_1", "_2", ...)
 end
 
-Cmd --> Cmd: targetPath = data/exports/chosen
+Cmd -> Cmd: targetPath = data/exports/chosen
 @enduml
