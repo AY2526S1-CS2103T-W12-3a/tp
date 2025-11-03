@@ -26,6 +26,14 @@ Follow AB3’s **SettingUp** instructions (JDK 17, JavaFX, Gradle) and this repo
 Run `gradlew clean test` to verify the build; `gradlew run` launches the app.
 On first run, the app creates the `data/` folder and an initial JSON storage file.
 
+### Development conventions
+
+All new commands, parsers, and models should follow the AB3 class structure.  
+Each feature should include corresponding unit tests in `src/test/java`.  
+Follow the SE-EDU Checkstyle rules before committing.  
+Use clear commit messages following the conventional format (`type: summary`).  
+All pull requests must pass CI before merge.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Design**
