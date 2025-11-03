@@ -167,7 +167,7 @@ Adds a new contact to the address book. Does not allow duplicate names.
 * add n/Sophia Lee p/90001111 e/sophia.lee@gmail.com a/18 Bishan Street 12 t/lead r/Partner c/10
 * add n/Bryan Ong p/92223333 e/bryan.ong@xyz.com a/450 Jurong West St 42 t/vip t/referral r/Investor
 
-![Added John Tan as a contact](../images/addCommandExample.png)
+![Added John Tan as a contact](../src/main/resources/images/addCommandExample.png)
 
 > ⚠️ **Warning:** Duplicate names are not allowed.  
 > If a contact already exists with the same name, the command will be rejected.
@@ -214,7 +214,7 @@ Edits an existing contact’s details by index.
 * `edit 3 a/123 Clementi Ave 3 r/Investor`
 * `edit 4 n/Alex Tan p/81234567 t/Friend t/Colleague c/14`
 
-![Edited the first person's role to Customer and cadence to 4 days](../images/editCommandExample.png)
+![Edited the first person's role to Customer and cadence to 4 days](../src/main/resources/images/editCommandExample.png)
 
 ---
 
@@ -241,7 +241,7 @@ Shows the full contact list.
 * `l`
   Displays the complete list of contacts (abbreviation).
 
-![Displays list of contacts](../images/listCommandExample.png)
+![Displays list of contacts](../src/main/resources/images/listCommandExample.png)
 ---
 
 ### Locating persons by name : `find`
@@ -263,9 +263,9 @@ Finds persons whose names contain any of the given keyword(s).
 
 **Examples:**
 * `find irfan`
-  ![Result for find irfan](../images/findCommandExample1.png)
+  ![Result for find irfan](../src/main/resources/images/findCommandExample1.png)
 * `find li`
-  ![Result for find li](../images/findCommandExample2.png)
+  ![Result for find li](../src/main/resources/images/findCommandExample2.png)
 ---
 
 ### Clearing all entries : `clear`
@@ -274,7 +274,7 @@ Clears all entries from the address book.
 
 **Format:** `clear`
 
-![](../images/clearCommandExample.png)
+![](../src/main/resources/images/clearCommandExample.png)
 ---
 
 ### Logging an interaction : `log`
@@ -316,7 +316,7 @@ Adds an interaction (call / email / meeting / note) to a person’s history.
   Adds an **email** interaction for the 1st person
   *(email replaces call because the last `i/` wins).*
 
-  ![Logged a call with the first person](../images/logCommandExample.png)`
+  ![Logged a call with the first person](../src/main/resources/images/logCommandExample.png)`
 
 ---
 
@@ -341,7 +341,7 @@ Exports the current or filtered contact list to a CSV file for use in Excel, Num
 * `export team.csv` → saves as `data/exports/team.csv`
 * `export submission --profile full` → exports all columns
 
-![Exported contacts to mycontacts.csv](../images/exportCommandExample.png)
+![Exported contacts to mycontacts.csv](../src/main/resources/images/exportCommandExample.png)
 
 ---
 
@@ -366,7 +366,7 @@ Duplicate entries (based on `Person#equals`) are skipped automatically.
 * `import ./data/exports/team_oct.csv`
 * `import /Users/me/Downloads/mesh_contacts.csv`
 
-![Imported contacts from mycontacts.csv](../images/importCommandExample.png)
+![Imported contacts from mycontacts.csv](../src/main/resources/images/importCommandExample.png)
 
 ---
 
@@ -383,7 +383,7 @@ Displays a summary of how many contacts belong to each tag in the address book.
 * If no tags exist, shows: `No tags found on any contact.`
 * Useful for understanding your contact composition (e.g., how many clients, investors, or friends you have).
 
-![](../images/statsCommandExample.png)
+![](../src/main/resources/images/statsCommandExample.png)
 
 ---
 
@@ -405,7 +405,7 @@ This command helps you prioritise which contacts to reach out to next.
 
 > 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
-![](../images/sortFollowUpCommandExample.png)
+![](../src/main/resources/images/sortFollowUpCommandExample.png)
 
 ---
 
