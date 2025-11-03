@@ -406,6 +406,7 @@ Sorts all persons in the address book by their next follow-up date.
 Calculated from their last interaction date and cadence (in days).
 
 **Format:** `sortfollowup`
+**Alias:** `sfu`
 
 This command helps you prioritise which contacts to reach out to next.
 * The next contact date = last interaction date + cadence days.
@@ -414,7 +415,7 @@ This command helps you prioritise which contacts to reach out to next.
 * Sorting affects only the displayed list — your data remains unchanged.
 * Useful for tracking regular check-ins or follow-ups with clients.
 
-> 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
+> 💡 **Tip:** Use `sortfollowup` (or the shorter `sfu`) after logging new interactions to quickly see who you’ve recently contacted. </div>
 
 > 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
 
