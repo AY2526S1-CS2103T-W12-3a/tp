@@ -406,6 +406,17 @@ otherwise.)
 * **Interaction**: a timestamped activity (call, email, meeting, note) with free-text details.
 * **Next follow-up**: derived date from `last interaction + cadence`.
 * **Filtered list**: the subset of contacts currently displayed in the UI.
+* **MSS (Main Success Scenario)**:The normal, expected sequence of steps for a use case without errors.
+* **CSV (Comma-Separated Values)**: A plain text format for tabular data used for import/export.
+* **JSON (JavaScript Object Notation)**: A structured text format used for persistent data storage.
+* **UI (User Interface)**: The visible part of the application users interact with (JavaFX in this project).
+* **CLI (Command-Line Interface)**: The text-based input system where users type commands.
+* **Tag**: A label assigned to contacts for grouping or filtering purposes.
+* **Command**: A user-entered instruction (e.g., log, find, sortfollowup) that triggers logic execution.
+* **Parser**: Component that interprets user input and constructs the corresponding command object.
+* **Model**: In-memory representation of user data (contacts, interactions, preferences).
+* **Storage**: Handles reading and writing of data (JSON/CSV) to the filesystem.
+* **Undo/Redo Stack**:Mechanism that stores previous versions of the model for history navigation.
 
 --------------------------------------------------------------------------------------------------------------------
 
