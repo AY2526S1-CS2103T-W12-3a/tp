@@ -232,19 +232,59 @@ Examples:
 - Comparator isolated under model logic so UI stays passive.
 - Clear tie-breaks make ordering deterministic.
 
-### CSV `export` / `import`
-
+### CSV `export`
+![Activity – Export](images/export-activity.png)
 **Export format**: `export [filename].csv`
 
-- Writes the **currently displayed list** to `data/exports/`.
-- Columns (current): `name,phone,email,address,tags` (tags joined by `;`).
-- Proper CSV quoting for commas/newlines.
+**Command**  
+`export [FILENAME].csv [--profile standard|full]`
+- **Output folder:** `data/exports/` (auto-created)
+- **Profiles:**
+    - `standard` (default): Name, Phone, Email, Address, Tags
+    - `full`: + Role, Cadence, Interactions
+- **Filename rules:**
+    - If **omitted** → timestamped (e.g., `contacts_YYYY-MM-DD_HH-mm-ss.csv`)
+    - If **exists** → numeric suffix (`_1`, `_2`, …)
 
-**Import format**: `import PATH/TO/file.csv`
+**Behavior**
+- Exports the **currently displayed list** (respects active filters).
+- Proper CSV quoting for commas, quotes, and newlines; UTF-8; `;` joins multiple tags inside one cell.
+- **Edge cases:** empty list → “No contacts to export”; invalid path/permissions → clear error.
 
-- Reads the same columns, constructs `Person` objects,
-- skips duplicates (as defined by `Person#equals`),
-- continues on malformed lines with a summary to the user.
+**Pseudocode**
+- if filtered.isEmpty(): return "No contacts to export"
+- name = givenName or timestamp()
+- path = uniquePath("data/exports/", name)
+- cols = (profile == FULL ? FULL_COLUMNS : STD_COLUMNS)
+- writeHeader(cols); for p in filtered: writeRow(extract(p, cols))
+- return "Exported N contacts to " + path
+
+**Quick manual tests**
+- Basic: `export my.csv` → file at `data/exports/my.csv` with expected columns
+- Filtered view → only filtered rows exported
+- Omit filename → timestamped file
+- Collision → `_1` suffix
+- Fields with commas/newlines open correctly in spreadsheet apps
+
+### CSV `import`
+![Activity – Import](images/import-activity.png)
+**Command**  
+`import PATH/TO/file.csv`
+
+**Behavior**
+- **Header-based** parsing (tolerant to column order); delimiter/newlines auto-detected when possible.
+- Per row: parse → validate → build `Person`; **duplicates** (per `Person#equals`) are **skipped**.
+- Continues on malformed lines; shows a **summary**: imported N, skipped (duplicates) M, malformed W.
+
+**Edge cases**
+- File not found / unreadable → clear error with given path.
+- Invalid/missing required header → error and abort.
+- Non-UTF-8 or mixed quoting → affected lines counted as malformed.
+
+**Quick manual tests**
+- Basic import with valid header → contacts added; summary shown
+- Missing file → error message with path
+- CSV with a few malformed and duplicate rows → imports valid rows; summary reports counts
 
 **Rationale**:
 
