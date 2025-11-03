@@ -245,6 +245,7 @@ Edits an existing contact’s details by index.
 <p align="left">
 <img src="../src/main/resources/images/editCommandExample.png" alt="Edited the first person's role to Customer and cadence to 4 days" width="600"/>
 </p>
+
 ---
 
 ### Listing all persons : `list`
@@ -364,23 +365,29 @@ Adds an interaction (call / email / meeting / note) to a person’s history.
 ### Exporting contacts : `export`
 
 Exports the current or filtered contact list to a CSV file for use in Excel, Numbers, or Google Sheets.
+(CSV-only for now. “Interactions” exports as a count, not the details.)
 
 **Format:**
 `export [FILENAME] [--profile standard|full]`
 
 **Details:**
-* Saved to `data/exports/`.
-* `.csv` is added automatically if not provided.
+* Saved to data/exports/.
+* .csv is added automatically if not provided.
 * Prevents overwriting by adding numeric suffixes.
-* `--profile` controls how much data is included:
-    * `standard` *(default)*: Name, Email, Address, Phone, Role
-    * `full`: Name, Email, Address, Phone, Role, Cadence, Interactions
 * Exports only the currently displayed list (respects filters).
+* Columns exported (CSV): Name, Email, Address, Phone, Role, Tags, Cadence, Interactions
+* In standard profile, only the subset Name, Email, Address, Phone, Role is included; in full, all columns are included.
+* --profile controls how much data is included:
+    * standard (default): Name, Email, Address, Phone, Role
+    * Note: All of these fields must be non-empty for each exported contact.
+    * full: Name, Email, Address, Phone, Role, Tags, Cadence, Interactions
 
 **Examples:**
 * `export` → timestamped CSV using standard profile
 * `export team.csv` → saves as `data/exports/team.csv`
 * `export submission --profile full` → exports all columns
+* `export team.csv --profile standard` → exports in standard form
+* `export team --profile standard` → adds .csv to the file name
 
 <p align="left">
 <img src="../src/main/resources/images/exportCommandExample.png" alt="Exported contacts to mycontacts.csv" width="600"/>
@@ -398,16 +405,23 @@ Duplicate entries (based on `Person#equals`) are skipped automatically.
 
 **Details:**
 * Reads data from a CSV at the given path (relative or absolute).
-* Required columns: `Name, Role, Address, Phone, Email`
-* Optional columns: `Tags, Cadence, Interactions`
+* Required columns (case-insensitive): Name, Email, Address, Phone, Role
+* Optional columns: Tags, Cadence, Interactions (Interactions are not imported for now; the column is ignored.)
 * Accepts comma, semicolon, or tab delimiters.
 * Unknown or missing columns are ignored.
-* Malformed or duplicate rows are skipped safely.
+* Malformed rows (e.g., missing any required field) are skipped safely.
+* Duplicates (same person per Person#equals) are skipped.
 
 **Examples:**
 * `import data/exports/contacts_backup.csv`
 * `import ./data/exports/team_oct.csv`
 * `import /Users/me/Downloads/mesh_contacts.csv`
+
+
+**Notes**
+* If the file path is empty or the file doesn’t exist, the command fails.
+* If the CSV has no valid contacts after skipping malformed/duplicate rows, the command fails with a message indicating no valid contacts were found.
+* Header names are case-insensitive and column order doesn’t matter.
 
 <p align="left">
 <img src="../src/main/resources/images/importCommandExample.png" alt="Imported contacts from mycontacts.csv" width="600"/>
@@ -448,9 +462,7 @@ This command helps you prioritise which contacts to reach out to next.
 * Useful for tracking regular check-ins or follow-ups with clients.
 
 > 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
-
-> 💡 **Tip:** Use `sortfollowup` after logging new interactions to quickly see who you’ve recently contacted. </div>
-    
+ 
 <p align="left">
 <img src="../src/main/resources/images/sortFollowUpCommandExample.png" alt="sortfollowup" width="600"/>
 </p>
@@ -548,6 +560,7 @@ they can their full names instead to distinguish between them.
 
 1. **Multiple screens:** The GUI may open off-screen if the app was last closed on a secondary display. Delete `preferences.json` to reset window position.
 2. **Minimized Help Window:** If minimized, re-running `help` will not open a new window. Restore the existing one manually.
+3. **Undo refreshes details panel:** Entering undo while viewing a details panel will cause the details panel to default to the empty details panel. The user will have to click on the person to review his/her details.
 
 --------------------------------------------------------------------------------------------------------------------
 
