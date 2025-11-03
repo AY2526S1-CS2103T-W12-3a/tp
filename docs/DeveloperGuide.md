@@ -135,7 +135,7 @@ MeshCRM adds parsers/commands for:
 
 Other parsing helpers follow AB3 conventions.
 
-<img src="images/ParserClasses.png" width="600"/>
+<img src="images/ParserClassesNew.png" width="600"/>
 
 ### Model component
 
