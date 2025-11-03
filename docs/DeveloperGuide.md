@@ -306,15 +306,28 @@ history of interactions.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely) - `*`
 
-| Priority | As a …​         | I want to …​                                    | So that I can…​                                   |
-|---------:|------------------|-------------------------------------------------|---------------------------------------------------|
-| `* * *`  | salesperson      | **log** a call/email/meeting/note               | remember what happened and when                   |
-| `* * *`  | salesperson      | **sort** by follow-up priority (`sortfollowup`) | decide who to contact next                        |
-| `* * *`  | user             | **import** contacts from CSV                    | bootstrap my CRM from existing lists              |
-| `* * *`  | user             | **export** contacts to CSV                      | back up/share my data                             |
-| `* *`    | user             | view **Role** and **Cadence** in details        | see context at a glance                           |
-| `* *`    | user             | use `list` to reset filters                     | return to a full view quickly                     |
-| `*`      | user             | hide private contact details                    | reduce accidental disclosure                      |
+| Priority | As a …​ | I want to …​ | So that I can…​ |
+|---:|---|---|---|
+| `* * *` | user | **add** a new contact | store their information in my list |
+| `* * *` | user | **update** (edit) a contact's details | keep their information accurate |
+| `* * *` | user | **delete** a contact | remove irrelevant or outdated entries |
+| `* * *` | user | **list** all my contacts | see everyone in my address book |
+| `* * *` | user | **view** a contact's details (phone, email, address) | get the information I need to reach them |
+| `* * *` | user | **find** a contact by their partial name | locate them quickly without typing their full name |
+| `* * *` | user | **add** a role to my contact | specify their professional position |
+| `* * *` | salesperson | **log** a call/email/meeting/note | remember what happened and when |
+| `* * *` | salesperson | **view** the history of interactions with a contact | have full context before my next communication |
+| `* * *` | salesperson | **sort** by follow-up priority (`sortfollowup`) | decide who to contact next |
+| `* * *` | salesperson | **view** a predicted next follow-up date | be reminded of when to reach out |
+| `* * *` | user | **import** contacts from CSV | bootstrap my CRM from existing lists |
+| `* * *` | user | **export** contacts to CSV | back up/share my data |
+| `* *` | user | **assign** multiple tags to a contact | categorize and filter them in flexible ways |
+| `* *` | salesperson | **view** statistics based on tags | understand the composition of my contact list |
+| `* *` | user | **open** the help window easily | get assistance when I'm stuck |
+| `* *` | user | view **Role** and **Cadence** in details | see context at a glance |
+| `* *` | user | use `list` to reset filters | return to a full view quickly |
+| `*` | user | **add** a role using a shortcut | perform common actions faster |
+| `*` | user | hide private contact details | reduce accidental disclosure |
 
 ### Use cases
 
