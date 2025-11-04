@@ -1,14 +1,9 @@
 package seedu.address.ui;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -33,9 +28,6 @@ public class HelpWindow extends UiPart<Stage> {
     @FXML
     private Label helpMessage;
 
-    @FXML
-    private Hyperlink helpLink;
-
     /**
      * Creates a new HelpWindow.
      *
@@ -43,7 +35,7 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public HelpWindow(Stage root) {
         super(FXML, root);
-        helpLink.setText(USERGUIDE_URL);
+        helpMessage.setText(HELP_MESSAGE);
     }
 
     /**
@@ -107,14 +99,5 @@ public class HelpWindow extends UiPart<Stage> {
         final ClipboardContent url = new ClipboardContent();
         url.putString(USERGUIDE_URL);
         clipboard.setContent(url);
-    }
-
-    @FXML
-    private void openLink() {
-        try {
-            Desktop.getDesktop().browse(new URI(USERGUIDE_URL));
-        } catch (IOException | URISyntaxException e) {
-            logger.warning("Failed to open link: " + e.getMessage());
-        }
     }
 }
