@@ -8,10 +8,47 @@ title: Developer Guide
 
 ## 1. Table of Contents
 
-{: .no_toc }
-
-* This page is auto-generated:
-  {:toc}
+- [2. Acknowledgements](#2-acknowledgements)
+- [3. Setting up & Getting Started](#3-setting-up--getting-started)
+    - [3.0 Conventions Used in This Document](#30-conventions-used-in-this-document)
+    - [3.1 Development Conventions](#31-development-conventions)
+- [4. Design](#4-design)
+    - [4.1 Architecture](#41-architecture)
+    - [4.2 UI Component](#42-ui-component)
+    - [4.3 Logic Component](#43-logic-component)
+    - [4.4 Model Component](#44-model-component)
+        - [4.4.1 Field & Encoding Constraints](#441-field--encoding-constraints)
+    - [4.5 Storage Component](#45-storage-component)
+    - [4.6 Common Classes](#46-common-classes)
+- [5. Implementation](#5-implementation)
+    - [5.1 `log` — Append an Interaction to a Contact](#51-log--append-an-interaction-to-a-contact)
+        - [5.1.1 Design Considerations](#511-design-considerations)
+    - [5.2 `sortfollowup` — Sort by Follow-Up Priority](#52-sortfollowup--sort-by-follow-up-priority)
+        - [5.2.1 Design Considerations](#521-design-considerations)
+    - [5.3 CSV `export`](#53-csv-export)
+        - [5.3.1 Design Considerations](#531-design-considerations)
+    - [5.4 CSV `import`](#54-csv-import)
+        - [5.4.1 Design Considerations](#541-design-considerations)
+    - [5.5 Command History](#55-command-history)
+    - [5.6 Undo/Redo (AB3-proposed; unchanged)](#56-undoredo-ab3-proposed-unchanged)
+    - [5.7 Data Archiving (Proposed)](#57-data-archiving-proposed)
+- [6. Documentation, Logging, Testing, Configuration, DevOps](#6-documentation-logging-testing-configuration-devops)
+- [7. Appendix: Requirements](#7-appendix-requirements)
+    - [7.1 Product Scope](#71-product-scope)
+        - [7.1.1 Traceability (stories → use cases → features)](#711-traceability-stories--use-cases--features)
+    - [7.2 User Stories](#72-user-stories)
+    - [7.3 Use Cases](#73-use-cases)
+    - [7.4 Non-Functional Requirements](#74-non-functional-requirements)
+    - [7.5 Glossary](#75-glossary)
+- [8. Appendix: Instructions for Manual Testing](#8-appendix-instructions-for-manual-testing)
+    - [Launch and shutdown](#launch-and-shutdown)
+    - [Listing contacts](#listing-contacts)
+    - [Logging interactions](#logging-interactions)
+    - [Sorting by follow-up priority](#sorting-by-follow-up-priority)
+    - [Exporting to CSV](#exporting-to-csv)
+    - [Importing from CSV](#importing-from-csv)
+    - [Saving data](#saving-data)
+- [9. Appendix: Planned Enhancements](#9-appendix-planned-enhancements)
 
 --------------------------------------------------------------------------------------------------------------------
 
