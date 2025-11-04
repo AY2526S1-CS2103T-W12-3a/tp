@@ -127,6 +127,10 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines, as space characters surrounding line breaks may be omitted when copied over to the application.
+
+* **Character set support:** MeshCRM officially supports **ASCII characters** in inputs (names, tags, addresses, etc.).
+  Non-ASCII characters (e.g., emojis or non-Latin scripts) may not render consistently across systems and exported CSVs.
+
 </div>
 
 ---
@@ -181,6 +185,8 @@ Adds a new contact to the address book. Does not allow duplicate names.
 * CADENCE accepts a positive number of days (e.g., c/7 means follow up every 7 days).
 * ROLE should be one of the following: Investor, Partner, Customer or Lead (case-insensitive).
 * NAME field with consecutive white-spaces will be reduced to 1 white-space.
+* NAME must be alphanumeric and spaces only (letters and digits with spaces; no punctuation).
+* PHONE must contain digits only and be 3–17 digits long.
 
 **Examples:**
 * add n/John Tan p/91234567 e/johntan@gmail.com a/123 Clementi Ave 3 t/client r/Investor c/14
@@ -235,6 +241,8 @@ Edits an existing contact’s details by index.
 * When editing tags, existing tags will be replaced with the new ones.
 * To remove all tags, type `t/` without specifying any tags after it.
 * Tags are replaced, not appended. Use all desired tags in the same command.
+* NAME (if provided) must be alphanumeric with spaces only.
+* PHONE (if provided) must be digits only (3–17 digits).
 
 **Examples:**
 * `edit 1 p/91234567 e/johndoe@example.com`
@@ -276,6 +284,22 @@ Shows the full contact list.
 </p>
 
 ---
+
+### Keyboard navigation (contacts & interactions)
+
+Move quickly without touching the mouse:
+
+* **Contacts list**
+    * **Next contact:** <kbd>Ctrl</kbd> + <kbd>J</kbd>
+    * **Previous contact:** <kbd>Ctrl</kbd> + <kbd>K</kbd>
+
+* **Interactions list** (inside the right-side Details panel)
+    * **Next interaction:** <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd>
+    * **Previous interaction:** <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>
+
+> 💡 **Tip:** Use these together with `list`, `find`, and `log` to review a contact’s history and jump through
+interactions quickly.
+
 
 ### Locating persons by name : `find`
 
@@ -342,6 +366,8 @@ Adds an interaction (call / email / meeting / note) to a person’s history.
   `log 3 i/call d/A d/Left voicemail` will store **`d/Left voicemail`** as the details.
 * The command is **saved in command history** (you can use <kbd>↑</kbd> and <kbd>↓</kbd> to navigate through successful
   commands later).
+* Editing or deleting previously logged interactions is **not yet supported**. This is a **planned enhancement**. As a
+  temporary workaround, you can use `undo` immediately after a mistaken log.
 
 **Examples:**
 
