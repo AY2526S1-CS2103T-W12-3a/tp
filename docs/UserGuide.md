@@ -1,5 +1,3 @@
-# MeshCRM User Guide
-
 MeshCRM is made for **entrepreneurs managing customer relationships, discovery, and fundraising.**
 
 It is a desktop app for managing contacts, optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI).
