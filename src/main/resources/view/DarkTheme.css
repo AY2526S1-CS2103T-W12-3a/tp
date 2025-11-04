@@ -353,6 +353,4 @@
 
 .details-root { }
 .details-title { -fx-font-size: 16px; -fx-font-weight: bold; }
-.root { -mesh-fg: #c9d1d9; }
-.label { -fx-text-fill: -mesh-fg; }
-.muted { -fx-text-fill: derive(-mesh-fg, -40%); }
+.muted { -fx-text-fill: derive(-fx-text-fill, -40%); }

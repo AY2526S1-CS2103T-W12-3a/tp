@@ -57,26 +57,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
     }
 
     private void setupInteractionCells() {
-        interactionList.setCellFactory(lv -> new ListCell<Interaction>() {
-            private final Label lbl = new Label();
-
-            {
-                lbl.setWrapText(true);
-                lbl.maxWidthProperty().bind(lv.widthProperty().subtract(20));
-            }
-
+        interactionList.setCellFactory(list -> new ListCell<Interaction>() {
             @Override
             protected void updateItem(Interaction it, boolean empty) {
                 super.updateItem(it, empty);
                 if (empty || it == null) {
-                    setGraphic(null);
                     setText(null);
-                    return;
+                } else {
+                    // Interaction has getType(), getDetails(), getTimestamp()
+                    String ts = TS_FMT.format(it.getTimestamp().atZone(java.time.ZoneId.systemDefault()));
+                    setText(String.format("[%s] %s — %s", ts, it.getType(), it.getDetails()));
                 }
-                String ts = TS_FMT.format(it.getTimestamp().atZone(ZoneId.systemDefault()));
-                lbl.setText(String.format("[%s] %s — %s", ts, it.getType(), it.getDetails()));
-                setGraphic(lbl);
-                setText(null);
             }
         });
     }
@@ -134,37 +125,5 @@ public class PersonDetailsPanel extends UiPart<Region> {
         cadence.setText("-");
         nextFollowUp.setText("-");
         emptyHint.setVisible(true);
-    }
-
-    /**
-     * Selects the next interaction (or the first if none is selected) and scrolls it into view.
-     */
-    public void selectNextInteraction() {
-        var sm = interactionList.getSelectionModel();
-        int i = sm.getSelectedIndex();
-        if (i < 0 && !interactionList.getItems().isEmpty()) {
-            i = -1;
-        }
-        int j = Math.min(interactionList.getItems().size() - 1, i + 1);
-        if (j != i) {
-            sm.select(j);
-            interactionList.scrollTo(j);
-        }
-    }
-
-    /**
-     * Selects the previous interaction (or the first if none is selected) and scrolls it into view.
-     */
-    public void selectPreviousInteraction() {
-        var sm = interactionList.getSelectionModel();
-        int i = sm.getSelectedIndex();
-        int j = Math.max(0, i - 1);
-        if (i < 0 && !interactionList.getItems().isEmpty()) {
-            j = 0;
-        }
-        if (j != i) {
-            sm.select(j);
-            interactionList.scrollTo(j);
-        }
     }
 }

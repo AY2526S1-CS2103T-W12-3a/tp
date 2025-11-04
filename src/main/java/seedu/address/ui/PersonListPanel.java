@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
@@ -60,30 +59,5 @@ public class PersonListPanel extends UiPart<Region> {
     public javafx.scene.control.MultipleSelectionModel<Person> getSelectionModel() {
         return personListView.getSelectionModel();
     }
-
-    /**
-     * Moves selection to the next contact, if any, and scrolls it into view.
-     */
-    public void selectNext() {
-        SelectionModel<Person> sm = personListView.getSelectionModel();
-        int i = sm.getSelectedIndex();
-        if (i < personListView.getItems().size() - 1) {
-            sm.select(i + 1);
-            personListView.scrollTo(i + 1);
-        }
-    }
-
-    /**
-     * Moves selection to the previous contact, if any, and scrolls it into view.
-     */
-    public void selectPrevious() {
-        SelectionModel<Person> sm = personListView.getSelectionModel();
-        int i = sm.getSelectedIndex();
-        if (i > 0) {
-            sm.select(i - 1);
-            personListView.scrollTo(i - 1);
-        }
-    }
-
 
 }
