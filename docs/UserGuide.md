@@ -1,4 +1,7 @@
-# MeshCRM User Guide
+---
+layout: page
+title: User Guide
+---
 
 MeshCRM is made for **entrepreneurs managing customer relationships, discovery, and fundraising.**
 
@@ -20,6 +23,8 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
 > A **CLI (Command Line Interface)** means you type commands — like texting the app what you want it to do.  
 > A **GUI (Graphical User Interface)** means you can also click buttons and see everything nicely displayed on your screen.  
 > MeshCRM combines both, so you can **type fast when you want speed** and **click around when you want convenience**.
+
+<div style="page-break-after: always;"></div>
 
 ## Table of Contents
 - [Quick start](#quick-start)
@@ -93,14 +98,15 @@ MeshCRM helps entrepreneurs and teams turn scattered contacts into a structured,
    <p align="left">
    <img src="images/Ui.png" alt="Ui" width="600"/>
    </p>
+   
 7. Type the command in the command box (indicated by the blue circle) and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-* `list` : Lists all contacts.
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/boss r/investor c/10` : Adds a contact named `John Doe`.
-* `delete 3` : Deletes the 3rd contact shown in the current list.
-* `clear` : Deletes all contacts.
-* `exit` : Exits the app.
+    * `list` : Lists all contacts.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/boss r/investor c/10` : Adds a contact named `John Doe`.
+    * `delete 3` : Deletes the 3rd contact shown in the current list.
+    * `clear` : Deletes all contacts.
+    * `exit` : Exits the app.
 
 8. Refer to the [Features](#features) below for details of each command.
 
