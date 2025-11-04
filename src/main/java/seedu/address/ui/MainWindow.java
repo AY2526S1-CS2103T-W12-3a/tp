@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -136,19 +134,6 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand, commandHistory);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-
-        var scene = getRoot().getScene();
-        scene.getAccelerators().put(
-            new KeyCodeCombination(KeyCode.J, KeyCombination.CONTROL_DOWN), () -> personListPanel.selectNext());
-        scene.getAccelerators().put(
-            new KeyCodeCombination(KeyCode.K, KeyCombination.CONTROL_DOWN), () -> personListPanel.selectPrevious());
-        scene.getAccelerators().put(
-            new KeyCodeCombination(KeyCode.J, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN), ()
-                -> personDetailsPanel.selectNextInteraction());
-        scene.getAccelerators().put(
-            new KeyCodeCombination(KeyCode.K, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN), ()
-                -> personDetailsPanel.selectPreviousInteraction());
-
     }
 
 
