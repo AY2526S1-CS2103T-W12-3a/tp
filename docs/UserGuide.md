@@ -542,6 +542,7 @@ Undoes the most recent command made
 **Details:**
 * Undo is recorded in the command history
 * Undoing a command does not remove it from the command history
+  
 > 💡 **Tip:** Use the undo feature to quickly undo any unintentional commands. </div>
 
 
